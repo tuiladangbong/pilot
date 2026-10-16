@@ -16,6 +16,12 @@ export default {
       if (assetResponse.status !== 404) {
         return assetResponse;
       }
+
+      // Single-page navigation fallback for /prompt/:id routes
+      if (url.pathname.startsWith('/prompt/')) {
+        const indexRequest = new Request(new URL('/', request.url).toString(), request);
+        return env.ASSETS.fetch(indexRequest);
+      }
     }
 
     // Fallback handling

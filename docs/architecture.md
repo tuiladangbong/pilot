@@ -1,96 +1,123 @@
 # Pilot Architecture
 
-## Pilot
+## Pilot: Personal Extensible AI Resource Hub
 
-Pilot is an extensible **AI Resource Hub**. Its purpose is to collect, organize, search, connect, and reuse useful AI-related resources.
+Pilot is designed from the beginning as a personal, extensible **AI Resource Hub**. It serves as an operating library for organizing, searching, connecting, and reusing useful AI-related resources.
 
-Prompts are the first resource module, but Pilot is not designed as a prompt-only vault. Pilot is architected from day one as a modular resource platform.
+**Prompts** is the first fully functional resource module. Pilot is explicitly **not** a prompt vault with random features bolted on; it is a modular platform where new resource types can be added without rewriting the existing application.
 
-## Architecture Style
+## Architectural Style: Modular Monolith + Hexagonal Architecture
 
-Pilot uses a **Modular Monolith** combined with **Hexagonal Architecture** (Ports and Adapters).
-
-- **Modular Monolith**: One deployable Cloudflare Worker application, one D1 database, and clear logical module boundaries. Modules communicate via explicit application and domain APIs rather than cross-importing internal implementation files.
-- **Hexagonal Architecture**: Clear inward-pointing dependency directions decoupling business logic from Cloudflare runtime specifics and database engines.
+Pilot operates as a **Modular Monolith** combined with pragmatic **Hexagonal Architecture** (Ports & Adapters):
 
 ```text
-                   ┌─────────────────┐
-                   │   HTTP / UI     │
-                   └────────┬────────┘
-                            │
-                   ┌────────▼────────┐
-                   │   Application   │
-                   └────────┬────────┘
-                            │
-                   ┌────────▼────────┐
-                   │     Domain      │
-                   └────────┬────────┘
-                            │ Ports
-                   ┌────────▼────────┐
-                   │    Adapters     │
-                   │      D1         │
-                   └─────────────────┘
+                   ┌───────────────────────────────┐
+                   │    HTTP / UI (Static Assets)  │
+                   └───────────────┬───────────────┘
+                                   │
+                   ┌───────────────▼───────────────┐
+                   │    Application Use Cases      │
+                   └───────────────┬───────────────┘
+                                   │
+                   ┌───────────────▼───────────────┐
+                   │         Domain Layer          │
+                   └───────────────┬───────────────┘
+                                   │ (Ports)
+                   ┌───────────────▼───────────────┐
+                   │    Adapters (D1 Database)     │
+                   └───────────────────────────────┘
 ```
 
-## Dependency Direction
+### Dependency Direction
 
 ```text
-Cloudflare Worker HTTP
-        ↓
-Application Use Cases / DTOs
-        ↓
-Domain
-        ↑
-Persistence Ports
-        ↑
-D1 Adapters
+HTTP Router / Static Frontend
+             ↓
+Application Use Cases & DTOs
+             ↓
+        Domain Layer
+             ↑
+      Persistence Ports
+             ↑
+   D1 Infrastructure Adapters
 ```
 
-## Core Architectural Rules
+- **Domain Independence**: Pure domain entities in `src/core/domain/` and `src/modules/*/domain/` contain no Cloudflare or database imports.
+- **Ports & Adapters**: Application use cases interact exclusively with ports (`ResourceRepository`, `PromptRepository`). D1 SQL statements live strictly inside `src/adapters/persistence/d1/`.
+- **Module Ownership**: Each module owns its domain models, application use cases, and dedicated database tables.
+- **Shared Core Minimality**: `src/core/domain/Resource.ts` contains only truly universal attributes: `id`, `type`, `title`, `description`, `createdAt`, `updatedAt`.
 
-1. **Domain code does not depend on Cloudflare**: Pure TypeScript in `src/core/domain/` and `src/modules/*/domain/` with zero imports of Cloudflare Workers APIs.
-2. **Application use cases depend on ports**: Application services interact with repositories through abstract ports.
-3. **Infrastructure implements ports**: Persistence adapters (`src/adapters/persistence/d1/`) implement ports defined in core and modules.
-4. **Modules own their domain logic and module-specific persistence**: The `prompts` module owns prompt domain concepts and the `prompts` D1 table schema.
-5. **Shared Core contains only genuinely shared concepts**: The generic `Resource` entity contains only universal properties (`id`, `type`, `title`, `description`, `createdAt`, `updatedAt`). Never place module-specific fields (e.g. prompt text, model parameters, API keys, workflow steps) into the shared core.
-6. **Modules must not import another module's internal implementation**: Cross-module communication must use published public APIs/DTOs.
-7. **D1 SQL stays inside persistence adapters**: No SQL queries in domain or application layers.
-8. **Cloudflare APIs stay in platform/adapters**: Worker bindings (`env.DB`, `env.ASSETS`) are encapsulated at the entry point and adapters.
-9. **New modules should be addable without restructuring existing modules**: Adding `tools`, `workflows`, or `agents` requires only adding a new folder under `src/modules/<name>/` and its corresponding migration.
-10. **Avoid abstractions until at least two concrete use cases justify them**: Pragmatic hexagonal architecture without ceremony (e.g. no fake clock ports, identity generator ports, or premature DI frameworks).
-
-## Conceptual Domain Model
-
-Pilot is centered around the concept of a **Resource**:
+## Implemented Structure
 
 ```text
-Resource (Core)
-  ├── Prompts (First established module)
-  ├── AI Tools (Future module)
-  ├── Workflows (Future module)
-  ├── Agents (Future module)
-  ├── Models (Future module)
-  ├── Articles & References (Future module)
-  ├── Snippets & Recipes (Future module)
-  └── Collections (Future module)
+src/
+├── core/
+│   ├── domain/
+│   │   └── Resource.ts            # Universal Resource entity
+│   ├── ports/
+│   │   └── ResourceRepository.ts  # Generic persistence port
+│   └── application/
+│       └── ResourceDto.ts         # Generic resource DTOs
+│
+├── modules/
+│   └── prompts/
+│       ├── domain/
+│       │   └── Prompt.ts          # Prompt entity, validation, tag normalization
+│       ├── ports/
+│       │   └── PromptRepository.ts# Prompt module persistence port
+│       └── application/
+│           ├── CreatePromptUseCase.ts
+│           ├── GetPromptUseCase.ts
+│           ├── ListPromptsUseCase.ts
+│           ├── UpdatePromptUseCase.ts
+│           ├── DeletePromptUseCase.ts
+│           ├── DuplicatePromptUseCase.ts
+│           ├── TogglePromptFavoriteUseCase.ts
+│           └── PromptDto.ts
+│
+├── adapters/
+│   ├── http/
+│   │   └── router.ts              # RESTful HTTP API & static fallback
+│   └── persistence/
+│       └── d1/
+│           ├── D1PromptRepository.ts    # D1 SQL, FTS5 search & batch transactions
+│           ├── D1ResourceRepository.ts  # Universal resource persistence
+│           └── D1HealthCheck.ts         # Database connectivity probe
+│
+├── platform/
+│   └── cloudflare/
+│       └── env.ts                 # Worker bindings (DB, ASSETS)
+│
+└── index.ts                       # Cloudflare Worker entry point
 ```
 
-### Relational Database Philosophy
+## Database Schema & Migrations
 
-D1 acts as the single relational database. The schema is organized to prevent nullable column bloat:
+D1 relational tables are structured to avoid nullable-column bloat:
 
-- `resources`: Universally shared metadata table (`id`, `type`, `title`, `description`, `created_at`, `updated_at`).
-- `tags` and `resource_tags`: Universal categorization join table.
-- `<module>` tables (e.g., `prompts`): Module-owned tables holding module-specific details, referencing `resources.id` via foreign key with `ON DELETE CASCADE`.
+```text
+resources (Universal Metadata)
+    ▲
+    ├── prompts (Module-owned table referencing resources.id)
+    ├── [future: tools]
+    ├── [future: workflows]
+    └── [future: articles]
 
-## Future Modules Roadmap
+tags (Universal Taxonomy)
+    ▲
+    └── resource_tags (Many-to-Many Join with resources.id)
+```
 
-The following conceptual modules will fit into Pilot:
+### Migrations
+1. `0001_initial.sql`: Core `resources`, `tags`, `resource_tags`, and initial `prompts` tables.
+2. `0002_prompt_module.sql`: Full-Text Search (`prompts_fts` using SQLite FTS5) with automated trigger synchronization across insert, update, and delete.
 
-- **core**: Universal Resource entity, tagging, base repository ports.
-- **prompts**: Prompt templates, variables, model targeting, versions (currently established).
-- **tools**: External AI websites, SaaS tools, web apps, and developer utilities.
-- **workflows**: Multi-step AI workflows connecting prompts, tools, and models.
-- **collections**: Curated sets of mixed resources (e.g., "Full-stack Coding Stack", "Writing Toolkit").
-- **search**: Cross-resource indexing and search querying across prompts, tools, workflows, and articles.
-- **relationships**: Typed graphs connecting resources (`USES`, `RELATED_TO`, `ALTERNATIVE_TO`, `WORKS_WITH`, `EXPLAINS`, `DERIVED_FROM`).
+## How to Add a Future Resource Module
+
+When introducing a new resource type (e.g., `tools` or `workflows`):
+
+1. **Add Module Folder**: Create `src/modules/<module-name>/` with its own `domain/`, `ports/`, and `application/`.
+2. **Define Database Table**: Add a numbered migration (e.g. `0003_tools_module.sql`) creating `<module-name>` with a foreign key to `resources(id) ON DELETE CASCADE`.
+3. **Implement Adapter**: Create `D1<Module>Repository.ts` in `src/adapters/persistence/d1/` implementing `<Module>Repository`.
+4. **Expose HTTP Endpoints**: Wire REST routes under `/api/<module-name>` in `src/adapters/http/router.ts`.
+5. **No Changes to Prompts**: The `prompts` module internals are never modified or coupled to other resource modules.
