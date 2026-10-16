@@ -23,7 +23,7 @@
       <div class="header-search">
         <div class="search-box">
           <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="search" id="global-search" placeholder="Search prompts, content, tags... (Ctrl+K)" autocomplete="off">
+          <input type="search" id="global-search" placeholder="Search prompts, tools, websites, tags... (Ctrl+K)" autocomplete="off">
           <button id="search-clear-btn" class="icon-btn search-clear hidden" aria-label="Clear search">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </button>
@@ -40,10 +40,31 @@
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
           </button>
         </div>
-        <button id="new-prompt-btn" class="btn btn-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-          <span>New Prompt</span>
-        </button>
+
+        <!-- Add Resource Dropdown -->
+        <div class="dropdown-wrapper">
+          <button id="add-btn" class="btn btn-primary dropdown-trigger" aria-haspopup="true" aria-expanded="false">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            <span>+ Add</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron-icon"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="dropdown-menu hidden" id="add-dropdown-menu" role="menu">
+            <button class="dropdown-item" id="menu-add-tool-btn" role="menuitem">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <div>
+                <strong>New Tool / Website</strong>
+                <small>Save AI web app, service, or documentation</small>
+              </div>
+            </button>
+            <button class="dropdown-item" id="menu-add-prompt-btn" role="menuitem">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <div>
+                <strong>New Prompt</strong>
+                <small>Save reusable system or task prompt</small>
+              </div>
+            </button>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -53,10 +74,20 @@
         <nav class="sidebar-nav">
           <div class="nav-group">
             <div class="nav-group-title">Resources</div>
-            <button class="nav-item active" data-filter-view="all">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
-              <span>All Prompts</span>
-              <span class="badge" id="badge-all-count">0</span>
+            <button class="nav-item active" data-filter-view="all-resources">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              <span>All Resources</span>
+              <span class="badge" id="badge-all-resources-count">0</span>
+            </button>
+            <button class="nav-item" data-filter-view="tools">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span>Tools & Websites</span>
+              <span class="badge" id="badge-tools-count">0</span>
+            </button>
+            <button class="nav-item" data-filter-view="prompts">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              <span>Prompts</span>
+              <span class="badge" id="badge-prompts-count">0</span>
             </button>
             <button class="nav-item" data-filter-view="favorites">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -65,8 +96,30 @@
             </button>
           </div>
 
-          <!-- Model Filter Section -->
-          <div class="nav-group">
+          <!-- Tools Filter Section (Category / Kind / Pricing) -->
+          <div class="nav-group" id="sidebar-tools-filters">
+            <div class="nav-group-title">Filter Tools</div>
+            <div class="filter-select-stack">
+              <select id="tool-kind-filter-select" aria-label="Filter by Kind">
+                <option value="">All Types (Tools & Sites)</option>
+                <option value="tool">Tools only</option>
+                <option value="website">Websites only</option>
+              </select>
+              <select id="tool-category-filter-select" aria-label="Filter by Category">
+                <option value="">All Categories</option>
+              </select>
+              <select id="tool-pricing-filter-select" aria-label="Filter by Pricing">
+                <option value="">All Pricing</option>
+                <option value="Free">Free</option>
+                <option value="Freemium">Freemium</option>
+                <option value="Paid">Paid</option>
+                <option value="Open Source">Open Source</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Model Filter Section (Prompts) -->
+          <div class="nav-group" id="sidebar-prompts-filters">
             <div class="nav-group-title">Models / AI</div>
             <div class="model-select-wrapper">
               <select id="model-filter-select" aria-label="Filter by AI Model">
@@ -91,10 +144,6 @@
             <div class="nav-group-title">Future Modules</div>
             <div class="future-item" title="Planned module">
               <span class="future-dot"></span>
-              <span>AI Tools & Websites</span>
-            </div>
-            <div class="future-item" title="Planned module">
-              <span class="future-dot"></span>
               <span>Workflows</span>
             </div>
             <div class="future-item" title="Planned module">
@@ -105,6 +154,10 @@
               <span class="future-dot"></span>
               <span>Collections</span>
             </div>
+            <div class="future-item" title="Planned module">
+              <span class="future-dot"></span>
+              <span>Recipes</span>
+            </div>
           </div>
         </nav>
       </aside>
@@ -113,7 +166,7 @@
       <main class="app-main">
         <div class="main-toolbar">
           <div class="toolbar-left">
-            <h1 class="view-title" id="current-view-title">All Prompts</h1>
+            <h1 class="view-title" id="current-view-title">All Resources</h1>
             <div class="active-filters" id="active-filters-container"></div>
           </div>
           <div class="toolbar-right">
@@ -128,8 +181,8 @@
           </div>
         </div>
 
-        <!-- Prompts Stream / Grid -->
-        <div class="prompts-container view-list" id="prompts-list">
+        <!-- Resource Stream / Grid -->
+        <div class="prompts-container view-list" id="resources-list">
           <!-- Loaded dynamically -->
         </div>
 
@@ -141,18 +194,122 @@
         <!-- Empty & Loading States -->
         <div class="state-container hidden" id="loading-state">
           <div class="spinner"></div>
-          <p>Loading prompts...</p>
+          <p id="loading-text">Loading resources...</p>
         </div>
 
         <div class="state-container hidden" id="empty-state">
-          <div class="empty-icon">📝</div>
-          <h2 class="empty-title" id="empty-state-title">No prompts yet</h2>
-          <p class="empty-desc" id="empty-state-desc">Save your first useful AI prompt to start your library.</p>
-          <button id="empty-action-btn" class="btn btn-primary">+ New Prompt</button>
+          <div class="empty-icon" id="empty-state-icon">✨</div>
+          <h2 class="empty-title" id="empty-state-title">No resources found</h2>
+          <p class="empty-desc" id="empty-state-desc">Save your first AI tool, website, or prompt to build your operating library.</p>
+          <div class="empty-actions">
+            <button id="empty-add-tool-btn" class="btn btn-primary">+ Add Tool / Website</button>
+            <button id="empty-add-prompt-btn" class="btn btn-secondary">+ Add Prompt</button>
+          </div>
         </div>
       </main>
     </div>
   </div>
+
+  <!-- Create / Edit Tool & Website Modal Dialog -->
+  <dialog id="tool-form-dialog" class="modal-dialog">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="tool-form-dialog-title">New Tool / Website</h2>
+        <button type="button" class="icon-btn modal-close" id="tool-form-close-btn" aria-label="Close dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="tool-form" class="modal-body">
+        <div class="form-error hidden" id="tool-form-error-banner" role="alert"></div>
+        <div class="form-warning hidden" id="tool-form-warning-banner" role="alert"></div>
+
+        <input type="hidden" id="form-tool-id" value="">
+
+        <!-- URL with Auto-fetch Button -->
+        <div class="form-group">
+          <label for="tool-url">URL <span class="required">*</span></label>
+          <div class="input-with-action">
+            <input type="url" id="tool-url" placeholder="https://claude.ai or https://github.com/..." required autocomplete="off">
+            <button type="button" class="btn btn-secondary" id="tool-fetch-meta-btn" title="Fetch site title, description, and favicon">
+              <span class="btn-text">⚡ Fetch Info</span>
+              <span class="spinner-sm hidden"></span>
+            </button>
+          </div>
+          <span class="label-hint">Paste full URL with http:// or https://</span>
+        </div>
+
+        <div class="form-group">
+          <label for="tool-title">Title <span class="required">*</span></label>
+          <input type="text" id="tool-title" placeholder="e.g. Claude 3.5 Sonnet, Hugging Face, Perplexity" required autocomplete="off">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="tool-kind">Kind</label>
+            <select id="tool-kind">
+              <option value="tool">AI Tool / Web App</option>
+              <option value="website">Website / Reference / Directory</option>
+            </select>
+          </div>
+          <div class="form-group flex-1">
+            <label for="tool-pricing">Pricing</label>
+            <select id="tool-pricing">
+              <option value="Freemium">Freemium</option>
+              <option value="Free">Free</option>
+              <option value="Paid">Paid</option>
+              <option value="Open Source">Open Source</option>
+              <option value="Unknown">Unknown</option>
+            </select>
+          </div>
+          <div class="form-group form-checkbox-group">
+            <label class="checkbox-label" for="tool-favorite">
+              <input type="checkbox" id="tool-favorite">
+              <span>Favorite</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="tool-provider">Provider / Creator</label>
+            <input type="text" id="tool-provider" list="providers-datalist" placeholder="e.g. Anthropic, OpenAI, Meta, Google" autocomplete="off">
+            <datalist id="providers-datalist"></datalist>
+          </div>
+          <div class="form-group flex-1">
+            <label for="tool-category">Category</label>
+            <input type="text" id="tool-category" list="categories-datalist" placeholder="e.g. Coding, Image, LLM, Audio, Research" autocomplete="off">
+            <datalist id="categories-datalist"></datalist>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tool-description">Description <span class="label-hint">(short tagline or summary)</span></label>
+          <input type="text" id="tool-description" placeholder="Brief summary of what this tool or site is good for..." autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="tool-notes">Personal Notes <span class="label-hint">(usage notes, keyboard shortcuts, tips)</span></label>
+          <textarea id="tool-notes" rows="4" placeholder="Personal notes, best models to select, workflows, prompt tips..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="tool-tags">Tags <span class="label-hint">(comma separated, e.g. coding, llm, fast, api)</span></label>
+          <input type="text" id="tool-tags" placeholder="coding, llm, reasoning, daily" autocomplete="off">
+        </div>
+
+        <input type="hidden" id="tool-favicon-url" value="">
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="tool-form-cancel-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="tool-form-submit-btn">
+            <span>Save Tool</span>
+            <kbd class="btn-kbd">Ctrl ↵</kbd>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
 
   <!-- Create / Edit Prompt Modal Dialog -->
   <dialog id="prompt-form-dialog" class="modal-dialog">
@@ -217,6 +374,71 @@
     </div>
   </dialog>
 
+  <!-- Tool Detail Dialog -->
+  <dialog id="tool-detail-dialog" class="modal-dialog detail-dialog">
+    <div class="modal-card detail-card">
+      <div class="modal-header">
+        <div class="detail-header-left">
+          <button class="favorite-star-btn" id="tool-detail-fav-btn" aria-label="Toggle favorite">
+            <svg class="star-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </button>
+          <div class="detail-title-icon-wrapper">
+            <img id="tool-detail-favicon" class="tool-favicon-lg hidden" alt="Site icon" width="24" height="24">
+            <h2 class="detail-title" id="tool-detail-title">Tool Title</h2>
+          </div>
+        </div>
+        <button type="button" class="icon-btn modal-close" id="tool-detail-close-btn" aria-label="Close dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="detail-meta">
+        <span class="badge badge-kind" id="tool-detail-kind">Tool</span>
+        <span class="badge badge-pricing" id="tool-detail-pricing">Free</span>
+        <span class="badge badge-category hidden" id="tool-detail-category">Category</span>
+        <span class="badge badge-provider hidden" id="tool-detail-provider">Provider</span>
+        <span class="meta-date" id="tool-detail-updated">Updated recently</span>
+      </div>
+
+      <!-- Quick Action: Open Link + Copy Link -->
+      <div class="detail-url-box">
+        <div class="url-display">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span class="url-text" id="tool-detail-url">https://example.com</span>
+        </div>
+        <div class="url-actions">
+          <button class="btn btn-secondary btn-sm" id="tool-detail-copy-url-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copy URL</span>
+          </button>
+          <a class="btn btn-primary btn-sm" id="tool-detail-open-link" href="#" target="_blank" rel="noopener noreferrer">
+            <span>Open Site</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <p class="detail-description hidden" id="tool-detail-description"></p>
+
+      <div class="detail-notes-wrapper hidden" id="tool-detail-notes-wrapper">
+        <span class="content-label">Personal Notes & Tips</span>
+        <div class="detail-notes-content" id="tool-detail-notes"></div>
+      </div>
+
+      <div class="detail-tags-row hidden" id="tool-detail-tags-row"></div>
+
+      <div class="modal-footer detail-footer">
+        <div class="footer-danger">
+          <button class="btn btn-danger" id="tool-detail-delete-btn">Delete</button>
+        </div>
+        <div class="footer-actions">
+          <button class="btn btn-secondary" id="tool-detail-duplicate-btn">Duplicate</button>
+          <button class="btn btn-secondary" id="tool-detail-edit-btn">Edit</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
   <!-- Prompt Detail Drawer / Dialog -->
   <dialog id="prompt-detail-dialog" class="modal-dialog detail-dialog">
     <div class="modal-card detail-card">
@@ -233,6 +455,7 @@
       </div>
 
       <div class="detail-meta">
+        <span class="badge badge-kind">Prompt</span>
         <span class="model-badge hidden" id="detail-model">Model</span>
         <span class="meta-date" id="detail-updated">Updated recently</span>
       </div>
@@ -268,7 +491,7 @@
   <dialog id="delete-confirm-dialog" class="modal-dialog alert-dialog">
     <div class="modal-card alert-card">
       <div class="modal-header">
-        <h2>Delete Prompt</h2>
+        <h2 id="delete-dialog-title">Delete Resource</h2>
       </div>
       <div class="modal-body">
         <p>Are you sure you want to permanently delete <strong id="delete-prompt-name"></strong>?</p>

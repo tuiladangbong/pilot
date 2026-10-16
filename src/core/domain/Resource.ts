@@ -9,6 +9,7 @@ export interface Resource {
   readonly type: string;
   readonly title: string;
   readonly description: string | null;
+  readonly favorite: boolean;
   readonly createdAt: string;
   readonly updatedAt: string;
 }
@@ -18,6 +19,7 @@ export interface CreateResourceInput {
   readonly type: string;
   readonly title: string;
   readonly description?: string | null;
+  readonly favorite?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
 }
@@ -39,6 +41,7 @@ export function createResource(input: CreateResourceInput): Resource {
     type: input.type.trim().toLowerCase(),
     title: input.title.trim(),
     description: input.description?.trim() ?? null,
+    favorite: Boolean(input.favorite),
     createdAt: input.createdAt ?? now,
     updatedAt: input.updatedAt ?? now,
   };

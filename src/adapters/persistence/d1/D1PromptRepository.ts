@@ -172,13 +172,14 @@ export class D1PromptRepository implements PromptRepository {
     statements.push(
       this.db
         .prepare(
-          `INSERT INTO resources (id, type, title, description, created_at, updated_at)
-           VALUES (?, 'prompt', ?, ?, ?, ?)`
+          `INSERT INTO resources (id, type, title, description, favorite, created_at, updated_at)
+           VALUES (?, 'prompt', ?, ?, ?, ?, ?)`
         )
         .bind(
           prompt.id,
           prompt.title,
           prompt.description,
+          prompt.favorite ? 1 : 0,
           prompt.createdAt,
           prompt.updatedAt
         )
@@ -229,10 +230,10 @@ export class D1PromptRepository implements PromptRepository {
       this.db
         .prepare(
           `UPDATE resources
-           SET title = ?, description = ?, updated_at = ?
+           SET title = ?, description = ?, favorite = ?, updated_at = ?
            WHERE id = ?`
         )
-        .bind(prompt.title, prompt.description, prompt.updatedAt, prompt.id)
+        .bind(prompt.title, prompt.description, prompt.favorite ? 1 : 0, prompt.updatedAt, prompt.id)
     );
 
     // 2. Update prompts
@@ -291,11 +292,11 @@ export class D1PromptRepository implements PromptRepository {
     const now = new Date().toISOString();
     const statements = [
       this.db
+        .prepare('UPDATE resources SET favorite = ?, updated_at = ? WHERE id = ?')
+        .bind(favorite ? 1 : 0, now, id),
+      this.db
         .prepare('UPDATE prompts SET favorite = ? WHERE resource_id = ?')
         .bind(favorite ? 1 : 0, id),
-      this.db
-        .prepare('UPDATE resources SET updated_at = ? WHERE id = ?')
-        .bind(now, id),
     ];
     await this.db.batch(statements);
     return true;
