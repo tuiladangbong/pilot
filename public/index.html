@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilot - AI Resource Hub</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="card">
+    <header>
+      <h1>Pilot</h1>
+      <p class="tagline">AI Resource Hub</p>
+      <p class="status-banner">Cloudflare foundation is running.</p>
+    </header>
+
+    <section class="api-checks" aria-label="System Status">
+      <h2>Foundation Diagnostics</h2>
+      <div class="check-item" id="check-health">
+        <span class="label">API Health:</span>
+        <span class="value" data-status="loading">Checking...</span>
+      </div>
+      <div class="check-item" id="check-db">
+        <span class="label">Database (D1):</span>
+        <span class="value" data-status="loading">Checking...</span>
+      </div>
+      <div class="check-item" id="check-arch">
+        <span class="label">Architecture:</span>
+        <span class="value" data-status="loading">Checking...</span>
+      </div>
+    </section>
+
+    <footer>
+      <p class="footer-note">Pilot Modular Monolith &bull; Hexagonal Architecture</p>
+    </footer>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

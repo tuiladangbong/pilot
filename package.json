@@ -1,0 +1,22 @@
+{
+  "name": "pilot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pilot - Extensible AI Resource Hub",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "db:migrate:local": "wrangler d1 execute pilot-db --local --file=./migrations/0001_initial.sql",
+    "db:migrate:remote": "wrangler d1 execute pilot-db --remote --file=./migrations/0001_initial.sql"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261016.1",
+    "typescript": "^5.6.3",
+    "wrangler": "^4.151.1"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "workerd@1.20261012.1": true
+  }
+}
