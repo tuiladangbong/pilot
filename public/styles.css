@@ -205,6 +205,38 @@ h1, h2, h3, h4, h5, h6 {
   color: #ffffff;
 }
 
+/* Language Toggle Button */
+.lang-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  height: 30px;
+}
+
+.lang-toggle-btn:hover {
+  background-color: var(--bg-card-hover);
+  border-color: var(--border-focus);
+}
+
+.lang-globe {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.lang-code {
+  letter-spacing: 0.05em;
+  color: #ffffff;
+}
+
 /* App Body Layout */
 .app-body {
   display: flex;

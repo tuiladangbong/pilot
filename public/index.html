@@ -16,15 +16,15 @@
         </button>
         <a href="/" class="brand-link" id="brand-home">
           <span class="brand-name">Pilot</span>
-          <span class="brand-subtitle">AI Resource Hub</span>
+          <span class="brand-subtitle" data-i18n="brand_subtitle">AI Resource Hub</span>
         </a>
       </div>
 
       <div class="header-search">
         <div class="search-box">
           <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="search" id="global-search" placeholder="Search prompts, tools, websites, tags... (Ctrl+K)" autocomplete="off">
-          <button id="search-clear-btn" class="icon-btn search-clear hidden" aria-label="Clear search">
+          <input type="search" id="global-search" placeholder="Search prompts, tools, websites, tags... (Ctrl+K)" data-i18n-placeholder="search_placeholder" autocomplete="off">
+          <button id="search-clear-btn" class="icon-btn search-clear hidden" aria-label="Clear search" data-i18n-title="search_clear">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </button>
           <kbd class="search-kbd" id="search-kbd-hint">Ctrl K</kbd>
@@ -32,11 +32,17 @@
       </div>
 
       <div class="header-right">
+        <!-- Language Switcher Button -->
+        <button id="lang-toggle-btn" class="lang-toggle-btn" title="English / Tiếng Việt" aria-label="Toggle language">
+          <span class="lang-globe">🌐</span>
+          <span id="lang-code" class="lang-code">EN</span>
+        </button>
+
         <div class="view-toggles" role="group" aria-label="View layout">
-          <button id="view-list-btn" class="icon-btn active" title="List View" aria-label="List View">
+          <button id="view-list-btn" class="icon-btn active" title="List View" aria-label="List View" data-i18n-title="view_list">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
           </button>
-          <button id="view-grid-btn" class="icon-btn" title="Grid View" aria-label="Grid View">
+          <button id="view-grid-btn" class="icon-btn" title="Grid View" aria-label="Grid View" data-i18n-title="view_grid">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
           </button>
         </div>
@@ -45,22 +51,22 @@
         <div class="dropdown-wrapper">
           <button id="add-btn" class="btn btn-primary dropdown-trigger" aria-haspopup="true" aria-expanded="false">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-            <span>+ Add</span>
+            <span data-i18n="add_btn">+ Add</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron-icon"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           <div class="dropdown-menu hidden" id="add-dropdown-menu" role="menu">
             <button class="dropdown-item" id="menu-add-tool-btn" role="menuitem">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
               <div>
-                <strong>New Tool / Website</strong>
-                <small>Save AI web app, service, or documentation</small>
+                <strong data-i18n="menu_new_tool">New Tool / Website</strong>
+                <small data-i18n="menu_new_tool_desc">Save AI web app, service, or documentation</small>
               </div>
             </button>
             <button class="dropdown-item" id="menu-add-prompt-btn" role="menuitem">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
               <div>
-                <strong>New Prompt</strong>
-                <small>Save reusable system or task prompt</small>
+                <strong data-i18n="menu_new_prompt">New Prompt</strong>
+                <small data-i18n="menu_new_prompt_desc">Save reusable system or task prompt</small>
               </div>
             </button>
           </div>
@@ -73,57 +79,57 @@
       <aside class="app-sidebar" id="app-sidebar">
         <nav class="sidebar-nav">
           <div class="nav-group">
-            <div class="nav-group-title">Resources</div>
+            <div class="nav-group-title" data-i18n="nav_resources">Resources</div>
             <button class="nav-item active" data-filter-view="all-resources">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-              <span>All Resources</span>
+              <span data-i18n="nav_all_resources">All Resources</span>
               <span class="badge" id="badge-all-resources-count">0</span>
             </button>
             <button class="nav-item" data-filter-view="tools">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-              <span>Tools & Websites</span>
+              <span data-i18n="nav_tools">Tools & Websites</span>
               <span class="badge" id="badge-tools-count">0</span>
             </button>
             <button class="nav-item" data-filter-view="prompts">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-              <span>Prompts</span>
+              <span data-i18n="nav_prompts">Prompts</span>
               <span class="badge" id="badge-prompts-count">0</span>
             </button>
             <button class="nav-item" data-filter-view="favorites">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <span>Favorites</span>
+              <span data-i18n="nav_favorites">Favorites</span>
               <span class="badge" id="badge-fav-count">0</span>
             </button>
           </div>
 
           <!-- Tools Filter Section (Category / Kind / Pricing) -->
           <div class="nav-group" id="sidebar-tools-filters">
-            <div class="nav-group-title">Filter Tools</div>
+            <div class="nav-group-title" data-i18n="nav_filter_tools">Filter Tools</div>
             <div class="filter-select-stack">
               <select id="tool-kind-filter-select" aria-label="Filter by Kind">
-                <option value="">All Types (Tools & Sites)</option>
-                <option value="tool">Tools only</option>
-                <option value="website">Websites only</option>
+                <option value="" data-i18n="nav_all_types">All Types (Tools & Sites)</option>
+                <option value="tool" data-i18n="nav_tools_only">Tools only</option>
+                <option value="website" data-i18n="nav_websites_only">Websites only</option>
               </select>
               <select id="tool-category-filter-select" aria-label="Filter by Category">
-                <option value="">All Categories</option>
+                <option value="" data-i18n="nav_all_categories">All Categories</option>
               </select>
               <select id="tool-pricing-filter-select" aria-label="Filter by Pricing">
-                <option value="">All Pricing</option>
-                <option value="Free">Free</option>
-                <option value="Freemium">Freemium</option>
-                <option value="Paid">Paid</option>
-                <option value="Open Source">Open Source</option>
+                <option value="" data-i18n="nav_all_pricing">All Pricing</option>
+                <option value="Free" data-i18n="pricing_free">Free</option>
+                <option value="Freemium" data-i18n="pricing_freemium">Freemium</option>
+                <option value="Paid" data-i18n="pricing_paid">Paid</option>
+                <option value="Open Source" data-i18n="pricing_opensource">Open Source</option>
               </select>
             </div>
           </div>
 
           <!-- Model Filter Section (Prompts) -->
           <div class="nav-group" id="sidebar-prompts-filters">
-            <div class="nav-group-title">Models / AI</div>
+            <div class="nav-group-title" data-i18n="nav_models">Models / AI</div>
             <div class="model-select-wrapper">
               <select id="model-filter-select" aria-label="Filter by AI Model">
-                <option value="">All Models</option>
+                <option value="" data-i18n="nav_all_models">All Models</option>
               </select>
             </div>
           </div>
@@ -131,32 +137,32 @@
           <!-- Tags Section -->
           <div class="nav-group">
             <div class="nav-group-header">
-              <span class="nav-group-title">Tags</span>
-              <button id="clear-tag-btn" class="text-btn hidden">Clear</button>
+              <span class="nav-group-title" data-i18n="nav_tags">Tags</span>
+              <button id="clear-tag-btn" class="text-btn hidden" data-i18n="nav_clear">Clear</button>
             </div>
             <div class="tags-list" id="sidebar-tags-list">
-              <span class="empty-hint">No tags yet</span>
+              <span class="empty-hint" data-i18n="nav_no_tags">No tags yet</span>
             </div>
           </div>
 
           <!-- Future Modules Extensibility Indicator -->
           <div class="nav-group future-modules">
-            <div class="nav-group-title">Future Modules</div>
+            <div class="nav-group-title" data-i18n="nav_future_modules">Future Modules</div>
             <div class="future-item" title="Planned module">
               <span class="future-dot"></span>
-              <span>Workflows</span>
+              <span data-i18n="future_workflows">Workflows</span>
             </div>
             <div class="future-item" title="Planned module">
               <span class="future-dot"></span>
-              <span>Agents</span>
+              <span data-i18n="future_agents">Agents</span>
             </div>
             <div class="future-item" title="Planned module">
               <span class="future-dot"></span>
-              <span>Collections</span>
+              <span data-i18n="future_collections">Collections</span>
             </div>
             <div class="future-item" title="Planned module">
               <span class="future-dot"></span>
-              <span>Recipes</span>
+              <span data-i18n="future_recipes">Recipes</span>
             </div>
           </div>
         </nav>
@@ -170,13 +176,13 @@
             <div class="active-filters" id="active-filters-container"></div>
           </div>
           <div class="toolbar-right">
-            <label for="sort-select" class="sort-label">Sort:</label>
+            <label for="sort-select" class="sort-label" data-i18n="sort_label">Sort:</label>
             <select id="sort-select" class="sort-select">
-              <option value="updated_at:desc">Recently Updated</option>
-              <option value="created_at:desc">Newest First</option>
-              <option value="created_at:asc">Oldest First</option>
-              <option value="title:asc">Title (A–Z)</option>
-              <option value="title:desc">Title (Z–A)</option>
+              <option value="updated_at:desc" data-i18n="sort_updated_desc">Recently Updated</option>
+              <option value="created_at:desc" data-i18n="sort_created_desc">Newest First</option>
+              <option value="created_at:asc" data-i18n="sort_created_asc">Oldest First</option>
+              <option value="title:asc" data-i18n="sort_title_asc">Title (A–Z)</option>
+              <option value="title:desc" data-i18n="sort_title_desc">Title (Z–A)</option>
             </select>
           </div>
         </div>
@@ -188,13 +194,13 @@
 
         <!-- Pagination / Load More -->
         <div class="load-more-wrapper hidden" id="load-more-wrapper">
-          <button id="load-more-btn" class="btn btn-secondary">Load More</button>
+          <button id="load-more-btn" class="btn btn-secondary" data-i18n="btn_load_more">Load More</button>
         </div>
 
         <!-- Empty & Loading States -->
         <div class="state-container hidden" id="loading-state">
           <div class="spinner"></div>
-          <p id="loading-text">Loading resources...</p>
+          <p id="loading-text" data-i18n="loading_resources">Loading resources...</p>
         </div>
 
         <div class="state-container hidden" id="empty-state">
@@ -202,8 +208,8 @@
           <h2 class="empty-title" id="empty-state-title">No resources found</h2>
           <p class="empty-desc" id="empty-state-desc">Save your first AI tool, website, or prompt to build your operating library.</p>
           <div class="empty-actions">
-            <button id="empty-add-tool-btn" class="btn btn-primary">+ Add Tool / Website</button>
-            <button id="empty-add-prompt-btn" class="btn btn-secondary">+ Add Prompt</button>
+            <button id="empty-add-tool-btn" class="btn btn-primary" data-i18n="btn_add_tool">+ Add Tool / Website</button>
+            <button id="empty-add-prompt-btn" class="btn btn-secondary" data-i18n="btn_add_prompt">+ Add Prompt</button>
           </div>
         </div>
       </main>
@@ -214,7 +220,7 @@
   <dialog id="tool-form-dialog" class="modal-dialog">
     <div class="modal-card">
       <div class="modal-header">
-        <h2 id="tool-form-dialog-title">New Tool / Website</h2>
+        <h2 id="tool-form-dialog-title" data-i18n="modal_new_tool">New Tool / Website</h2>
         <button type="button" class="icon-btn modal-close" id="tool-form-close-btn" aria-label="Close dialog">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
@@ -228,82 +234,82 @@
 
         <!-- URL with Auto-fetch Button -->
         <div class="form-group">
-          <label for="tool-url">URL <span class="required">*</span></label>
+          <label for="tool-url"><span data-i18n="label_url">URL</span> <span class="required">*</span></label>
           <div class="input-with-action">
             <input type="url" id="tool-url" placeholder="https://claude.ai or https://github.com/..." required autocomplete="off">
             <button type="button" class="btn btn-secondary" id="tool-fetch-meta-btn" title="Fetch site title, description, and favicon">
-              <span class="btn-text">⚡ Fetch Info</span>
+              <span class="btn-text" data-i18n="btn_fetch_info">⚡ Fetch Info</span>
               <span class="spinner-sm hidden"></span>
             </button>
           </div>
-          <span class="label-hint">Paste full URL with http:// or https://</span>
+          <span class="label-hint" data-i18n="label_url_hint">Paste full URL with http:// or https://</span>
         </div>
 
         <div class="form-group">
-          <label for="tool-title">Title <span class="required">*</span></label>
+          <label for="tool-title"><span data-i18n="label_title">Title</span> <span class="required">*</span></label>
           <input type="text" id="tool-title" placeholder="e.g. Claude 3.5 Sonnet, Hugging Face, Perplexity" required autocomplete="off">
         </div>
 
         <div class="form-row">
           <div class="form-group flex-1">
-            <label for="tool-kind">Kind</label>
+            <label for="tool-kind" data-i18n="label_kind">Kind</label>
             <select id="tool-kind">
-              <option value="tool">AI Tool / Web App</option>
-              <option value="website">Website / Reference / Directory</option>
+              <option value="tool" data-i18n="opt_kind_tool">AI Tool / Web App</option>
+              <option value="website" data-i18n="opt_kind_website">Website / Reference / Directory</option>
             </select>
           </div>
           <div class="form-group flex-1">
-            <label for="tool-pricing">Pricing</label>
+            <label for="tool-pricing" data-i18n="label_pricing">Pricing</label>
             <select id="tool-pricing">
-              <option value="Freemium">Freemium</option>
-              <option value="Free">Free</option>
-              <option value="Paid">Paid</option>
-              <option value="Open Source">Open Source</option>
-              <option value="Unknown">Unknown</option>
+              <option value="Freemium" data-i18n="pricing_freemium">Freemium</option>
+              <option value="Free" data-i18n="pricing_free">Free</option>
+              <option value="Paid" data-i18n="pricing_paid">Paid</option>
+              <option value="Open Source" data-i18n="pricing_opensource">Open Source</option>
+              <option value="Unknown" data-i18n="pricing_unknown">Unknown</option>
             </select>
           </div>
           <div class="form-group form-checkbox-group">
             <label class="checkbox-label" for="tool-favorite">
               <input type="checkbox" id="tool-favorite">
-              <span>Favorite</span>
+              <span data-i18n="label_favorite">Favorite</span>
             </label>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group flex-1">
-            <label for="tool-provider">Provider / Creator</label>
+            <label for="tool-provider" data-i18n="label_provider">Provider / Creator</label>
             <input type="text" id="tool-provider" list="providers-datalist" placeholder="e.g. Anthropic, OpenAI, Meta, Google" autocomplete="off">
             <datalist id="providers-datalist"></datalist>
           </div>
           <div class="form-group flex-1">
-            <label for="tool-category">Category</label>
+            <label for="tool-category" data-i18n="label_category">Category</label>
             <input type="text" id="tool-category" list="categories-datalist" placeholder="e.g. Coding, Image, LLM, Audio, Research" autocomplete="off">
             <datalist id="categories-datalist"></datalist>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="tool-description">Description <span class="label-hint">(short tagline or summary)</span></label>
+          <label for="tool-description"><span data-i18n="label_description">Description</span> <span class="label-hint" data-i18n="label_desc_hint">(short tagline or summary)</span></label>
           <input type="text" id="tool-description" placeholder="Brief summary of what this tool or site is good for..." autocomplete="off">
         </div>
 
         <div class="form-group">
-          <label for="tool-notes">Personal Notes <span class="label-hint">(usage notes, keyboard shortcuts, tips)</span></label>
+          <label for="tool-notes"><span data-i18n="label_notes">Personal Notes</span> <span class="label-hint" data-i18n="label_notes_hint">(usage notes, keyboard shortcuts, tips)</span></label>
           <textarea id="tool-notes" rows="4" placeholder="Personal notes, best models to select, workflows, prompt tips..."></textarea>
         </div>
 
         <div class="form-group">
-          <label for="tool-tags">Tags <span class="label-hint">(comma separated, e.g. coding, llm, fast, api)</span></label>
+          <label for="tool-tags"><span data-i18n="label_tags">Tags</span> <span class="label-hint" data-i18n="label_tags_hint_tool">(comma separated, e.g. coding, llm, fast, api)</span></label>
           <input type="text" id="tool-tags" placeholder="coding, llm, reasoning, daily" autocomplete="off">
         </div>
 
         <input type="hidden" id="tool-favicon-url" value="">
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" id="tool-form-cancel-btn">Cancel</button>
+          <button type="button" class="btn btn-secondary" id="tool-form-cancel-btn" data-i18n="btn_cancel">Cancel</button>
           <button type="submit" class="btn btn-primary" id="tool-form-submit-btn">
-            <span>Save Tool</span>
+            <span data-i18n="btn_save_tool">Save Tool</span>
             <kbd class="btn-kbd">Ctrl ↵</kbd>
           </button>
         </div>
@@ -315,7 +321,7 @@
   <dialog id="prompt-form-dialog" class="modal-dialog">
     <div class="modal-card">
       <div class="modal-header">
-        <h2 id="form-dialog-title">New Prompt</h2>
+        <h2 id="form-dialog-title" data-i18n="modal_new_prompt">New Prompt</h2>
         <button type="button" class="icon-btn modal-close" id="form-close-btn" aria-label="Close dialog">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
@@ -327,46 +333,46 @@
         <input type="hidden" id="form-prompt-id" value="">
 
         <div class="form-group">
-          <label for="prompt-title">Title <span class="required">*</span></label>
+          <label for="prompt-title"><span data-i18n="label_title">Title</span> <span class="required">*</span></label>
           <input type="text" id="prompt-title" placeholder="e.g. Python Async Refactoring Expert" required autocomplete="off">
         </div>
 
         <div class="form-row">
           <div class="form-group flex-1">
-            <label for="prompt-model">Intended Model / AI</label>
+            <label for="prompt-model" data-i18n="label_model">Intended Model / AI</label>
             <input type="text" id="prompt-model" list="models-datalist" placeholder="e.g. Claude Code, ChatGPT, Gemini" autocomplete="off">
             <datalist id="models-datalist"></datalist>
           </div>
           <div class="form-group form-checkbox-group">
             <label class="checkbox-label" for="prompt-favorite">
               <input type="checkbox" id="prompt-favorite">
-              <span>Mark as Favorite</span>
+              <span data-i18n="label_mark_favorite">Mark as Favorite</span>
             </label>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="prompt-description">Description <span class="label-hint">(optional summary or usage notes)</span></label>
+          <label for="prompt-description"><span data-i18n="label_description">Description</span> <span class="label-hint" data-i18n="label_prompt_desc_hint">(optional summary or usage notes)</span></label>
           <input type="text" id="prompt-description" placeholder="Brief context about when and how to use this prompt..." autocomplete="off">
         </div>
 
         <div class="form-group">
           <div class="label-row">
-            <label for="prompt-content">Prompt Content <span class="required">*</span></label>
-            <span class="label-hint">Plain text &bull; Preserves exact whitespace</span>
+            <label for="prompt-content"><span data-i18n="label_prompt_content">Prompt Content</span> <span class="required">*</span></label>
+            <span class="label-hint" data-i18n="label_prompt_content_hint">Plain text &bull; Preserves exact whitespace</span>
           </div>
           <textarea id="prompt-content" rows="10" placeholder="Paste or write your full prompt here..." required spellcheck="false"></textarea>
         </div>
 
         <div class="form-group">
-          <label for="prompt-tags">Tags <span class="label-hint">(comma separated, e.g. coding, refactor, python)</span></label>
+          <label for="prompt-tags"><span data-i18n="label_tags">Tags</span> <span class="label-hint" data-i18n="label_tags_hint_prompt">(comma separated, e.g. coding, refactor, python)</span></label>
           <input type="text" id="prompt-tags" placeholder="coding, refactor, architecture" autocomplete="off">
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" id="form-cancel-btn">Cancel</button>
+          <button type="button" class="btn btn-secondary" id="form-cancel-btn" data-i18n="btn_cancel">Cancel</button>
           <button type="submit" class="btn btn-primary" id="form-submit-btn">
-            <span>Save Prompt</span>
+            <span data-i18n="btn_save_prompt">Save Prompt</span>
             <kbd class="btn-kbd">Ctrl ↵</kbd>
           </button>
         </div>
@@ -409,10 +415,10 @@
         <div class="url-actions">
           <button class="btn btn-secondary btn-sm" id="tool-detail-copy-url-btn">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            <span>Copy URL</span>
+            <span data-i18n="btn_copy_url">Copy URL</span>
           </button>
           <a class="btn btn-primary btn-sm" id="tool-detail-open-link" href="#" target="_blank" rel="noopener noreferrer">
-            <span>Open Site</span>
+            <span data-i18n="btn_open_site">Open Site</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
         </div>
@@ -421,7 +427,7 @@
       <p class="detail-description hidden" id="tool-detail-description"></p>
 
       <div class="detail-notes-wrapper hidden" id="tool-detail-notes-wrapper">
-        <span class="content-label">Personal Notes & Tips</span>
+        <span class="content-label" data-i18n="notes_tips_title">Personal Notes & Tips</span>
         <div class="detail-notes-content" id="tool-detail-notes"></div>
       </div>
 
@@ -429,11 +435,11 @@
 
       <div class="modal-footer detail-footer">
         <div class="footer-danger">
-          <button class="btn btn-danger" id="tool-detail-delete-btn">Delete</button>
+          <button class="btn btn-danger" id="tool-detail-delete-btn" data-i18n="btn_delete">Delete</button>
         </div>
         <div class="footer-actions">
-          <button class="btn btn-secondary" id="tool-detail-duplicate-btn">Duplicate</button>
-          <button class="btn btn-secondary" id="tool-detail-edit-btn">Edit</button>
+          <button class="btn btn-secondary" id="tool-detail-duplicate-btn" data-i18n="btn_duplicate">Duplicate</button>
+          <button class="btn btn-secondary" id="tool-detail-edit-btn" data-i18n="btn_edit">Edit</button>
         </div>
       </div>
     </div>
@@ -455,7 +461,7 @@
       </div>
 
       <div class="detail-meta">
-        <span class="badge badge-kind">Prompt</span>
+        <span class="badge badge-kind" data-i18n="badge_prompt">Prompt</span>
         <span class="model-badge hidden" id="detail-model">Model</span>
         <span class="meta-date" id="detail-updated">Updated recently</span>
       </div>
@@ -466,10 +472,10 @@
 
       <div class="detail-content-wrapper">
         <div class="content-header">
-          <span class="content-label">Prompt Content</span>
+          <span class="content-label" data-i18n="label_prompt_content">Prompt Content</span>
           <button class="btn btn-copy" id="detail-copy-btn">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            <span>Copy Prompt</span>
+            <span data-i18n="btn_copy">Copy Prompt</span>
           </button>
         </div>
         <pre class="detail-content-pre" id="detail-content"></pre>
@@ -477,11 +483,11 @@
 
       <div class="modal-footer detail-footer">
         <div class="footer-danger">
-          <button class="btn btn-danger" id="detail-delete-btn">Delete</button>
+          <button class="btn btn-danger" id="detail-delete-btn" data-i18n="btn_delete">Delete</button>
         </div>
         <div class="footer-actions">
-          <button class="btn btn-secondary" id="detail-duplicate-btn">Duplicate</button>
-          <button class="btn btn-secondary" id="detail-edit-btn">Edit</button>
+          <button class="btn btn-secondary" id="detail-duplicate-btn" data-i18n="btn_duplicate">Duplicate</button>
+          <button class="btn btn-secondary" id="detail-edit-btn" data-i18n="btn_edit">Edit</button>
         </div>
       </div>
     </div>
@@ -491,15 +497,15 @@
   <dialog id="delete-confirm-dialog" class="modal-dialog alert-dialog">
     <div class="modal-card alert-card">
       <div class="modal-header">
-        <h2 id="delete-dialog-title">Delete Resource</h2>
+        <h2 id="delete-dialog-title" data-i18n="delete_resource_title">Delete Resource</h2>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to permanently delete <strong id="delete-prompt-name"></strong>?</p>
-        <p class="alert-warning-text">This action cannot be undone.</p>
+        <p><span id="delete-confirm-prompt-msg">Are you sure you want to permanently delete</span> <strong id="delete-prompt-name"></strong>?</p>
+        <p class="alert-warning-text" data-i18n="delete_warning">This action cannot be undone.</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="delete-cancel-btn">Cancel</button>
-        <button type="button" class="btn btn-danger" id="delete-confirm-btn">Delete Permanently</button>
+        <button type="button" class="btn btn-secondary" id="delete-cancel-btn" data-i18n="btn_cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="delete-confirm-btn" data-i18n="btn_delete_permanently">Delete Permanently</button>
       </div>
     </div>
   </dialog>

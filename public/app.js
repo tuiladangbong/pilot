@@ -4,8 +4,328 @@
 (function () {
   'use strict';
 
+  // --- Internationalization (i18n) ---
+  const I18N = {
+    en: {
+      brand_subtitle: 'AI Resource Hub',
+      search_placeholder: 'Search prompts, tools, websites, tags... (Ctrl+K)',
+      search_clear: 'Clear search',
+      view_list: 'List View',
+      view_grid: 'Grid View',
+      add_btn: '+ Add',
+      menu_new_tool: 'New Tool / Website',
+      menu_new_tool_desc: 'Save AI web app, service, or documentation',
+      menu_new_prompt: 'New Prompt',
+      menu_new_prompt_desc: 'Save reusable system or task prompt',
+
+      // Sidebar
+      nav_resources: 'Resources',
+      nav_all_resources: 'All Resources',
+      nav_tools: 'Tools & Websites',
+      nav_prompts: 'Prompts',
+      nav_favorites: 'Favorites',
+      nav_filter_tools: 'Filter Tools',
+      nav_all_types: 'All Types (Tools & Sites)',
+      nav_tools_only: 'Tools only',
+      nav_websites_only: 'Websites only',
+      nav_all_categories: 'All Categories',
+      nav_all_pricing: 'All Pricing',
+      pricing_free: 'Free',
+      pricing_freemium: 'Freemium',
+      pricing_paid: 'Paid',
+      pricing_opensource: 'Open Source',
+      pricing_unknown: 'Unknown',
+      nav_models: 'Models / AI',
+      nav_all_models: 'All Models',
+      nav_tags: 'Tags',
+      nav_clear: 'Clear',
+      nav_no_tags: 'No tags yet',
+      nav_future_modules: 'Future Modules',
+      future_workflows: 'Workflows',
+      future_agents: 'Agents',
+      future_collections: 'Collections',
+      future_recipes: 'Recipes',
+
+      // Toolbar
+      sort_label: 'Sort:',
+      sort_updated_desc: 'Recently Updated',
+      sort_created_desc: 'Newest First',
+      sort_created_asc: 'Oldest First',
+      sort_title_asc: 'Title (A–Z)',
+      sort_title_desc: 'Title (Z–A)',
+
+      // Card & Badges
+      badge_tool: 'Tool',
+      badge_website: 'Website',
+      badge_prompt: 'Prompt',
+      btn_copy: 'Copy',
+      btn_copy_prompt: 'Copy Prompt',
+      btn_copy_url: 'Copy URL',
+      btn_copied: 'Copied ✓',
+      btn_open: 'Open',
+      btn_open_site: 'Open Site',
+
+      // Empty & Loading States
+      loading_resources: 'Loading resources...',
+      empty_no_resources: 'No resources found',
+      empty_no_resources_desc: 'Save your first AI tool, website, or prompt to build your operating library.',
+      empty_no_tools: 'No AI tools or websites yet',
+      empty_no_tools_desc: 'Save your first AI tool or reference site to build your collection.',
+      empty_no_prompts: 'No prompts yet',
+      empty_no_prompts_desc: 'Save your first AI prompt to build your operating library.',
+      empty_no_favs: 'Nothing favorited yet',
+      empty_no_favs_desc: 'Star useful prompts, tools, and websites to find them here.',
+      empty_search_no_match: 'No resources match this search',
+      empty_search_desc: (q) => `No items matching "${q}".`,
+      empty_tag_no_match: (tag) => `No resources tagged #${tag}`,
+      empty_tag_desc: 'Try selecting another tag or clearing the filter.',
+      btn_add_tool: '+ Add Tool / Website',
+      btn_add_prompt: '+ Add Prompt',
+      btn_load_more: 'Load More',
+
+      // Modals
+      modal_new_tool: 'New Tool / Website',
+      modal_edit_tool: 'Edit Tool / Website',
+      modal_new_prompt: 'New Prompt',
+      modal_edit_prompt: 'Edit Prompt',
+      label_url: 'URL',
+      label_url_hint: 'Paste full URL with http:// or https://',
+      btn_fetch_info: '⚡ Fetch Info',
+      btn_fetching: 'Fetching...',
+      label_title: 'Title',
+      label_kind: 'Kind',
+      opt_kind_tool: 'AI Tool / Web App',
+      opt_kind_website: 'Website / Reference / Directory',
+      label_pricing: 'Pricing',
+      label_favorite: 'Favorite',
+      label_mark_favorite: 'Mark as Favorite',
+      label_provider: 'Provider / Creator',
+      label_category: 'Category',
+      label_description: 'Description',
+      label_desc_hint: '(short tagline or summary)',
+      label_notes: 'Personal Notes',
+      label_notes_hint: '(usage notes, keyboard shortcuts, tips)',
+      label_tags: 'Tags',
+      label_tags_hint_tool: '(comma separated, e.g. coding, llm, fast, api)',
+      label_tags_hint_prompt: '(comma separated, e.g. coding, refactor, architecture)',
+      label_model: 'Intended Model / AI',
+      label_prompt_desc_hint: '(optional summary or usage notes)',
+      label_prompt_content: 'Prompt Content',
+      label_prompt_content_hint: 'Plain text • Preserves exact whitespace',
+      btn_cancel: 'Cancel',
+      btn_save_tool: 'Save Tool',
+      btn_save_prompt: 'Save Prompt',
+      btn_save_changes: 'Save Changes',
+
+      // Detail Dialogs
+      notes_tips_title: 'Personal Notes & Tips',
+      btn_duplicate: 'Duplicate',
+      btn_edit: 'Edit',
+      btn_delete: 'Delete',
+      updated_recently: 'Updated recently',
+      updated_at: (date) => `Updated ${date}`,
+
+      // Delete Dialog
+      delete_resource_title: 'Delete Resource',
+      delete_prompt_title: 'Delete Prompt',
+      delete_confirm_text: (name) => `Are you sure you want to permanently delete "${name}"?`,
+      delete_warning: 'This action cannot be undone.',
+      btn_delete_permanently: 'Delete Permanently',
+
+      // Toasts & Errors
+      toast_copied: 'Copied to clipboard',
+      toast_copy_failed: 'Failed to copy to clipboard',
+      toast_fav_added: 'Marked as favorite',
+      toast_fav_removed: 'Removed from favorites',
+      toast_site_fetched: 'Site info fetched successfully!',
+      toast_enter_url: 'Enter a URL to fetch info',
+      toast_tool_created: 'Tool saved successfully',
+      toast_tool_updated: 'Tool updated successfully',
+      toast_prompt_created: 'Prompt created successfully',
+      toast_prompt_updated: 'Prompt updated successfully',
+      toast_duplicated: (title) => `Duplicated "${title}"`,
+      toast_deleted: (title) => `Deleted "${title}"`,
+      err_title_required: 'Title is required',
+      err_url_required: 'URL is required',
+      err_prompt_content_required: 'Prompt content is required',
+
+      // Relative Dates
+      time_just_now: 'just now',
+      time_mins_ago: (n) => `${n}m ago`,
+      time_hours_ago: (n) => `${n}h ago`,
+      time_days_ago: (n) => `${n}d ago`,
+
+      // Filter Pill Labels
+      filter_search: (q) => `Search: "${q}"`,
+      filter_tag: (t) => `#${t}`,
+      filter_kind: (k) => `Kind: ${k}`,
+      filter_category: (c) => `Category: ${c}`,
+      filter_pricing: (p) => `Pricing: ${p}`,
+      filter_model: (m) => `Model: ${m}`,
+    },
+
+    vi: {
+      brand_subtitle: 'Trung tâm tài nguyên AI',
+      search_placeholder: 'Tìm kiếm prompt, công cụ, website, thẻ... (Ctrl+K)',
+      search_clear: 'Xóa tìm kiếm',
+      view_list: 'Xem danh sách',
+      view_grid: 'Xem lưới',
+      add_btn: '+ Thêm',
+      menu_new_tool: 'Thêm Công cụ / Website',
+      menu_new_tool_desc: 'Lưu web app AI, dịch vụ hoặc trang tài liệu tham khảo',
+      menu_new_prompt: 'Thêm Prompt',
+      menu_new_prompt_desc: 'Lưu prompt hệ thống hoặc tác vụ tái sử dụng',
+
+      // Sidebar
+      nav_resources: 'Tài nguyên',
+      nav_all_resources: 'Tất cả tài nguyên',
+      nav_tools: 'Công cụ & Website',
+      nav_prompts: 'Prompts',
+      nav_favorites: 'Yêu thích',
+      nav_filter_tools: 'Lọc công cụ',
+      nav_all_types: 'Tất cả loại (Công cụ & Trang)',
+      nav_tools_only: 'Chỉ công cụ',
+      nav_websites_only: 'Chỉ website',
+      nav_all_categories: 'Tất cả danh mục',
+      nav_all_pricing: 'Tất cả mức giá',
+      pricing_free: 'Miễn phí',
+      pricing_freemium: 'Freemium',
+      pricing_paid: 'Trả phí',
+      pricing_opensource: 'Mã nguồn mở',
+      pricing_unknown: 'Chưa rõ',
+      nav_models: 'Mô hình / AI',
+      nav_all_models: 'Tất cả mô hình',
+      nav_tags: 'Thẻ',
+      nav_clear: 'Xóa lọc',
+      nav_no_tags: 'Chưa có thẻ nào',
+      nav_future_modules: 'Mô-đun sắp tới',
+      future_workflows: 'Quy trình (Workflows)',
+      future_agents: 'Tác nhân (Agents)',
+      future_collections: 'Bộ sưu tập (Collections)',
+      future_recipes: 'Công thức (Recipes)',
+
+      // Toolbar
+      sort_label: 'Sắp xếp:',
+      sort_updated_desc: 'Cập nhật gần đây',
+      sort_created_desc: 'Mới nhất trước',
+      sort_created_asc: 'Cũ nhất trước',
+      sort_title_asc: 'Tiêu đề (A–Z)',
+      sort_title_desc: 'Tiêu đề (Z–A)',
+
+      // Card & Badges
+      badge_tool: 'Công cụ',
+      badge_website: 'Website',
+      badge_prompt: 'Prompt',
+      btn_copy: 'Sao chép',
+      btn_copy_prompt: 'Sao chép Prompt',
+      btn_copy_url: 'Chép URL',
+      btn_copied: 'Đã chép ✓',
+      btn_open: 'Mở',
+      btn_open_site: 'Mở trang web',
+
+      // Empty & Loading States
+      loading_resources: 'Đang tải tài nguyên...',
+      empty_no_resources: 'Không tìm thấy tài nguyên nào',
+      empty_no_resources_desc: 'Lưu công cụ AI, website hoặc prompt đầu tiên của bạn để xây dựng kho vận hành.',
+      empty_no_tools: 'Chưa có công cụ hoặc website AI nào',
+      empty_no_tools_desc: 'Lưu công cụ hoặc trang web AI đầu tiên để bắt đầu bộ sưu tập.',
+      empty_no_prompts: 'Chưa có prompt nào',
+      empty_no_prompts_desc: 'Lưu prompt AI đầu tiên để xây dựng thư viện vận hành cá nhân.',
+      empty_no_favs: 'Chưa có mục yêu thích nào',
+      empty_no_favs_desc: 'Đánh dấu sao các prompt, công cụ và website hữu ích để tìm nhanh tại đây.',
+      empty_search_no_match: 'Không tìm thấy tài nguyên phù hợp',
+      empty_search_desc: (q) => `Không có mục nào khớp với "${q}".`,
+      empty_tag_no_match: (tag) => `Không có tài nguyên gắn thẻ #${tag}`,
+      empty_tag_desc: 'Thử chọn một thẻ khác hoặc xóa bộ lọc.',
+      btn_add_tool: '+ Thêm Công cụ / Website',
+      btn_add_prompt: '+ Thêm Prompt',
+      btn_load_more: 'Tải thêm',
+
+      // Modals
+      modal_new_tool: 'Thêm Công cụ / Website mới',
+      modal_edit_tool: 'Chỉnh sửa Công cụ / Website',
+      modal_new_prompt: 'Thêm Prompt mới',
+      modal_edit_prompt: 'Chỉnh sửa Prompt',
+      label_url: 'URL',
+      label_url_hint: 'Dán URL đầy đủ có http:// hoặc https://',
+      btn_fetch_info: '⚡ Lấy thông tin',
+      btn_fetching: 'Đang lấy...',
+      label_title: 'Tiêu đề',
+      label_kind: 'Loại',
+      opt_kind_tool: 'Công cụ AI / Web App',
+      opt_kind_website: 'Website / Tham khảo / Danh bạ',
+      label_pricing: 'Mức giá',
+      label_favorite: 'Yêu thích',
+      label_mark_favorite: 'Đánh dấu yêu thích',
+      label_provider: 'Nhà cung cấp / Tác giả',
+      label_category: 'Danh mục',
+      label_description: 'Mô tả',
+      label_desc_hint: '(tóm tắt ngắn hoặc khẩu hiệu)',
+      label_notes: 'Ghi chú cá nhân',
+      label_notes_hint: '(ghi chú cách dùng, phím tắt, mẹo)',
+      label_tags: 'Thẻ',
+      label_tags_hint_tool: '(phân tách bằng dấu phẩy, vd: coding, llm, nhanh, api)',
+      label_tags_hint_prompt: '(phân tách bằng dấu phẩy, vd: coding, refactor, python)',
+      label_model: 'Mô hình / AI dự định dùng',
+      label_prompt_desc_hint: '(tóm tắt hoặc ghi chú sử dụng tùy chọn)',
+      label_prompt_content: 'Nội dung Prompt',
+      label_prompt_content_hint: 'Văn bản thuần • Giữ nguyên khoảng trắng',
+      btn_cancel: 'Hủy',
+      btn_save_tool: 'Lưu công cụ',
+      btn_save_prompt: 'Lưu Prompt',
+      btn_save_changes: 'Lưu thay đổi',
+
+      // Detail Dialogs
+      notes_tips_title: 'Ghi chú & Mẹo cá nhân',
+      btn_duplicate: 'Nhân bản',
+      btn_edit: 'Chỉnh sửa',
+      btn_delete: 'Xóa',
+      updated_recently: 'Cập nhật gần đây',
+      updated_at: (date) => `Đã cập nhật ${date}`,
+
+      // Delete Dialog
+      delete_resource_title: 'Xóa tài nguyên',
+      delete_prompt_title: 'Xóa Prompt',
+      delete_confirm_text: (name) => `Bạn có chắc chắn muốn xóa vĩnh viễn "${name}"?`,
+      delete_warning: 'Hành động này không thể hoàn tác.',
+      btn_delete_permanently: 'Xóa vĩnh viễn',
+
+      // Toasts & Errors
+      toast_copied: 'Đã sao chép vào bộ nhớ tạm',
+      toast_copy_failed: 'Không thể sao chép vào bộ nhớ tạm',
+      toast_fav_added: 'Đã thêm vào mục yêu thích',
+      toast_fav_removed: 'Đã xóa khỏi mục yêu thích',
+      toast_site_fetched: 'Đã lấy thông tin trang thành công!',
+      toast_enter_url: 'Vui lòng nhập URL để lấy thông tin',
+      toast_tool_created: 'Đã lưu công cụ thành công',
+      toast_tool_updated: 'Đã cập nhật công cụ thành công',
+      toast_prompt_created: 'Đã tạo prompt thành công',
+      toast_prompt_updated: 'Đã cập nhật prompt thành công',
+      toast_duplicated: (title) => `Đã nhân bản "${title}"`,
+      toast_deleted: (title) => `Đã xóa "${title}"`,
+      err_title_required: 'Tiêu đề là bắt buộc',
+      err_url_required: 'URL là bắt buộc',
+      err_prompt_content_required: 'Nội dung Prompt là bắt buộc',
+
+      // Relative Dates
+      time_just_now: 'vừa xong',
+      time_mins_ago: (n) => `${n} phút trước`,
+      time_hours_ago: (n) => `${n} giờ trước`,
+      time_days_ago: (n) => `${n} ngày trước`,
+
+      // Filter Pill Labels
+      filter_search: (q) => `Tìm kiếm: "${q}"`,
+      filter_tag: (t) => `#${t}`,
+      filter_kind: (k) => `Loại: ${k === 'website' ? 'Website' : 'Công cụ'}`,
+      filter_category: (c) => `Danh mục: ${c}`,
+      filter_pricing: (p) => `Mức giá: ${p}`,
+      filter_model: (m) => `Mô hình: ${m}`,
+    },
+  };
+
   // --- State ---
   const state = {
+    lang: localStorage.getItem('pilot_lang') || 'en', // strictly default to English
     items: [],
     total: 0,
     limit: 50,
@@ -31,6 +351,25 @@
     isLoading: false,
   };
 
+  function t(key, ...args) {
+    const langDict = I18N[state.lang] || I18N.en;
+    const val = langDict[key] ?? I18N.en[key] ?? key;
+    if (typeof val === 'function') {
+      return val(...args);
+    }
+    return val;
+  }
+
+  function getLocalizedPricing(pricing) {
+    if (!pricing || pricing === 'Unknown') return t('pricing_unknown');
+    const lower = pricing.toLowerCase().replace(/\s+/g, '');
+    if (lower === 'free') return t('pricing_free');
+    if (lower === 'freemium') return t('pricing_freemium');
+    if (lower === 'paid') return t('pricing_paid');
+    if (lower === 'opensource') return t('pricing_opensource');
+    return pricing;
+  }
+
   // --- DOM Elements ---
   const el = {
     // Header & Global Search
@@ -41,6 +380,8 @@
     viewGridBtn: document.getElementById('view-grid-btn'),
     mobileMenuToggle: document.getElementById('mobile-menu-toggle'),
     sidebar: document.getElementById('app-sidebar'),
+    langToggleBtn: document.getElementById('lang-toggle-btn'),
+    langCode: document.getElementById('lang-code'),
 
     // Add Dropdown
     addBtn: document.getElementById('add-btn'),
@@ -165,11 +506,52 @@
     deleteDialog: document.getElementById('delete-confirm-dialog'),
     deleteDialogTitle: document.getElementById('delete-dialog-title'),
     deletePromptName: document.getElementById('delete-prompt-name'),
+    deleteConfirmPromptMsg: document.getElementById('delete-confirm-prompt-msg'),
     deleteCancelBtn: document.getElementById('delete-cancel-btn'),
     deleteConfirmBtn: document.getElementById('delete-confirm-btn'),
   };
 
   // --- Utility Functions ---
+
+  function setLanguage(lang) {
+    if (lang !== 'en' && lang !== 'vi') lang = 'en';
+    state.lang = lang;
+    localStorage.setItem('pilot_lang', lang);
+    document.documentElement.lang = lang;
+
+    if (el.langCode) {
+      el.langCode.textContent = lang.toUpperCase();
+    }
+
+    // Apply data-i18n attributes
+    document.querySelectorAll('[data-i18n]').forEach((node) => {
+      const k = node.getAttribute('data-i18n');
+      if (k) node.textContent = t(k);
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((node) => {
+      const k = node.getAttribute('data-i18n-placeholder');
+      if (k) node.placeholder = t(k);
+    });
+
+    document.querySelectorAll('[data-i18n-title]').forEach((node) => {
+      const k = node.getAttribute('data-i18n-title');
+      if (k) node.title = t(k);
+    });
+
+    // Refresh dynamic parts
+    updateActiveFilters();
+    renderTagsList();
+    renderModelOptions();
+    renderCategoryAndProviderOptions();
+    renderResourcesList();
+  }
+
+  function toggleLanguage() {
+    const nextLang = state.lang === 'en' ? 'vi' : 'en';
+    setLanguage(nextLang);
+    showToast(nextLang === 'vi' ? 'Đã chuyển sang Tiếng Việt' : 'Switched to English');
+  }
 
   function showToast(message, type = 'success') {
     const toast = document.createElement('div');
@@ -190,14 +572,15 @@
       const date = new Date(isoDateString);
       const now = new Date();
       const diffSec = Math.floor((now - date) / 1000);
-      if (diffSec < 60) return 'just now';
+      if (diffSec < 60) return t('time_just_now');
       const diffMin = Math.floor(diffSec / 60);
-      if (diffMin < 60) return `${diffMin}m ago`;
+      if (diffMin < 60) return t('time_mins_ago', diffMin);
       const diffHours = Math.floor(diffMin / 60);
-      if (diffHours < 24) return `${diffHours}h ago`;
+      if (diffHours < 24) return t('time_hours_ago', diffHours);
       const diffDays = Math.floor(diffHours / 24);
-      if (diffDays < 7) return `${diffDays}d ago`;
-      return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+      if (diffDays < 7) return t('time_days_ago', diffDays);
+      const locale = state.lang === 'vi' ? 'vi-VN' : 'en-US';
+      return date.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
     } catch {
       return '';
     }
@@ -209,15 +592,15 @@
       if (btnElement) {
         const originalContent = btnElement.innerHTML;
         btnElement.classList.add('copied');
-        btnElement.textContent = 'Copied ✓';
+        btnElement.textContent = t('btn_copied');
         setTimeout(() => {
           btnElement.classList.remove('copied');
           btnElement.innerHTML = originalContent;
         }, 1800);
       }
-      showToast('Copied to clipboard');
+      showToast(t('toast_copied'));
     } catch {
-      showToast('Failed to copy to clipboard', 'error');
+      showToast(t('toast_copy_failed'), 'error');
     }
   }
 
@@ -319,7 +702,7 @@
     } catch (err) {
       showToast(err.message, 'error');
       if (!append && state.items.length === 0) {
-        showEmptyState('Error loading resources', err.message);
+        showEmptyState(t('empty_no_resources'), err.message);
       }
     } finally {
       state.isLoading = false;
@@ -387,7 +770,7 @@
     if (state.tags.length === 0) {
       const hint = document.createElement('span');
       hint.className = 'empty-hint';
-      hint.textContent = 'No tags yet';
+      hint.textContent = t('nav_no_tags');
       el.sidebarTagsList.appendChild(hint);
       el.clearTagBtn.classList.add('hidden');
       return;
@@ -425,7 +808,7 @@
 
   function renderModelOptions() {
     const current = el.modelFilterSelect.value;
-    el.modelFilterSelect.innerHTML = '<option value="">All Models</option>';
+    el.modelFilterSelect.innerHTML = `<option value="">${t('nav_all_models')}</option>`;
     el.modelsDatalist.innerHTML = '';
 
     for (const m of state.models) {
@@ -444,7 +827,7 @@
   function renderCategoryAndProviderOptions() {
     // Categories select & datalist
     const currentCat = el.toolCategoryFilterSelect.value;
-    el.toolCategoryFilterSelect.innerHTML = '<option value="">All Categories</option>';
+    el.toolCategoryFilterSelect.innerHTML = `<option value="">${t('nav_all_categories')}</option>`;
     el.categoriesDatalist.innerHTML = '';
 
     for (const c of state.categories) {
@@ -476,17 +859,17 @@
     if (state.items.length === 0) {
       el.resourcesList.classList.add('hidden');
       if (state.q) {
-        showEmptyState('No resources match this search', `No items matching "${state.q}".`);
+        showEmptyState(t('empty_search_no_match'), t('empty_search_desc', state.q));
       } else if (state.currentNav === 'favorites') {
-        showEmptyState('Nothing favorited yet', 'Star useful prompts, tools, and websites to find them here.');
+        showEmptyState(t('empty_no_favs'), t('empty_no_favs_desc'));
       } else if (state.tag) {
-        showEmptyState(`No resources tagged #${state.tag}`, 'Try selecting another tag or clearing the filter.');
+        showEmptyState(t('empty_tag_no_match', state.tag), t('empty_tag_desc'));
       } else if (state.currentNav === 'tools') {
-        showEmptyState('No AI tools or websites yet', 'Save your first AI tool or reference site to build your collection.');
+        showEmptyState(t('empty_no_tools'), t('empty_no_tools_desc'));
       } else if (state.currentNav === 'prompts') {
-        showEmptyState('No prompts yet', 'Save your first AI prompt to build your operating library.');
+        showEmptyState(t('empty_no_prompts'), t('empty_no_prompts_desc'));
       } else {
-        showEmptyState('No resources found', 'Save your first AI tool, website, or prompt to get started.');
+        showEmptyState(t('empty_no_resources'), t('empty_no_resources_desc'));
       }
       return;
     }
@@ -496,7 +879,6 @@
 
     const sliceItems = append ? state.items.slice(state.offset) : state.items;
     for (const item of sliceItems) {
-      // Determine if item is prompt or tool
       const itemType = item.type || (item.content !== undefined ? 'prompt' : 'tool');
       if (itemType === 'prompt') {
         const card = createPromptCardElement(item);
@@ -545,7 +927,7 @@
       toggleToolFavorite(tool, favBtn);
     });
 
-    // Favicon image or fallback globe
+    // Favicon image
     const faviconImg = document.createElement('img');
     faviconImg.className = 'tool-favicon';
     faviconImg.alt = '';
@@ -568,7 +950,7 @@
     // Kind Badge
     const kindBadge = document.createElement('span');
     kindBadge.className = `badge badge-kind kind-${kind}`;
-    kindBadge.textContent = kind === 'website' ? 'Website' : 'Tool';
+    kindBadge.textContent = kind === 'website' ? t('badge_website') : t('badge_tool');
     titleGroup.appendChild(kindBadge);
 
     // Pricing Badge
@@ -576,7 +958,7 @@
       const pricingBadge = document.createElement('span');
       const pricingClass = pricing.toLowerCase().replace(/\s+/g, '');
       pricingBadge.className = `badge badge-pricing pricing-${pricingClass}`;
-      pricingBadge.textContent = pricing;
+      pricingBadge.textContent = getLocalizedPricing(pricing);
       titleGroup.appendChild(pricingBadge);
     }
 
@@ -588,7 +970,7 @@
     copyBtn.className = 'btn btn-copy';
     copyBtn.innerHTML = `
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      <span>Copy URL</span>
+      <span>${t('btn_copy_url')}</span>
     `;
     copyBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -601,7 +983,7 @@
     openLink.target = '_blank';
     openLink.rel = 'noopener noreferrer';
     openLink.innerHTML = `
-      <span>Open</span>
+      <span>${t('btn_open')}</span>
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
     `;
     openLink.addEventListener('click', (e) => e.stopPropagation());
@@ -674,13 +1056,13 @@
 
     const tags = Array.isArray(tool.tags) ? tool.tags : [];
     if (tags.length > 0) {
-      for (const t of tags.slice(0, 4)) {
+      for (const tag of tags.slice(0, 4)) {
         const tagPill = document.createElement('span');
         tagPill.className = 'card-tag';
-        tagPill.textContent = `#${t}`;
+        tagPill.textContent = `#${tag}`;
         tagPill.addEventListener('click', (e) => {
           e.stopPropagation();
-          state.tag = t;
+          state.tag = tag;
           loadData();
           renderTagsList();
         });
@@ -746,7 +1128,7 @@
     // Prompt Badge
     const promptBadge = document.createElement('span');
     promptBadge.className = 'badge badge-kind kind-prompt';
-    promptBadge.textContent = 'Prompt';
+    promptBadge.textContent = t('badge_prompt');
     titleGroup.appendChild(promptBadge);
 
     const quickActions = document.createElement('div');
@@ -756,7 +1138,7 @@
     copyBtn.className = 'btn btn-copy';
     copyBtn.innerHTML = `
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      <span>Copy</span>
+      <span>${t('btn_copy')}</span>
     `;
     copyBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -803,13 +1185,13 @@
 
     const tags = Array.isArray(prompt.tags) ? prompt.tags : [];
     if (tags.length > 0) {
-      for (const t of tags.slice(0, 4)) {
+      for (const tag of tags.slice(0, 4)) {
         const tagPill = document.createElement('span');
         tagPill.className = 'card-tag';
-        tagPill.textContent = `#${t}`;
+        tagPill.textContent = `#${tag}`;
         tagPill.addEventListener('click', (e) => {
           e.stopPropagation();
-          state.tag = t;
+          state.tag = tag;
           loadData();
           renderTagsList();
         });
@@ -849,18 +1231,18 @@
 
     // Title text
     if (state.currentNav === 'favorites') {
-      el.currentViewTitle.textContent = 'Favorites';
+      el.currentViewTitle.textContent = t('nav_favorites');
     } else if (state.currentNav === 'tools') {
-      el.currentViewTitle.textContent = 'Tools & Websites';
+      el.currentViewTitle.textContent = t('nav_tools');
     } else if (state.currentNav === 'prompts') {
-      el.currentViewTitle.textContent = 'Prompts';
+      el.currentViewTitle.textContent = t('nav_prompts');
     } else {
-      el.currentViewTitle.textContent = 'All Resources';
+      el.currentViewTitle.textContent = t('nav_all_resources');
     }
 
     // Pill for Search
     if (state.q) {
-      const pill = createFilterPill(`Search: "${state.q}"`, () => {
+      const pill = createFilterPill(t('filter_search', state.q), () => {
         state.q = '';
         el.search.value = '';
         el.searchClear.classList.add('hidden');
@@ -871,7 +1253,7 @@
 
     // Pill for Tag
     if (state.tag) {
-      const pill = createFilterPill(`#${state.tag}`, () => {
+      const pill = createFilterPill(t('filter_tag', state.tag), () => {
         state.tag = null;
         loadData();
         renderTagsList();
@@ -881,7 +1263,7 @@
 
     // Pill for Tool Kind
     if (state.toolKind) {
-      const pill = createFilterPill(`Kind: ${state.toolKind}`, () => {
+      const pill = createFilterPill(t('filter_kind', state.toolKind), () => {
         state.toolKind = null;
         el.toolKindFilterSelect.value = '';
         loadData();
@@ -891,7 +1273,7 @@
 
     // Pill for Tool Category
     if (state.toolCategory) {
-      const pill = createFilterPill(`Category: ${state.toolCategory}`, () => {
+      const pill = createFilterPill(t('filter_category', state.toolCategory), () => {
         state.toolCategory = null;
         el.toolCategoryFilterSelect.value = '';
         loadData();
@@ -901,7 +1283,7 @@
 
     // Pill for Tool Pricing
     if (state.toolPricing) {
-      const pill = createFilterPill(`Pricing: ${state.toolPricing}`, () => {
+      const pill = createFilterPill(t('filter_pricing', getLocalizedPricing(state.toolPricing)), () => {
         state.toolPricing = null;
         el.toolPricingFilterSelect.value = '';
         loadData();
@@ -911,7 +1293,7 @@
 
     // Pill for Prompt Model
     if (state.model) {
-      const pill = createFilterPill(`Model: ${state.model}`, () => {
+      const pill = createFilterPill(t('filter_model', state.model), () => {
         state.model = null;
         el.modelFilterSelect.value = '';
         loadData();
@@ -956,7 +1338,7 @@
         body: JSON.stringify({ favorite: nextState }),
       });
       updateCounts();
-      showToast(nextState ? 'Marked as favorite' : 'Removed from favorites');
+      showToast(nextState ? t('toast_fav_added') : t('toast_fav_removed'));
       if (state.currentNav === 'favorites' && !nextState) {
         loadData();
       }
@@ -987,7 +1369,7 @@
         body: JSON.stringify({ favorite: nextState }),
       });
       updateCounts();
-      showToast(nextState ? 'Marked as favorite' : 'Removed from favorites');
+      showToast(nextState ? t('toast_fav_added') : t('toast_fav_removed'));
       if (state.currentNav === 'favorites' && !nextState) {
         loadData();
       }
@@ -1010,7 +1392,7 @@
       try {
         const res = await apiFetch(`/api/tools/${id}`);
         tool = res.data;
-      } catch (err) {
+      } catch {
         showToast('Failed to load tool details', 'error');
         return;
       }
@@ -1034,11 +1416,11 @@
     }
 
     // Meta badges
-    el.toolDetailKind.textContent = tool.kind === 'website' ? 'Website' : 'Tool';
+    el.toolDetailKind.textContent = tool.kind === 'website' ? t('badge_website') : t('badge_tool');
     el.toolDetailKind.className = `badge badge-kind kind-${tool.kind}`;
 
     const pricing = tool.pricing || 'Unknown';
-    el.toolDetailPricing.textContent = pricing;
+    el.toolDetailPricing.textContent = getLocalizedPricing(pricing);
     el.toolDetailPricing.className = `badge badge-pricing pricing-${pricing.toLowerCase().replace(/\s+/g, '')}`;
 
     if (tool.category) {
@@ -1055,7 +1437,7 @@
       el.toolDetailProvider.classList.add('hidden');
     }
 
-    el.toolDetailUpdated.textContent = `Updated ${formatRelativeDate(tool.updatedAt)}`;
+    el.toolDetailUpdated.textContent = t('updated_at', formatRelativeDate(tool.updatedAt));
 
     // URL & Direct Open
     el.toolDetailUrl.textContent = tool.url;
@@ -1081,13 +1463,13 @@
     el.toolDetailTagsRow.innerHTML = '';
     const tags = Array.isArray(tool.tags) ? tool.tags : [];
     if (tags.length > 0) {
-      for (const t of tags) {
+      for (const tag of tags) {
         const tagSpan = document.createElement('span');
         tagSpan.className = 'card-tag';
-        tagSpan.textContent = `#${t}`;
+        tagSpan.textContent = `#${tag}`;
         tagSpan.addEventListener('click', () => {
           el.toolDetailDialog.close();
-          state.tag = t;
+          state.tag = tag;
           loadData();
           renderTagsList();
         });
@@ -1126,7 +1508,7 @@
       try {
         const res = await apiFetch(`/api/prompts/${id}`);
         prompt = res.data;
-      } catch (err) {
+      } catch {
         showToast('Failed to load prompt details', 'error');
         return;
       }
@@ -1150,7 +1532,7 @@
     }
 
     // Dates
-    el.promptDetailUpdated.textContent = `Updated ${formatRelativeDate(prompt.updatedAt)}`;
+    el.promptDetailUpdated.textContent = t('updated_at', formatRelativeDate(prompt.updatedAt));
 
     // Description
     if (prompt.description) {
@@ -1164,13 +1546,13 @@
     el.promptDetailTagsRow.innerHTML = '';
     const tags = Array.isArray(prompt.tags) ? prompt.tags : [];
     if (tags.length > 0) {
-      for (const t of tags) {
+      for (const tag of tags) {
         const tagSpan = document.createElement('span');
         tagSpan.className = 'card-tag';
-        tagSpan.textContent = `#${t}`;
+        tagSpan.textContent = `#${tag}`;
         tagSpan.addEventListener('click', () => {
           el.promptDetailDialog.close();
-          state.tag = t;
+          state.tag = tag;
           loadData();
           renderTagsList();
         });
@@ -1212,7 +1594,7 @@
     el.toolFormSubmitBtn.disabled = false;
 
     if (toolToEdit) {
-      el.toolFormTitle.textContent = 'Edit Tool / Website';
+      el.toolFormTitle.textContent = t('modal_edit_tool');
       el.inputToolId.value = toolToEdit.id;
       el.inputToolUrl.value = toolToEdit.url;
       el.inputToolTitle.value = toolToEdit.title;
@@ -1225,9 +1607,9 @@
       el.inputToolNotes.value = toolToEdit.notes || '';
       el.inputToolTags.value = Array.isArray(toolToEdit.tags) ? toolToEdit.tags.join(', ') : '';
       el.inputToolFaviconUrl.value = toolToEdit.faviconUrl || '';
-      el.toolFormSubmitBtn.querySelector('span').textContent = 'Save Changes';
+      el.toolFormSubmitBtn.querySelector('span').textContent = t('btn_save_changes');
     } else {
-      el.toolFormTitle.textContent = 'New Tool / Website';
+      el.toolFormTitle.textContent = t('modal_new_tool');
       el.toolForm.reset();
       el.inputToolId.value = '';
       el.inputToolKind.value = 'tool';
@@ -1236,7 +1618,7 @@
       if (state.tag) el.inputToolTags.value = state.tag;
       if (state.toolCategory) el.inputToolCategory.value = state.toolCategory;
       el.inputToolFaviconUrl.value = '';
-      el.toolFormSubmitBtn.querySelector('span').textContent = 'Save Tool';
+      el.toolFormSubmitBtn.querySelector('span').textContent = t('btn_save_tool');
     }
 
     el.toolFormDialog.showModal();
@@ -1250,7 +1632,7 @@
   async function handleFetchMetadata() {
     const rawUrl = el.inputToolUrl.value.trim();
     if (!rawUrl) {
-      showToast('Enter a URL to fetch info', 'error');
+      showToast(t('toast_enter_url'), 'error');
       el.inputToolUrl.focus();
       return;
     }
@@ -1258,7 +1640,7 @@
     const btnText = el.toolFetchMetaBtn.querySelector('.btn-text');
     const spinner = el.toolFetchMetaBtn.querySelector('.spinner-sm');
     el.toolFetchMetaBtn.disabled = true;
-    if (btnText) btnText.textContent = 'Fetching...';
+    if (btnText) btnText.textContent = t('btn_fetching');
     if (spinner) spinner.classList.remove('hidden');
 
     try {
@@ -1281,13 +1663,13 @@
         if (meta.faviconUrl) {
           el.inputToolFaviconUrl.value = meta.faviconUrl;
         }
-        showToast('Site info fetched successfully!');
+        showToast(t('toast_site_fetched'));
       }
     } catch (err) {
       showToast(err.message, 'error');
     } finally {
       el.toolFetchMetaBtn.disabled = false;
-      if (btnText) btnText.textContent = '⚡ Fetch Info';
+      if (btnText) btnText.textContent = t('btn_fetch_info');
       if (spinner) spinner.classList.add('hidden');
     }
   }
@@ -1311,14 +1693,14 @@
       .filter((t) => t.length > 0);
 
     if (!title) {
-      el.toolFormError.textContent = 'Title is required';
+      el.toolFormError.textContent = t('err_title_required');
       el.toolFormError.classList.remove('hidden');
       el.inputToolTitle.focus();
       return;
     }
 
     if (!url) {
-      el.toolFormError.textContent = 'URL is required';
+      el.toolFormError.textContent = t('err_url_required');
       el.toolFormError.classList.remove('hidden');
       el.inputToolUrl.focus();
       return;
@@ -1352,7 +1734,7 @@
           body: JSON.stringify(payload),
         });
         saved = res.data;
-        showToast('Tool updated successfully');
+        showToast(t('toast_tool_updated'));
       } else {
         const res = await apiFetch('/api/tools', {
           method: 'POST',
@@ -1362,7 +1744,7 @@
         if (res.warning) {
           showToast(res.warning, 'error');
         } else {
-          showToast('Tool saved successfully');
+          showToast(t('toast_tool_created'));
         }
       }
 
@@ -1390,7 +1772,7 @@
     el.promptFormSubmitBtn.disabled = false;
 
     if (promptToEdit) {
-      el.promptFormTitle.textContent = 'Edit Prompt';
+      el.promptFormTitle.textContent = t('modal_edit_prompt');
       el.inputPromptId.value = promptToEdit.id;
       el.inputPromptTitle.value = promptToEdit.title;
       el.inputPromptModel.value = promptToEdit.model || '';
@@ -1398,15 +1780,15 @@
       el.inputPromptDescription.value = promptToEdit.description || '';
       el.inputPromptContent.value = promptToEdit.content || '';
       el.inputPromptTags.value = Array.isArray(promptToEdit.tags) ? promptToEdit.tags.join(', ') : '';
-      el.promptFormSubmitBtn.querySelector('span').textContent = 'Save Changes';
+      el.promptFormSubmitBtn.querySelector('span').textContent = t('btn_save_changes');
     } else {
-      el.promptFormTitle.textContent = 'New Prompt';
+      el.promptFormTitle.textContent = t('modal_new_prompt');
       el.promptForm.reset();
       el.inputPromptId.value = '';
       el.inputPromptFavorite.checked = state.currentNav === 'favorites';
       if (state.tag) el.inputPromptTags.value = state.tag;
       if (state.model) el.inputPromptModel.value = state.model;
-      el.promptFormSubmitBtn.querySelector('span').textContent = 'Save Prompt';
+      el.promptFormSubmitBtn.querySelector('span').textContent = t('btn_save_prompt');
     }
 
     el.promptFormDialog.showModal();
@@ -1431,14 +1813,14 @@
       .filter((t) => t.length > 0);
 
     if (!title) {
-      el.promptFormError.textContent = 'Title is required';
+      el.promptFormError.textContent = t('err_title_required');
       el.promptFormError.classList.remove('hidden');
       el.inputPromptTitle.focus();
       return;
     }
 
     if (!content || content.trim() === '') {
-      el.promptFormError.textContent = 'Prompt content is required';
+      el.promptFormError.textContent = t('err_prompt_content_required');
       el.promptFormError.classList.remove('hidden');
       el.inputPromptContent.focus();
       return;
@@ -1460,14 +1842,14 @@
           body: JSON.stringify(payload),
         });
         saved = res.data;
-        showToast('Prompt updated successfully');
+        showToast(t('toast_prompt_updated'));
       } else {
         const res = await apiFetch('/api/prompts', {
           method: 'POST',
           body: JSON.stringify(payload),
         });
         saved = res.data;
-        showToast('Prompt created successfully');
+        showToast(t('toast_prompt_created'));
       }
 
       closePromptFormDialog();
@@ -1491,7 +1873,7 @@
   async function duplicatePrompt(prompt) {
     try {
       const res = await apiFetch(`/api/prompts/${prompt.id}/duplicate`, { method: 'POST' });
-      showToast(`Duplicated "${prompt.title}"`);
+      showToast(t('toast_duplicated', prompt.title));
       await loadData();
       await loadTags();
       if (res.data) {
@@ -1505,7 +1887,7 @@
   async function duplicateTool(tool) {
     try {
       const res = await apiFetch(`/api/tools/${tool.id}/duplicate`, { method: 'POST' });
-      showToast(`Duplicated "${tool.title}"`);
+      showToast(t('toast_duplicated', tool.title));
       await loadData();
       await loadTags();
       if (res.data) {
@@ -1521,7 +1903,8 @@
   function openDeleteDialog(item, type) {
     state.itemToDelete = { id: item.id, title: item.title, type };
     el.deletePromptName.textContent = `"${item.title}"`;
-    el.deleteDialogTitle.textContent = type === 'prompt' ? 'Delete Prompt' : 'Delete Resource';
+    el.deleteDialogTitle.textContent = type === 'prompt' ? t('delete_prompt_title') : t('delete_resource_title');
+    el.deleteConfirmPromptMsg.textContent = state.lang === 'vi' ? 'Bạn có chắc chắn muốn xóa vĩnh viễn' : 'Are you sure you want to permanently delete';
     el.deleteDialog.showModal();
   }
 
@@ -1534,7 +1917,7 @@
     try {
       const endpoint = item.type === 'prompt' ? `/api/prompts/${item.id}` : `/api/tools/${item.id}`;
       await apiFetch(endpoint, { method: 'DELETE' });
-      showToast(`Deleted "${item.title}"`);
+      showToast(t('toast_deleted', item.title));
       el.deleteDialog.close();
 
       if (state.activeDetailPrompt?.id === item.id) {
@@ -1572,6 +1955,13 @@
   // --- Event Listeners Setup ---
 
   function initEventListeners() {
+    // Language Toggle Button
+    if (el.langToggleBtn) {
+      el.langToggleBtn.addEventListener('click', () => {
+        toggleLanguage();
+      });
+    }
+
     // Add dropdown toggle
     el.addBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -1759,7 +2149,8 @@
 
     el.promptDetailCopyBtn.addEventListener('click', () => {
       if (state.activeDetailPrompt) {
-        copyToClipboard(state.activeDetailPrompt.content, el.promptDetailCopyBtn);
+        const content = state.activeDetailPrompt.content || state.activeDetailPrompt.extra?.content || '';
+        copyToClipboard(content, el.promptDetailCopyBtn);
       }
     });
 
@@ -1896,6 +2287,7 @@
 
   async function init() {
     setViewMode(state.viewMode);
+    setLanguage(state.lang); // Defaults to English unless Vietnamese was saved
     initEventListeners();
 
     const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
