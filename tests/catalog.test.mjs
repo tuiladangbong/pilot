@@ -14,10 +14,10 @@ test('catalog dataset exists and conforms to public seed requirements', () => {
   const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
 
   assert.ok(Array.isArray(catalog), 'Catalog must be an array');
-  assert.ok(catalog.length >= 150 && catalog.length <= 250, `Catalog count (${catalog.length}) should be between 150 and 250`);
+  assert.ok(catalog.length >= 150 && catalog.length <= 300, `Catalog count (${catalog.length}) should be between 150 and 300`);
 
   const featuredCount = catalog.filter((item) => item.featured).length;
-  assert.ok(featuredCount >= 25 && featuredCount <= 65, `Featured count (${featuredCount}) should be between 25 and 65`);
+  assert.ok(featuredCount >= 25 && featuredCount <= 90, `Featured count (${featuredCount}) should be between 25 and 90`);
 
   const mandatoryProducts = [
     'Claude',

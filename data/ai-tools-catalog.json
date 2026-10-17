@@ -3841,5 +3841,670 @@
     "featured": false,
     "origin": "curated",
     "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Supabase",
+    "url": "https://supabase.com",
+    "kind": "tool",
+    "provider": "Supabase",
+    "category": "AI Infrastructure",
+    "pricing": "Open Source",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Open-source Firebase alternative featuring Postgres database, authentication, instant APIs, edge functions, and pgvector embeddings.",
+    "tags": [
+      "baas",
+      "database",
+      "postgres",
+      "vector-db",
+      "open-source"
+    ]
+  },
+  {
+    "title": "Firebase",
+    "url": "https://firebase.google.com",
+    "kind": "tool",
+    "provider": "Google",
+    "category": "AI Infrastructure",
+    "pricing": "Freemium",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Google's app development platform providing NoSQL databases, authentication, hosting, cloud functions, and Firebase Genkit for AI workflows.",
+    "tags": [
+      "baas",
+      "database",
+      "google",
+      "cloud-functions",
+      "genkit"
+    ]
+  },
+  {
+    "title": "PocketBase",
+    "url": "https://pocketbase.io",
+    "kind": "tool",
+    "provider": "PocketBase",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Open-source backend in 1 file consisting of embedded SQLite database with realtime subscriptions, built-in auth, and file storage.",
+    "tags": [
+      "baas",
+      "sqlite",
+      "embedded",
+      "open-source",
+      "realtime"
+    ]
+  },
+  {
+    "title": "Appwrite",
+    "url": "https://appwrite.io",
+    "kind": "tool",
+    "provider": "Appwrite",
+    "category": "AI Infrastructure",
+    "pricing": "Open Source",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Secure, open-source self-hosted backend platform delivering authentication, databases, storage, and serverless functions for web and mobile.",
+    "tags": [
+      "baas",
+      "self-hosted",
+      "database",
+      "auth",
+      "open-source"
+    ]
+  },
+  {
+    "title": "Convex",
+    "url": "https://www.convex.dev",
+    "kind": "tool",
+    "provider": "Convex",
+    "category": "AI Infrastructure",
+    "pricing": "Freemium",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Reactive backend application platform for full-stack TypeScript and AI apps with automatic sync, ACID transactions, and server functions.",
+    "tags": [
+      "baas",
+      "reactive",
+      "typescript",
+      "fullstack",
+      "realtime"
+    ]
+  },
+  {
+    "title": "Neon",
+    "url": "https://neon.tech",
+    "kind": "tool",
+    "provider": "Neon",
+    "category": "AI Infrastructure",
+    "pricing": "Freemium",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Serverless PostgreSQL platform with scale-to-zero compute, instantaneous database branching for dev/test workflows, and pgvector support.",
+    "tags": [
+      "serverless",
+      "postgres",
+      "database-branching",
+      "vector-db",
+      "cloud"
+    ]
+  },
+  {
+    "title": "Turso",
+    "url": "https://turso.tech",
+    "kind": "tool",
+    "provider": "ChiselStrike",
+    "category": "AI Infrastructure",
+    "pricing": "Freemium",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Edge-hosted distributed SQLite database powered by libSQL, offering microsecond latency replication and database-per-tenant architecture.",
+    "tags": [
+      "sqlite",
+      "libsql",
+      "edge-computing",
+      "distributed",
+      "serverless"
+    ]
+  },
+  {
+    "title": "Upstash",
+    "url": "https://upstash.com",
+    "kind": "tool",
+    "provider": "Upstash",
+    "category": "AI Infrastructure",
+    "pricing": "Freemium",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Serverless data platform for developers providing low-latency Redis, Kafka messaging, QStash scheduling, and Vector search on the Edge.",
+    "tags": [
+      "serverless",
+      "redis",
+      "vector-db",
+      "edge",
+      "kafka"
+    ]
+  },
+  {
+    "title": "Clerk",
+    "url": "https://clerk.com",
+    "kind": "tool",
+    "provider": "Clerk",
+    "category": "Developer Tools & MCP",
+    "pricing": "Freemium",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Comprehensive user authentication, identity management, and session handling purpose-built for modern Next.js and React applications.",
+    "tags": [
+      "auth",
+      "identity",
+      "nextjs",
+      "react",
+      "security"
+    ]
+  },
+  {
+    "title": "Pinecone",
+    "url": "https://www.pinecone.io",
+    "kind": "tool",
+    "provider": "Pinecone Systems",
+    "category": "AI Infrastructure",
+    "pricing": "Freemium",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Managed cloud-native vector database designed for high-performance similarity search, RAG pipelines, and semantic AI recommendation systems.",
+    "tags": [
+      "vector-db",
+      "rag",
+      "embeddings",
+      "similarity-search",
+      "cloud"
+    ]
+  },
+  {
+    "title": "Qdrant",
+    "url": "https://qdrant.tech",
+    "kind": "tool",
+    "provider": "Qdrant",
+    "category": "AI Infrastructure",
+    "pricing": "Open Source",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Production-grade open-source vector similarity search engine and database written in Rust with advanced payload-based filtering.",
+    "tags": [
+      "vector-db",
+      "rust",
+      "open-source",
+      "rag",
+      "similarity-search"
+    ]
+  },
+  {
+    "title": "Chroma",
+    "url": "https://www.trychroma.com",
+    "kind": "tool",
+    "provider": "Chroma",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "AI-native open-source embedding database designed to make it simple to build LLM apps by making knowledge and documents searchable.",
+    "tags": [
+      "vector-db",
+      "open-source",
+      "python",
+      "embeddings",
+      "rag"
+    ]
+  },
+  {
+    "title": "Weaviate",
+    "url": "https://weaviate.io",
+    "kind": "tool",
+    "provider": "Weaviate",
+    "category": "AI Infrastructure",
+    "pricing": "Open Source",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Open-source, AI-native vector database offering hybrid search combining dense vector search and BM25 sparse keyword search.",
+    "tags": [
+      "vector-db",
+      "hybrid-search",
+      "open-source",
+      "rag",
+      "multimodal"
+    ]
+  },
+  {
+    "title": "Milvus",
+    "url": "https://milvus.io",
+    "kind": "tool",
+    "provider": "LF AI & Data Foundation",
+    "category": "AI Infrastructure",
+    "pricing": "Open Source",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Highly scalable open-source vector database built for massive enterprise unstructured data search and billions of vector queries.",
+    "tags": [
+      "vector-db",
+      "enterprise",
+      "open-source",
+      "scalability",
+      "similarity-search"
+    ]
+  },
+  {
+    "title": "Firecrawl",
+    "url": "https://www.firecrawl.dev",
+    "kind": "tool",
+    "provider": "Mendable",
+    "category": "Developer Tools & MCP",
+    "pricing": "Open Source",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "The de-facto open-source web scraper API that turns any website into clean, LLM-ready markdown format with crawling and extraction.",
+    "tags": [
+      "web-scraping",
+      "markdown",
+      "open-source",
+      "llm-ready",
+      "crawling"
+    ]
+  },
+  {
+    "title": "Jina AI",
+    "url": "https://jina.ai",
+    "kind": "tool",
+    "provider": "Jina AI",
+    "category": "Developer Tools & MCP",
+    "pricing": "Freemium",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Developer platform providing Reader API to fetch and parse web content for LLMs, along with high-performance embeddings and rerankers.",
+    "tags": [
+      "reader-api",
+      "embeddings",
+      "reranker",
+      "search",
+      "developer-tools"
+    ]
+  },
+  {
+    "title": "Tavily",
+    "url": "https://tavily.com",
+    "kind": "tool",
+    "provider": "Tavily",
+    "category": "Search & Research",
+    "pricing": "Freemium",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Search engine specifically engineered for AI agents and LLMs to retrieve accurate, factual, and real-time web knowledge with citations.",
+    "tags": [
+      "search-api",
+      "ai-agents",
+      "citations",
+      "realtime",
+      "research"
+    ]
+  },
+  {
+    "title": "Exa",
+    "url": "https://exa.ai",
+    "kind": "tool",
+    "provider": "Exa",
+    "category": "Search & Research",
+    "pricing": "Freemium",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Neural search engine and web API designed for AI that searches using embeddings rather than keyword matching to find high-signal knowledge.",
+    "tags": [
+      "neural-search",
+      "embeddings",
+      "api",
+      "research",
+      "semantic-search"
+    ]
+  },
+  {
+    "title": "Browserbase",
+    "url": "https://www.browserbase.com",
+    "kind": "tool",
+    "provider": "Browserbase",
+    "category": "Automation & Workflows",
+    "pricing": "Freemium",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Serverless headless browser infrastructure designed specifically to run, manage, and monitor autonomous AI browser agents at scale.",
+    "tags": [
+      "headless-browser",
+      "ai-agents",
+      "automation",
+      "infrastructure",
+      "puppeteer"
+    ]
+  },
+  {
+    "title": "LlamaParse",
+    "url": "https://cloud.llamaindex.ai",
+    "kind": "tool",
+    "provider": "LlamaIndex",
+    "category": "Developer Tools & MCP",
+    "pricing": "Freemium",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "GenAI-native document parsing service by LlamaIndex that converts complex PDFs with embedded tables, diagrams, and charts into structured data.",
+    "tags": [
+      "pdf-parser",
+      "documents",
+      "rag",
+      "llamaindex",
+      "tables"
+    ]
+  },
+  {
+    "title": "Docling",
+    "url": "https://github.com/DS4SD/docling",
+    "kind": "tool",
+    "provider": "IBM Research",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Open-source document conversion and parsing toolkit by IBM converting PDF, DOCX, and PPTX into clean Markdown and JSON for LLMs.",
+    "tags": [
+      "document-parsing",
+      "pdf",
+      "markdown",
+      "open-source",
+      "ibm"
+    ]
+  },
+  {
+    "title": "LangGraph",
+    "url": "https://langchain-ai.github.io/langgraph",
+    "kind": "tool",
+    "provider": "LangChain",
+    "category": "Automation & Workflows",
+    "pricing": "Open Source",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Cyclic computational framework by LangChain for coordinating multi-agent workflows with state persistence, human-in-the-loop, and branching.",
+    "tags": [
+      "multi-agent",
+      "graph",
+      "langchain",
+      "orchestration",
+      "open-source"
+    ]
+  },
+  {
+    "title": "DSPy",
+    "url": "https://github.com/stanfordnlp/dspy",
+    "kind": "tool",
+    "provider": "Stanford NLP",
+    "category": "Coding",
+    "pricing": "Open Source",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Stanford NLP framework for algorithmically optimizing LLM prompts and weights instead of manual prompt engineering tricks.",
+    "tags": [
+      "prompt-optimization",
+      "stanford",
+      "open-source",
+      "nlp",
+      "llmops"
+    ]
+  },
+  {
+    "title": "Langfuse",
+    "url": "https://langfuse.com",
+    "kind": "tool",
+    "provider": "Langfuse",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Open Source",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Open-source LLM engineering and observability platform providing detailed execution tracing, evaluations, prompt management, and metrics.",
+    "tags": [
+      "llmops",
+      "observability",
+      "tracing",
+      "evals",
+      "open-source"
+    ]
+  },
+  {
+    "title": "Arize Phoenix",
+    "url": "https://phoenix.arize.com",
+    "kind": "tool",
+    "provider": "Arize AI",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Open Source",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "AI observability and evaluation library for tracing LLM applications, diagnosing hallucinations, analyzing RAG retrieval, and benchmarking.",
+    "tags": [
+      "observability",
+      "evals",
+      "rag",
+      "hallucination",
+      "open-source"
+    ]
+  },
+  {
+    "title": "Weights & Biases",
+    "url": "https://wandb.ai",
+    "kind": "tool",
+    "provider": "Weights & Biases",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Freemium",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "The AI developer platform for tracking machine learning experiments, hyperparameter tuning, model evaluation, and collaborative LLMOps.",
+    "tags": [
+      "mlops",
+      "experiment-tracking",
+      "llmops",
+      "evaluation",
+      "machine-learning"
+    ]
+  },
+  {
+    "title": "Railway",
+    "url": "https://railway.app",
+    "kind": "tool",
+    "provider": "Railway",
+    "category": "AI Infrastructure",
+    "pricing": "Paid",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Instant cloud platform for deploying full-stack web applications, databases, AI workers, and containerized microservices without DevOps hassle.",
+    "tags": [
+      "cloud-hosting",
+      "deployment",
+      "databases",
+      "docker",
+      "developer-tools"
+    ]
+  },
+  {
+    "title": "Render",
+    "url": "https://render.com",
+    "kind": "tool",
+    "provider": "Render",
+    "category": "AI Infrastructure",
+    "pricing": "Freemium",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Unified cloud platform to build and run all your apps and websites with free TLS, global CDN, private networks, and managed PostgreSQL.",
+    "tags": [
+      "cloud-hosting",
+      "deployment",
+      "postgres",
+      "web-services",
+      "developer-tools"
+    ]
+  },
+  {
+    "title": "Fly.io",
+    "url": "https://fly.io",
+    "kind": "tool",
+    "provider": "Fly.io",
+    "category": "AI Infrastructure",
+    "pricing": "Paid",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Global application platform that transforms Docker containers into microVMs running close to users in cities all over the world.",
+    "tags": [
+      "microvm",
+      "edge",
+      "docker",
+      "cloud-hosting",
+      "global"
+    ]
+  },
+  {
+    "title": "Tripo3D",
+    "url": "https://www.tripo3d.ai",
+    "kind": "tool",
+    "provider": "Tripo AI",
+    "category": "Presentations & Design",
+    "pricing": "Freemium",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Fast generative AI 3D model platform turning simple text descriptions or single images into production-ready 3D meshes in seconds.",
+    "tags": [
+      "3d-generation",
+      "meshes",
+      "text-to-3d",
+      "gaming",
+      "design"
+    ]
+  },
+  {
+    "title": "Meshy",
+    "url": "https://www.meshy.ai",
+    "kind": "tool",
+    "provider": "Meshy",
+    "category": "Presentations & Design",
+    "pricing": "Freemium",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Generative 3D creation toolkit for game developers and 3D artists, generating textured 3D models from text prompts and 2D images.",
+    "tags": [
+      "3d-assets",
+      "game-dev",
+      "textures",
+      "text-to-3d",
+      "design"
+    ]
+  },
+  {
+    "title": "Napkin AI",
+    "url": "https://www.napkin.ai",
+    "kind": "tool",
+    "provider": "Napkin",
+    "category": "Presentations & Design",
+    "pricing": "Freemium",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Visual storytelling tool that transforms written text, concepts, and business documents into engaging diagrams, flowcharts, and infographics.",
+    "tags": [
+      "diagrams",
+      "infographics",
+      "visual-thinking",
+      "flowcharts",
+      "design"
+    ]
+  },
+  {
+    "title": "Obsidian",
+    "url": "https://obsidian.md",
+    "kind": "tool",
+    "provider": "Dynalist",
+    "category": "Productivity & Notes",
+    "pricing": "Free",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Private, flexible local-first markdown note-taking app that adapts to the way you think with local file storage and rich AI plugins.",
+    "tags": [
+      "markdown",
+      "local-first",
+      "pkm",
+      "knowledge-base",
+      "notes"
+    ]
+  },
+  {
+    "title": "AFFiNE",
+    "url": "https://affine.pro",
+    "kind": "tool",
+    "provider": "Toeverything",
+    "category": "Productivity & Notes",
+    "pricing": "Open Source",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "Next-generation open-source workspace merging docs, whiteboards, and database tables with local-first multimodal AI integration.",
+    "tags": [
+      "workspace",
+      "whiteboard",
+      "open-source",
+      "notion-alternative",
+      "local-first"
+    ]
+  },
+  {
+    "title": "Superwhisper",
+    "url": "https://superwhisper.com",
+    "kind": "tool",
+    "provider": "Superwhisper",
+    "category": "Voice & Audio",
+    "pricing": "Freemium",
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "description": "AI-powered voice-to-text dictation application that runs completely offline and locally on your device with high transcription accuracy.",
+    "tags": [
+      "dictation",
+      "voice-to-text",
+      "local-ai",
+      "whisper",
+      "offline"
+    ]
   }
 ]
