@@ -23,7 +23,8 @@ export default {
       if (
         url.pathname.startsWith('/prompt/') ||
         url.pathname.startsWith('/tool/') ||
-        url.pathname.startsWith('/workflow/')
+        url.pathname.startsWith('/workflow/') ||
+        url.pathname.startsWith('/agent/')
       ) {
         const indexRequest = new Request(new URL('/', request.url).toString(), request);
         return env.ASSETS.fetch(indexRequest);

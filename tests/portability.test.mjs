@@ -88,6 +88,7 @@ test('Architectural Guard: HTTP router must not import D1 repositories or Cloudf
     /\bD1PromptRepository\b/,
     /\bD1ToolRepository\b/,
     /\bD1WorkflowRepository\b/,
+    /\bD1AgentRepository\b/,
     /\bD1ResourceRepository\b/,
     /\bD1HealthCheck\b/,
     /@cloudflare\//,
@@ -119,6 +120,7 @@ test('Architectural Guard: Ports must define platform-agnostic repository interf
     path.join(projectRoot, 'src', 'modules', 'prompts', 'ports'),
     path.join(projectRoot, 'src', 'modules', 'tools', 'ports'),
     path.join(projectRoot, 'src', 'modules', 'workflows', 'ports'),
+    path.join(projectRoot, 'src', 'modules', 'agents', 'ports'),
   ];
 
   const portFiles = [];
@@ -126,7 +128,7 @@ test('Architectural Guard: Ports must define platform-agnostic repository interf
     portFiles.push(...getTsFiles(dir));
   }
 
-  assert.ok(portFiles.length >= 4, 'Must have at least 4 port interfaces');
+  assert.ok(portFiles.length >= 5, 'Must have at least 5 port interfaces');
 
   const forbiddenInPorts = [
     /\bEnv\b/,

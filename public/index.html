@@ -55,6 +55,13 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron-icon"><path d="m6 9 6 6 6-6"/></svg>
           </button>
           <div class="dropdown-menu hidden" id="add-dropdown-menu" role="menu">
+            <button class="dropdown-item" id="menu-add-agent-btn" role="menuitem">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <div>
+                <strong data-i18n="menu_new_agent">New Agent</strong>
+                <small data-i18n="menu_new_agent_desc">Reusable AI role definition & instructions</small>
+              </div>
+            </button>
             <button class="dropdown-item" id="menu-add-workflow-btn" role="menuitem">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
               <div>
@@ -92,6 +99,11 @@
               <span data-i18n="nav_all_resources">All Resources</span>
               <span class="badge" id="badge-all-resources-count">0</span>
             </button>
+            <button class="nav-item" data-filter-view="agents">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span data-i18n="nav_agents">Agents</span>
+              <span class="badge" id="badge-agents-count">0</span>
+            </button>
             <button class="nav-item" data-filter-view="workflows">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
               <span data-i18n="nav_workflows">Workflows</span>
@@ -112,6 +124,31 @@
               <span data-i18n="nav_favorites">Favorites</span>
               <span class="badge" id="badge-fav-count">0</span>
             </button>
+          </div>
+
+          <!-- Agents Filter Section (Runtime / Model / Status / Autonomy) -->
+          <div class="nav-group" id="sidebar-agents-filters">
+            <div class="nav-group-title" data-i18n="nav_filter_agents">Filter Agents</div>
+            <div class="filter-select-stack">
+              <select id="agent-status-filter-select" aria-label="Filter by Status">
+                <option value="" data-i18n="nav_all_statuses">All Statuses</option>
+                <option value="Active" data-i18n="nav_status_active">Active</option>
+                <option value="Draft" data-i18n="nav_status_draft">Draft</option>
+                <option value="Archived" data-i18n="nav_status_archived">Archived</option>
+              </select>
+              <select id="agent-autonomy-filter-select" aria-label="Filter by Autonomy">
+                <option value="" data-i18n="nav_all_autonomy">All Autonomy Levels</option>
+                <option value="Manual" data-i18n="autonomy_manual">Manual</option>
+                <option value="Assisted" data-i18n="autonomy_assisted">Assisted</option>
+                <option value="Autonomous" data-i18n="autonomy_autonomous">Autonomous</option>
+              </select>
+              <select id="agent-runtime-filter-select" aria-label="Filter by Runtime">
+                <option value="" data-i18n="nav_all_runtimes">All Runtimes</option>
+              </select>
+              <select id="agent-model-filter-select" aria-label="Filter by Model">
+                <option value="" data-i18n="nav_all_models">All Models</option>
+              </select>
+            </div>
           </div>
 
           <!-- Workflows Filter Section (Status / Difficulty) -->
@@ -181,10 +218,6 @@
             <div class="nav-group-title" data-i18n="nav_future_modules">Future Modules</div>
             <div class="future-item" title="Planned module">
               <span class="future-dot"></span>
-              <span data-i18n="future_agents">Agents</span>
-            </div>
-            <div class="future-item" title="Planned module">
-              <span class="future-dot"></span>
               <span data-i18n="future_collections">Collections</span>
             </div>
             <div class="future-item" title="Planned module">
@@ -235,7 +268,8 @@
           <h2 class="empty-title" id="empty-state-title">No resources found</h2>
           <p class="empty-desc" id="empty-state-desc">Save your first AI tool, website, or prompt to build your operating library.</p>
           <div class="empty-actions">
-            <button id="empty-add-workflow-btn" class="btn btn-primary" data-i18n="btn_add_workflow">+ Add Workflow</button>
+            <button id="empty-add-agent-btn" class="btn btn-primary" data-i18n="btn_add_agent">+ Add Agent</button>
+            <button id="empty-add-workflow-btn" class="btn btn-secondary" data-i18n="btn_add_workflow">+ Add Workflow</button>
             <button id="empty-add-tool-btn" class="btn btn-secondary" data-i18n="btn_add_tool">+ Add Tool / Website</button>
             <button id="empty-add-prompt-btn" class="btn btn-secondary" data-i18n="btn_add_prompt">+ Add Prompt</button>
           </div>
@@ -685,7 +719,240 @@
     </div>
   </dialog>
 
-  <!-- Resource Picker Dialog (for linking Prompts, Tools & Websites to steps) -->
+  <!-- Create / Edit Agent Modal Dialog -->
+  <dialog id="agent-form-dialog" class="modal-dialog">
+    <div class="modal-card modal-card-lg">
+      <div class="modal-header">
+        <h2 id="agent-form-title" data-i18n="modal_new_agent">New Agent</h2>
+        <button type="button" class="icon-btn modal-close" id="agent-form-close-btn" aria-label="Close dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="agent-form" class="modal-form" novalidate>
+        <input type="hidden" id="agent-id">
+
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label for="agent-title"><span data-i18n="label_title">Title</span> <span class="required">*</span></label>
+            <input type="text" id="agent-title" placeholder="e.g. Cloudflare App Builder" required autocomplete="off">
+          </div>
+          <div class="form-group flex-2">
+            <label for="agent-role"><span data-i18n="label_role">Role</span> <span class="required">*</span></label>
+            <input type="text" id="agent-role" placeholder="e.g. Senior Full-Stack Developer" required autocomplete="off">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="agent-goal"><span data-i18n="label_goal">Goal</span> <span class="label-hint" data-i18n="label_goal_hint">(primary outcome to achieve)</span></label>
+          <input type="text" id="agent-goal" placeholder="e.g. Build and deploy small production-ready Cloudflare applications autonomously" autocomplete="off">
+        </div>
+
+        <div class="form-group">
+          <label for="agent-description"><span data-i18n="label_description">Description</span> <span class="label-hint" data-i18n="label_desc_hint">(short tagline or summary)</span></label>
+          <input type="text" id="agent-description" placeholder="Brief overview of what this agent does..." autocomplete="off">
+        </div>
+
+        <!-- Instructions Editor with preserved whitespace and char counter -->
+        <div class="form-group">
+          <div class="form-header-inline">
+            <label for="agent-instructions"><span data-i18n="label_instructions">Instructions / System Definition</span> <span class="required">*</span></label>
+            <span class="char-counter" id="agent-instructions-counter">0 chars</span>
+          </div>
+          <textarea id="agent-instructions" rows="9" class="code-textarea" placeholder="You are responsible for...&#10;Rules:&#10;1. Preserve modular monolith architecture&#10;2. Keep domain logic pure" required></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="agent-runtime" data-i18n="label_runtime">Runtime / Context</label>
+            <input type="text" id="agent-runtime" list="agent-runtime-suggestions" placeholder="e.g. Claude Code, Antigravity" autocomplete="off">
+            <datalist id="agent-runtime-suggestions">
+              <option value="Claude Code">
+              <option value="Antigravity">
+              <option value="Codex">
+              <option value="Gemini">
+              <option value="ChatGPT">
+              <option value="Custom">
+            </datalist>
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="agent-model" data-i18n="label_model">Intended Model</label>
+            <input type="text" id="agent-model" list="agent-model-suggestions" placeholder="e.g. Claude 3.5 Sonnet, Auto" autocomplete="off">
+            <datalist id="agent-model-suggestions">
+              <option value="Claude 3.5 Sonnet">
+              <option value="Claude 3 Opus">
+              <option value="GPT-4o">
+              <option value="Gemini 1.5 Pro">
+              <option value="Auto">
+            </datalist>
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="agent-status" data-i18n="label_status">Status</label>
+            <select id="agent-status">
+              <option value="Active" data-i18n="nav_status_active">Active</option>
+              <option value="Draft" data-i18n="nav_status_draft">Draft</option>
+              <option value="Archived" data-i18n="nav_status_archived">Archived</option>
+            </select>
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="agent-autonomy" data-i18n="label_autonomy">Autonomy Level</label>
+            <select id="agent-autonomy">
+              <option value="Manual" data-i18n="autonomy_manual">Manual</option>
+              <option value="Assisted" data-i18n="autonomy_assisted">Assisted</option>
+              <option value="Autonomous" data-i18n="autonomy_autonomous">Autonomous</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="agent-input-desc"><span data-i18n="label_input_desc">Expected Input</span> <span class="label-hint" data-i18n="label_input_desc_hint">(what this agent takes in)</span></label>
+            <textarea id="agent-input-desc" rows="2" placeholder="e.g. A project brief, repository path, and deployment target..."></textarea>
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="agent-output-desc"><span data-i18n="label_output_desc">Expected Output</span> <span class="label-hint" data-i18n="label_output_desc_hint">(what this agent delivers)</span></label>
+            <textarea id="agent-output-desc" rows="2" placeholder="e.g. Production-ready implementation, committed to Git and deployed..."></textarea>
+          </div>
+        </div>
+
+        <!-- Linked Resources Section -->
+        <div class="form-group form-steps-section">
+          <div class="form-steps-header">
+            <div>
+              <label><strong data-i18n="label_linked_resources">Linked Resources</strong></label>
+              <span class="label-hint" data-i18n="label_agent_links_hint">Prompts, Tools, Websites, or Workflows this agent uses or follows</span>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="agent-add-resource-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              <span data-i18n="btn_link_resource">+ Link Resource</span>
+            </button>
+          </div>
+
+          <div class="agent-linked-resources-container" id="agent-form-resources-list">
+            <!-- Dynamic linked resource items added here -->
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-3">
+            <label for="agent-tags"><span data-i18n="label_tags">Tags</span> <span class="label-hint" data-i18n="label_tags_hint_prompt">(comma separated, e.g. coding, devops, worker)</span></label>
+            <input type="text" id="agent-tags" placeholder="coding, devops, cloudflare" autocomplete="off">
+          </div>
+          <div class="form-group form-group-checkbox flex-1">
+            <label class="checkbox-label" for="agent-favorite">
+              <input type="checkbox" id="agent-favorite">
+              <span data-i18n="label_favorite">Favorite</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="agent-notes"><span data-i18n="label_notes">Personal Notes</span> <span class="label-hint" data-i18n="label_agent_notes_hint">(when to use, constraints, tips)</span></label>
+          <textarea id="agent-notes" rows="2" placeholder="e.g. Use for infrastructure-heavy tasks. Works better with detailed constraints..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="agent-form-cancel-btn" data-i18n="btn_cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="agent-form-submit-btn">
+            <span data-i18n="btn_save_agent">Save Agent</span>
+            <kbd class="btn-kbd">Ctrl ↵</kbd>
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- Agent Detail Dialog -->
+  <dialog id="agent-detail-dialog" class="modal-dialog detail-dialog">
+    <div class="modal-card detail-card modal-card-lg">
+      <div class="modal-header">
+        <div class="detail-header-left">
+          <button class="favorite-star-btn" id="agent-detail-fav-btn" aria-label="Toggle favorite">
+            <svg class="star-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </button>
+          <div>
+            <h2 class="detail-title" id="agent-detail-title">Agent Title</h2>
+            <div class="detail-role-subtitle" id="agent-detail-role">Senior Full-Stack Developer</div>
+          </div>
+        </div>
+        <button type="button" class="icon-btn modal-close" id="agent-detail-close-btn" aria-label="Close dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="detail-meta">
+        <span class="badge badge-agent" data-i18n="badge_agent">Agent</span>
+        <span class="badge badge-status" id="agent-detail-status">Active</span>
+        <span class="badge badge-autonomy" id="agent-detail-autonomy">Manual</span>
+        <span class="badge badge-runtime hidden" id="agent-detail-runtime">Claude Code</span>
+        <span class="badge badge-model hidden" id="agent-detail-model">Auto</span>
+        <span class="meta-date" id="agent-detail-updated">Updated recently</span>
+      </div>
+
+      <!-- Goal Banner -->
+      <div class="detail-purpose-box hidden" id="agent-detail-goal-box">
+        <strong data-i18n="label_goal">Goal:</strong>
+        <span id="agent-detail-goal"></span>
+      </div>
+
+      <p class="detail-description hidden" id="agent-detail-description"></p>
+
+      <!-- Instructions Section -->
+      <div class="detail-content-wrapper">
+        <div class="content-header">
+          <span class="content-label" data-i18n="label_instructions">Instructions</span>
+          <button class="btn btn-copy" id="agent-detail-copy-instructions-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span data-i18n="btn_copy_instructions">Copy Instructions</span>
+          </button>
+        </div>
+        <pre class="detail-content-pre" id="agent-detail-instructions"></pre>
+      </div>
+
+      <!-- Contract Box (Input / Output) -->
+      <div class="agent-contract-grid hidden" id="agent-detail-contract-grid">
+        <div class="contract-card hidden" id="agent-detail-input-card">
+          <div class="contract-card-title" data-i18n="label_input_desc">Expected Input</div>
+          <div class="contract-card-body" id="agent-detail-input"></div>
+        </div>
+        <div class="contract-card hidden" id="agent-detail-output-card">
+          <div class="contract-card-title" data-i18n="label_output_desc">Expected Output</div>
+          <div class="contract-card-body" id="agent-detail-output"></div>
+        </div>
+      </div>
+
+      <!-- Linked Resources Section (grouped by USES, FOLLOWS, REFERENCES, ASSIGNS_TO) -->
+      <div class="agent-linked-section hidden" id="agent-detail-linked-section">
+        <div class="content-label" data-i18n="label_linked_resources">Linked Resources</div>
+        <div id="agent-detail-linked-groups"></div>
+      </div>
+
+      <!-- Personal Notes -->
+      <div class="detail-notes-wrapper hidden" id="agent-detail-notes-wrapper">
+        <span class="content-label" data-i18n="notes_tips_title">Personal Notes & Tips</span>
+        <div class="detail-notes-content" id="agent-detail-notes"></div>
+      </div>
+
+      <div class="detail-tags-row hidden" id="agent-detail-tags-row"></div>
+
+      <div class="modal-footer detail-footer">
+        <div class="footer-danger">
+          <button class="btn btn-danger" id="agent-detail-delete-btn" data-i18n="btn_delete">Delete</button>
+        </div>
+        <div class="footer-actions">
+          <button class="btn btn-secondary" id="agent-detail-copy-full-btn" data-i18n="btn_copy_full_agent">Copy Full Agent</button>
+          <button class="btn btn-secondary" id="agent-detail-duplicate-btn" data-i18n="btn_duplicate">Duplicate</button>
+          <button class="btn btn-secondary" id="agent-detail-edit-btn" data-i18n="btn_edit">Edit</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Resource Picker Dialog (for linking Prompts, Tools, Websites, Workflows, Agents) -->
   <dialog id="resource-picker-dialog" class="modal-dialog">
     <div class="modal-card">
       <div class="modal-header">

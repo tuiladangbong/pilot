@@ -82,11 +82,18 @@ src/
 │   │   │   └── ToolRepository.ts  # Tool module persistence port
 │   │   └── application/           # CRUD, duplicate, favorite, fetch-metadata use cases
 │   │
-│   └── workflows/
+│   ├── workflows/
+│   │   ├── domain/
+│   │   │   └── Workflow.ts        # Workflow & Step entities, difficulty, status, links
+│   │   ├── ports/
+│   │   │   └── WorkflowRepository.ts # Workflow persistence port
+│   │   └── application/           # CRUD, duplicate, favorite use cases & DTOs
+│   │
+│   └── agents/
 │       ├── domain/
-│       │   └── Workflow.ts        # Workflow & Step entities, difficulty, status, links
+│       │   └── Agent.ts           # Agent entity, role, goal, autonomy, instructions
 │       ├── ports/
-│       │   └── WorkflowRepository.ts # Workflow persistence port
+│       │   └── AgentRepository.ts # Agent persistence port
 │       └── application/           # CRUD, duplicate, favorite use cases & DTOs
 │
 ├── adapters/
@@ -97,6 +104,7 @@ src/
 │           ├── D1PromptRepository.ts    # D1 SQL & FTS5 search
 │           ├── D1ToolRepository.ts      # D1 SQL & tools FTS5 search
 │           ├── D1WorkflowRepository.ts  # D1 SQL, steps, relationships, workflows FTS5
+│           ├── D1AgentRepository.ts     # D1 SQL, relationships, agents FTS5
 │           ├── D1ResourceRepository.ts  # Universal cross-module resource queries
 │           └── D1HealthCheck.ts         # Database connectivity probe
 │
@@ -151,7 +159,9 @@ resources (Universal Metadata)
     │     ▲
     │     └── workflow_steps (Ordered steps referencing workflows.id)
     │           ▲
-    └── resource_relationships (Links workflows/steps to target resources: prompts, tools, websites)
+    ├── agents (Module-owned table referencing resources.id)
+    │     ▲
+    └── resource_relationships (Links workflows/steps & agents to target resources: prompts, tools, websites, workflows)
 
 tags (Universal Taxonomy)
     ▲
@@ -163,6 +173,7 @@ tags (Universal Taxonomy)
 2. `0002_prompt_module.sql`: Full-Text Search (`prompts_fts` using SQLite FTS5) with automated trigger synchronization.
 3. `0003_tools.sql`: `tools` table and `tools_fts` with automated trigger synchronization.
 4. `0004_workflows.sql`: `workflows`, `workflow_steps`, `resource_relationships`, and `workflows_fts` with automated trigger synchronization.
+5. `0005_agents.sql`: `agents` and `agents_fts` with automated trigger synchronization.
 
 ## How to Add a Future Resource Module
 

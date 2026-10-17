@@ -30,4 +30,8 @@ Instructions and rules for AI agents and developers working on the **Pilot** cod
 - **Verify production after deploy**: Ensure both local and production endpoints respond with 200 OK after deployment.
 - **Make focused commits**: Keep commit messages concise, descriptive, and aligned with Conventional Commits.
 - **Do not implement unrelated modules during a focused task**: Maintain tight scoping to avoid feature creep.
+- **Agents are definitions, not execution runtimes**: An Agent is a reusable knowledge and role specification (identity, role, goal, instructions, input/output contract, runtime, model, autonomy level). Do NOT implement execution daemons, background workers, LLM API calls, or chat history in Pilot.
+- **Agents are provider and runtime agnostic**: Treat runtime environments (Claude Code, Antigravity, OpenAI, etc.) and target models as descriptive metadata without vendor lock-in.
+- **Connect agents via resource relationships**: Always use `resource_relationships` (`USES`, `FOLLOWS`, `REFERENCES`, `ASSIGNS_TO`) to link agents with Prompts, Tools, Websites, and Workflows rather than denormalizing resource data into the `agents` table.
+
 

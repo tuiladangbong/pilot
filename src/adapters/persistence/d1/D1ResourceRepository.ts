@@ -26,6 +26,12 @@ interface ResourceExtendedRow {
   workflow_difficulty: string | null;
   workflow_estimated_time: string | null;
   workflow_step_count: number | null;
+  agent_role: string | null;
+  agent_goal: string | null;
+  agent_runtime: string | null;
+  agent_model: string | null;
+  agent_status: string | null;
+  agent_autonomy_level: string | null;
 }
 
 export class D1ResourceRepository implements ResourceRepository {
@@ -51,12 +57,15 @@ export class D1ResourceRepository implements ResourceRepository {
              tl.category as tool_category, tl.pricing as tool_pricing,
              w.purpose as workflow_purpose, w.status as workflow_status,
              w.difficulty as workflow_difficulty, w.estimated_time as workflow_estimated_time,
-             COUNT(DISTINCT ws.id) as workflow_step_count
+             COUNT(DISTINCT ws.id) as workflow_step_count,
+             ag.role as agent_role, ag.goal as agent_goal, ag.runtime as agent_runtime,
+             ag.model as agent_model, ag.status as agent_status, ag.autonomy_level as agent_autonomy_level
       FROM resources r
       LEFT JOIN prompts p ON p.resource_id = r.id
       LEFT JOIN tools tl ON tl.resource_id = r.id
       LEFT JOIN workflows w ON w.resource_id = r.id
       LEFT JOIN workflow_steps ws ON ws.workflow_id = r.id
+      LEFT JOIN agents ag ON ag.resource_id = r.id
       LEFT JOIN resource_tags rt ON rt.resource_id = r.id
       LEFT JOIN tags t ON t.id = rt.tag_id
       WHERE r.id = ?
@@ -111,17 +120,20 @@ export class D1ResourceRepository implements ResourceRepository {
           r.id IN (SELECT resource_id FROM tools_fts WHERE tools_fts MATCH ?)
           OR
           r.id IN (SELECT resource_id FROM workflows_fts WHERE workflows_fts MATCH ?)
+          OR
+          r.id IN (SELECT resource_id FROM agents_fts WHERE agents_fts MATCH ?)
         )`);
-        bindings.push(ftsFormatted, ftsFormatted, ftsFormatted);
+        bindings.push(ftsFormatted, ftsFormatted, ftsFormatted, ftsFormatted);
       } else {
         conditions.push(`(
           r.title LIKE ? OR r.description LIKE ?
           OR EXISTS (SELECT 1 FROM prompts p2 WHERE p2.resource_id = r.id AND p2.content LIKE ?)
           OR EXISTS (SELECT 1 FROM tools tl2 WHERE tl2.resource_id = r.id AND (tl2.url LIKE ? OR tl2.notes LIKE ?))
           OR EXISTS (SELECT 1 FROM workflows w2 WHERE w2.resource_id = r.id AND (w2.purpose LIKE ? OR w2.notes LIKE ?))
+          OR EXISTS (SELECT 1 FROM agents a2 WHERE a2.resource_id = r.id AND (a2.role LIKE ? OR a2.goal LIKE ? OR a2.instructions LIKE ? OR a2.notes LIKE ?))
         )`);
         const likeTerm = `%${rawQ}%`;
-        bindings.push(likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm);
+        bindings.push(likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm);
       }
     }
 
@@ -151,12 +163,15 @@ export class D1ResourceRepository implements ResourceRepository {
              tl.category as tool_category, tl.pricing as tool_pricing,
              w.purpose as workflow_purpose, w.status as workflow_status,
              w.difficulty as workflow_difficulty, w.estimated_time as workflow_estimated_time,
-             COUNT(DISTINCT ws.id) as workflow_step_count
+             COUNT(DISTINCT ws.id) as workflow_step_count,
+             ag.role as agent_role, ag.goal as agent_goal, ag.runtime as agent_runtime,
+             ag.model as agent_model, ag.status as agent_status, ag.autonomy_level as agent_autonomy_level
       FROM resources r
       LEFT JOIN prompts p ON p.resource_id = r.id
       LEFT JOIN tools tl ON tl.resource_id = r.id
       LEFT JOIN workflows w ON w.resource_id = r.id
       LEFT JOIN workflow_steps ws ON ws.workflow_id = r.id
+      LEFT JOIN agents ag ON ag.resource_id = r.id
       LEFT JOIN resource_tags rt ON rt.resource_id = r.id
       LEFT JOIN tags t ON t.id = rt.tag_id
       ${whereClause}
@@ -237,6 +252,13 @@ export class D1ResourceRepository implements ResourceRepository {
       if (row.workflow_step_count !== null && row.workflow_step_count !== undefined) {
         extra.stepCount = row.workflow_step_count;
       }
+    } else if (row.type === 'agent') {
+      if (row.agent_role) extra.role = row.agent_role;
+      if (row.agent_goal) extra.goal = row.agent_goal;
+      if (row.agent_runtime) extra.runtime = row.agent_runtime;
+      if (row.agent_model) extra.model = row.agent_model;
+      if (row.agent_status) extra.status = row.agent_status;
+      if (row.agent_autonomy_level) extra.autonomyLevel = row.agent_autonomy_level;
     }
 
     return {

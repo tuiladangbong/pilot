@@ -8,12 +8,12 @@ Production: [https://pilot.nodbits.com](https://pilot.nodbits.com)
 
 Pilot is an operating library for organizing, searching, connecting, and reusing AI-related knowledge and resources.
 
-**Prompts**, **AI Tools & Websites**, and **Workflows** are the implemented resource modules. Pilot is designed from the core as a modular resource platform rather than a prompt-only application. Modules include:
+**Prompts**, **AI Tools & Websites**, **Workflows**, and **Agents** are the implemented resource modules. Pilot is designed from the core as a modular resource platform rather than a prompt-only application. Modules include:
 
 - Prompts (Implemented)
 - AI Tools & Websites (Implemented)
 - Workflows (Implemented)
-- Agents (Planned)
+- Agents (Implemented)
 - Models & APIs (Planned)
 - Coding & Automation Recipes (Planned)
 - Articles & Notes (Planned)
@@ -94,6 +94,18 @@ npm run deploy
 
 ### Core Resources
 - `GET /api/resources` - Universal list of all resources across modules (supports `q`, `type`, `tag`, `favorite`, `sort`, `order`, `limit`, `offset`)
+
+### Agents Module
+- `GET /api/agents` - List agents (supports `q`, `tag`, `status`, `autonomy_level`, `runtime`, `model`, `favorite`, `sort`, `order`, `limit`, `offset`)
+- `GET /api/agents/:id` - Get agent by ID (includes role, instructions, contract, and linked resources)
+- `POST /api/agents` - Create new agent (`title`, `role`, `instructions`, `goal`, `description`, `runtime`, `model`, `status`, `autonomyLevel`, `inputDescription`, `outputDescription`, `favorite`, `notes`, `tags`, `linkedResources`)
+- `PUT /api/agents/:id` - Update agent and linked resource relationships
+- `DELETE /api/agents/:id` - Delete agent (cascades to relationships and FTS)
+- `POST /api/agents/:id/duplicate` - Duplicate agent and relationships
+- `PATCH /api/agents/:id/favorite` - Toggle or set favorite state
+- `GET /api/agents/:id/full-text` - Export plain-text reusable prompt format
+- `GET /api/agents/meta/runtimes` - Distinct runtime environments
+- `GET /api/agents/meta/models` - Distinct models used across agents
 
 ### Workflows Module
 - `GET /api/workflows` - List workflows (supports `q`, `tag`, `status`, `difficulty`, `favorite`, `sort`, `order`, `limit`, `offset`)

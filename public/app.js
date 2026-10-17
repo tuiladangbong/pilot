@@ -13,6 +13,8 @@
       view_list: 'List View',
       view_grid: 'Grid View',
       add_btn: '+ Add',
+      menu_new_agent: 'New Agent',
+      menu_new_agent_desc: 'Reusable AI role definition & instructions',
       menu_new_workflow: 'New Workflow',
       menu_new_workflow_desc: 'Structured steps & reusable AI process',
       menu_new_tool: 'New Tool / Website',
@@ -23,10 +25,17 @@
       // Sidebar
       nav_resources: 'Resources',
       nav_all_resources: 'All Resources',
+      nav_agents: 'Agents',
       nav_workflows: 'Workflows',
       nav_tools: 'Tools & Websites',
       nav_prompts: 'Prompts',
       nav_favorites: 'Favorites',
+      nav_filter_agents: 'Filter Agents',
+      nav_all_autonomy: 'All Autonomy Levels',
+      autonomy_manual: 'Manual',
+      autonomy_assisted: 'Assisted',
+      autonomy_autonomous: 'Autonomous',
+      nav_all_runtimes: 'All Runtimes',
       nav_filter_workflows: 'Filter Workflows',
       nav_all_statuses: 'All Statuses',
       nav_status_active: 'Active',
@@ -71,8 +80,11 @@
       badge_website: 'Website',
       badge_prompt: 'Prompt',
       badge_workflow: 'Workflow',
+      badge_agent: 'Agent',
       btn_copy: 'Copy',
       btn_copy_prompt: 'Copy Prompt',
+      btn_copy_instructions: 'Copy Instructions',
+      btn_copy_full_agent: 'Copy Full Agent',
       btn_copy_url: 'Copy URL',
       btn_copied: 'Copied ✓',
       btn_open: 'Open',
@@ -81,7 +93,9 @@
       // Empty & Loading States
       loading_resources: 'Loading resources...',
       empty_no_resources: 'No resources found',
-      empty_no_resources_desc: 'Save your first AI tool, website, or prompt to build your operating library.',
+      empty_no_resources_desc: 'Save your first AI tool, website, prompt, or agent to build your operating library.',
+      empty_no_agents: 'No agents yet',
+      empty_no_agents_desc: 'Save a reusable AI role definition, behavioral guidelines, and instructions.',
       empty_no_workflows: 'No workflows yet',
       empty_no_workflows_desc: 'Create structured AI processes to streamline your work.',
       empty_no_tools: 'No AI tools or websites yet',
@@ -89,23 +103,43 @@
       empty_no_prompts: 'No prompts yet',
       empty_no_prompts_desc: 'Save your first AI prompt to build your operating library.',
       empty_no_favs: 'Nothing favorited yet',
-      empty_no_favs_desc: 'Star useful prompts, tools, websites, and workflows to find them here.',
+      empty_no_favs_desc: 'Star useful prompts, tools, websites, workflows, and agents to find them here.',
       empty_search_no_match: 'No resources match this search',
       empty_search_desc: (q) => `No items matching "${q}".`,
       empty_tag_no_match: (tag) => `No resources tagged #${tag}`,
       empty_tag_desc: 'Try selecting another tag or clearing the filter.',
+      btn_add_agent: '+ Add Agent',
       btn_add_workflow: '+ Add Workflow',
       btn_add_tool: '+ Add Tool / Website',
       btn_add_prompt: '+ Add Prompt',
       btn_load_more: 'Load More',
 
       // Modals
+      modal_new_agent: 'New Agent',
+      modal_edit_agent: 'Edit Agent',
       modal_new_workflow: 'New Workflow',
       modal_edit_workflow: 'Edit Workflow',
       modal_new_tool: 'New Tool / Website',
       modal_edit_tool: 'Edit Tool / Website',
       modal_new_prompt: 'New Prompt',
       modal_edit_prompt: 'Edit Prompt',
+      label_role: 'Role',
+      label_goal: 'Goal',
+      label_goal_hint: '(primary outcome to achieve)',
+      label_instructions: 'Instructions / System Definition',
+      label_runtime: 'Runtime / Context',
+      label_autonomy: 'Autonomy Level',
+      label_input_desc: 'Expected Input',
+      label_input_desc_hint: '(what this agent takes in)',
+      label_output_desc: 'Expected Output',
+      label_output_desc_hint: '(what this agent delivers)',
+      label_agent_notes_hint: '(when to use, constraints, tips)',
+      label_agent_links_hint: 'Prompts, Tools, Websites, or Workflows this agent uses or follows',
+      btn_save_agent: 'Save Agent',
+      rel_uses: 'Uses',
+      rel_follows: 'Follows',
+      rel_references: 'References',
+      rel_assigns_to: 'Assigns To',
       label_purpose: 'Purpose / Goal',
       label_purpose_hint: '(what this workflow achieves)',
       label_status: 'Status',
@@ -206,6 +240,8 @@
       filter_model: (m) => `Model: ${m}`,
       filter_status: (s) => `Status: ${s}`,
       filter_difficulty: (d) => `Difficulty: ${d}`,
+      filter_autonomy: (a) => `Autonomy: ${a}`,
+      filter_runtime: (r) => `Runtime: ${r}`,
       workflow_progress: (done, total) => `${done}/${total} steps completed`,
     },
 
@@ -216,6 +252,8 @@
       view_list: 'Xem danh sách',
       view_grid: 'Xem lưới',
       add_btn: '+ Thêm',
+      menu_new_agent: 'Agent Mới',
+      menu_new_agent_desc: 'Định nghĩa vai trò AI & hướng dẫn tái sử dụng',
       menu_new_workflow: 'Thêm Quy trình',
       menu_new_workflow_desc: 'Các bước tuần tự & quy trình AI tái sử dụng',
       menu_new_tool: 'Thêm Công cụ / Website',
@@ -226,10 +264,17 @@
       // Sidebar
       nav_resources: 'Tài nguyên',
       nav_all_resources: 'Tất cả tài nguyên',
+      nav_agents: 'Agents',
       nav_workflows: 'Quy trình',
       nav_tools: 'Công cụ & Website',
       nav_prompts: 'Prompts',
       nav_favorites: 'Yêu thích',
+      nav_filter_agents: 'Lọc Agents',
+      nav_all_autonomy: 'Tất cả mức tự chủ',
+      autonomy_manual: 'Thủ công (Manual)',
+      autonomy_assisted: 'Hỗ trợ (Assisted)',
+      autonomy_autonomous: 'Tự chủ (Autonomous)',
+      nav_all_runtimes: 'Tất cả Runtime',
       nav_filter_workflows: 'Lọc quy trình',
       nav_all_statuses: 'Tất cả trạng thái',
       nav_status_active: 'Đang dùng',
@@ -274,8 +319,11 @@
       badge_website: 'Website',
       badge_prompt: 'Prompt',
       badge_workflow: 'Quy trình',
+      badge_agent: 'Agent',
       btn_copy: 'Sao chép',
       btn_copy_prompt: 'Sao chép Prompt',
+      btn_copy_instructions: 'Sao chép Hướng dẫn',
+      btn_copy_full_agent: 'Sao chép toàn bộ Agent',
       btn_copy_url: 'Chép URL',
       btn_copied: 'Đã chép ✓',
       btn_open: 'Mở',
@@ -284,7 +332,9 @@
       // Empty & Loading States
       loading_resources: 'Đang tải tài nguyên...',
       empty_no_resources: 'Không tìm thấy tài nguyên nào',
-      empty_no_resources_desc: 'Lưu công cụ AI, website hoặc prompt đầu tiên của bạn để xây dựng kho vận hành.',
+      empty_no_resources_desc: 'Lưu công cụ AI, website, prompt hoặc agent đầu tiên của bạn để xây dựng kho vận hành.',
+      empty_no_agents: 'Chưa có Agent nào',
+      empty_no_agents_desc: 'Lưu vai trò AI tái sử dụng, nguyên tắc hành vi và hướng dẫn chi tiết.',
       empty_no_workflows: 'Chưa có quy trình nào',
       empty_no_workflows_desc: 'Tạo các quy trình làm việc có cấu trúc để tối ưu hóa công việc của bạn.',
       empty_no_tools: 'Chưa có công cụ hoặc website AI nào',
@@ -292,23 +342,43 @@
       empty_no_prompts: 'Chưa có prompt nào',
       empty_no_prompts_desc: 'Lưu prompt AI đầu tiên để xây dựng thư viện vận hành cá nhân.',
       empty_no_favs: 'Chưa có mục yêu thích nào',
-      empty_no_favs_desc: 'Đánh dấu sao các prompt, công cụ, website và quy trình hữu ích để tìm nhanh tại đây.',
+      empty_no_favs_desc: 'Đánh dấu sao các prompt, công cụ, website, quy trình và agent hữu ích để tìm nhanh tại đây.',
       empty_search_no_match: 'Không tìm thấy tài nguyên phù hợp',
       empty_search_desc: (q) => `Không có mục nào khớp với "${q}".`,
       empty_tag_no_match: (tag) => `Không có tài nguyên gắn thẻ #${tag}`,
       empty_tag_desc: 'Thử chọn một thẻ khác hoặc xóa bộ lọc.',
+      btn_add_agent: '+ Thêm Agent',
       btn_add_workflow: '+ Thêm Quy trình',
       btn_add_tool: '+ Thêm Công cụ / Website',
       btn_add_prompt: '+ Thêm Prompt',
       btn_load_more: 'Tải thêm',
 
       // Modals
+      modal_new_agent: 'Thêm Agent Mới',
+      modal_edit_agent: 'Chỉnh sửa Agent',
       modal_new_workflow: 'Thêm Quy trình mới',
       modal_edit_workflow: 'Chỉnh sửa Quy trình',
       modal_new_tool: 'Thêm Công cụ / Website mới',
       modal_edit_tool: 'Chỉnh sửa Công cụ / Website',
       modal_new_prompt: 'Thêm Prompt mới',
       modal_edit_prompt: 'Chỉnh sửa Prompt',
+      label_role: 'Vai trò (Role)',
+      label_goal: 'Mục tiêu (Goal)',
+      label_goal_hint: '(kết quả mong muốn đạt được)',
+      label_instructions: 'Hướng dẫn / Định nghĩa hệ thống',
+      label_runtime: 'Môi trường thực thi (Runtime)',
+      label_autonomy: 'Mức độ tự chủ',
+      label_input_desc: 'Đầu vào mong đợi',
+      label_input_desc_hint: '(dữ liệu cung cấp cho agent)',
+      label_output_desc: 'Đầu ra mong đợi',
+      label_output_desc_hint: '(kết quả bàn giao)',
+      label_agent_notes_hint: '(khi nào nên dùng, hạn chế, mẹo)',
+      label_agent_links_hint: 'Prompt, Công cụ, Website hoặc Quy trình agent này sử dụng',
+      btn_save_agent: 'Lưu Agent',
+      rel_uses: 'Sử dụng (Uses)',
+      rel_follows: 'Theo quy trình (Follows)',
+      rel_references: 'Tham chiếu (References)',
+      rel_assigns_to: 'Giao việc cho (Assigns To)',
       label_purpose: 'Mục tiêu / Mục đích',
       label_purpose_hint: '(mục đích đạt được của quy trình)',
       label_status: 'Trạng thái',
@@ -409,6 +479,8 @@
       filter_model: (m) => `Mô hình: ${m}`,
       filter_status: (s) => `Trạng thái: ${s}`,
       filter_difficulty: (d) => `Độ khó: ${d}`,
+      filter_autonomy: (a) => `Tự chủ: ${a}`,
+      filter_runtime: (r) => `Runtime: ${r}`,
       workflow_progress: (done, total) => `Đã hoàn thành ${done}/${total} bước`,
     },
   };
@@ -432,18 +504,27 @@
     sort: 'updated_at',
     order: 'desc',
     viewMode: localStorage.getItem('pilot_view_mode') || 'list',
-    currentNav: 'all-resources', // 'all-resources' | 'workflows' | 'tools' | 'prompts' | 'favorites'
+    currentNav: 'all-resources', // 'all-resources' | 'agents' | 'workflows' | 'tools' | 'prompts' | 'favorites'
     activeDetailPrompt: null,
     activeDetailTool: null,
     activeDetailWorkflow: null,
+    activeDetailAgent: null,
     currentEditingWorkflowSteps: [],
+    currentEditingAgentResources: [],
+    pickerMode: 'workflow_step', // 'workflow_step' | 'agent_resource'
     activeStepIndexForPicker: null,
     activeWorkflowChecklistState: {},
-    itemToDelete: null, // { id, title, type: 'prompt' | 'tool' | 'website' | 'workflow' }
+    itemToDelete: null, // { id, title, type: 'prompt' | 'tool' | 'website' | 'workflow' | 'agent' }
+    agentStatus: null,
+    agentAutonomy: null,
+    agentRuntime: null,
+    agentModel: null,
     tags: [],
     models: [],
     categories: [],
     providers: [],
+    runtimes: [],
+    agentModels: [],
     isLoading: false,
   };
 
@@ -482,6 +563,7 @@
     // Add Dropdown
     addBtn: document.getElementById('add-btn'),
     addDropdownMenu: document.getElementById('add-dropdown-menu'),
+    menuAddAgentBtn: document.getElementById('menu-add-agent-btn'),
     menuAddWorkflowBtn: document.getElementById('menu-add-workflow-btn'),
     menuAddToolBtn: document.getElementById('menu-add-tool-btn'),
     menuAddPromptBtn: document.getElementById('menu-add-prompt-btn'),
@@ -493,12 +575,18 @@
 
     // Badges & Navigation
     badgeAllResourcesCount: document.getElementById('badge-all-resources-count'),
+    badgeAgentsCount: document.getElementById('badge-agents-count'),
     badgeWorkflowsCount: document.getElementById('badge-workflows-count'),
     badgeToolsCount: document.getElementById('badge-tools-count'),
     badgePromptsCount: document.getElementById('badge-prompts-count'),
     badgeFavCount: document.getElementById('badge-fav-count'),
 
     // Sidebar Filters
+    sidebarAgentsFilters: document.getElementById('sidebar-agents-filters'),
+    agentStatusFilterSelect: document.getElementById('agent-status-filter-select'),
+    agentAutonomyFilterSelect: document.getElementById('agent-autonomy-filter-select'),
+    agentRuntimeFilterSelect: document.getElementById('agent-runtime-filter-select'),
+    agentModelFilterSelect: document.getElementById('agent-model-filter-select'),
     sidebarWorkflowsFilters: document.getElementById('sidebar-workflows-filters'),
     workflowStatusFilterSelect: document.getElementById('workflow-status-filter-select'),
     workflowDiffFilterSelect: document.getElementById('workflow-diff-filter-select'),
@@ -523,6 +611,7 @@
     emptyState: document.getElementById('empty-state'),
     emptyStateTitle: document.getElementById('empty-state-title'),
     emptyStateDesc: document.getElementById('empty-state-desc'),
+    emptyAddAgentBtn: document.getElementById('empty-add-agent-btn'),
     emptyAddWorkflowBtn: document.getElementById('empty-add-workflow-btn'),
     emptyAddToolBtn: document.getElementById('empty-add-tool-btn'),
     emptyAddPromptBtn: document.getElementById('empty-add-prompt-btn'),
@@ -655,6 +744,63 @@
     promptDetailEditBtn: document.getElementById('detail-edit-btn'),
     promptDetailDuplicateBtn: document.getElementById('detail-duplicate-btn'),
     promptDetailDeleteBtn: document.getElementById('detail-delete-btn'),
+
+    // Agent Form Dialog
+    agentFormDialog: document.getElementById('agent-form-dialog'),
+    agentForm: document.getElementById('agent-form'),
+    agentFormTitle: document.getElementById('agent-form-title'),
+    agentFormCloseBtn: document.getElementById('agent-form-close-btn'),
+    agentFormCancelBtn: document.getElementById('agent-form-cancel-btn'),
+    agentFormSubmitBtn: document.getElementById('agent-form-submit-btn'),
+    inputAgentId: document.getElementById('agent-id'),
+    inputAgentTitle: document.getElementById('agent-title'),
+    inputAgentRole: document.getElementById('agent-role'),
+    inputAgentGoal: document.getElementById('agent-goal'),
+    inputAgentDescription: document.getElementById('agent-description'),
+    inputAgentInstructions: document.getElementById('agent-instructions'),
+    agentInstructionsCounter: document.getElementById('agent-instructions-counter'),
+    inputAgentRuntime: document.getElementById('agent-runtime'),
+    inputAgentModel: document.getElementById('agent-model'),
+    inputAgentStatus: document.getElementById('agent-status'),
+    inputAgentAutonomy: document.getElementById('agent-autonomy'),
+    inputAgentInputDesc: document.getElementById('agent-input-desc'),
+    inputAgentOutputDesc: document.getElementById('agent-output-desc'),
+    agentAddResourceBtn: document.getElementById('agent-add-resource-btn'),
+    agentFormResourcesList: document.getElementById('agent-form-resources-list'),
+    inputAgentTags: document.getElementById('agent-tags'),
+    inputAgentFavorite: document.getElementById('agent-favorite'),
+    inputAgentNotes: document.getElementById('agent-notes'),
+
+    // Agent Detail Dialog
+    agentDetailDialog: document.getElementById('agent-detail-dialog'),
+    agentDetailCloseBtn: document.getElementById('agent-detail-close-btn'),
+    agentDetailFavBtn: document.getElementById('agent-detail-fav-btn'),
+    agentDetailTitle: document.getElementById('agent-detail-title'),
+    agentDetailRole: document.getElementById('agent-detail-role'),
+    agentDetailStatus: document.getElementById('agent-detail-status'),
+    agentDetailAutonomy: document.getElementById('agent-detail-autonomy'),
+    agentDetailRuntime: document.getElementById('agent-detail-runtime'),
+    agentDetailModel: document.getElementById('agent-detail-model'),
+    agentDetailUpdated: document.getElementById('agent-detail-updated'),
+    agentDetailGoalBox: document.getElementById('agent-detail-goal-box'),
+    agentDetailGoal: document.getElementById('agent-detail-goal'),
+    agentDetailDescription: document.getElementById('agent-detail-description'),
+    agentDetailCopyInstructionsBtn: document.getElementById('agent-detail-copy-instructions-btn'),
+    agentDetailInstructions: document.getElementById('agent-detail-instructions'),
+    agentDetailContractGrid: document.getElementById('agent-detail-contract-grid'),
+    agentDetailInputCard: document.getElementById('agent-detail-input-card'),
+    agentDetailInput: document.getElementById('agent-detail-input'),
+    agentDetailOutputCard: document.getElementById('agent-detail-output-card'),
+    agentDetailOutput: document.getElementById('agent-detail-output'),
+    agentDetailLinkedSection: document.getElementById('agent-detail-linked-section'),
+    agentDetailLinkedGroups: document.getElementById('agent-detail-linked-groups'),
+    agentDetailNotesWrapper: document.getElementById('agent-detail-notes-wrapper'),
+    agentDetailNotes: document.getElementById('agent-detail-notes'),
+    agentDetailTagsRow: document.getElementById('agent-detail-tags-row'),
+    agentDetailDeleteBtn: document.getElementById('agent-detail-delete-btn'),
+    agentDetailCopyFullBtn: document.getElementById('agent-detail-copy-full-btn'),
+    agentDetailDuplicateBtn: document.getElementById('agent-detail-duplicate-btn'),
+    agentDetailEditBtn: document.getElementById('agent-detail-edit-btn'),
 
     // Delete Confirmation Dialog
     deleteDialog: document.getElementById('delete-confirm-dialog'),
@@ -826,7 +972,13 @@
 
       let endpoint = '/api/resources';
 
-      if (state.currentNav === 'workflows') {
+      if (state.currentNav === 'agents') {
+        endpoint = '/api/agents';
+        if (state.agentStatus) params.set('status', state.agentStatus);
+        if (state.agentAutonomy) params.set('autonomy_level', state.agentAutonomy);
+        if (state.agentRuntime) params.set('runtime', state.agentRuntime);
+        if (state.agentModel) params.set('model', state.agentModel);
+      } else if (state.currentNav === 'workflows') {
         endpoint = '/api/workflows';
         if (state.workflowStatus) params.set('status', state.workflowStatus);
         if (state.workflowDifficulty) params.set('difficulty', state.workflowDifficulty);
@@ -912,10 +1064,53 @@
     }
   }
 
+  async function loadAgentMetadataOptions() {
+    try {
+      const [runtimesRes, modelsRes] = await Promise.all([
+        apiFetch('/api/agents/meta/runtimes'),
+        apiFetch('/api/agents/meta/models'),
+      ]);
+      state.runtimes = runtimesRes.data || [];
+      state.agentModels = modelsRes.data || [];
+      renderAgentMetadataOptions();
+    } catch (err) {
+      console.warn('Failed to load agent metadata:', err);
+    }
+  }
+
+  function renderAgentMetadataOptions() {
+    if (el.agentRuntimeFilterSelect) {
+      const current = el.agentRuntimeFilterSelect.value;
+      el.agentRuntimeFilterSelect.innerHTML = `<option value="">${t('nav_all_runtimes')}</option>`;
+      for (const r of state.runtimes) {
+        if (!r) continue;
+        const opt = document.createElement('option');
+        opt.value = r;
+        opt.textContent = r;
+        el.agentRuntimeFilterSelect.appendChild(opt);
+      }
+      el.agentRuntimeFilterSelect.value = current;
+    }
+
+    if (el.agentModelFilterSelect) {
+      const current = el.agentModelFilterSelect.value;
+      el.agentModelFilterSelect.innerHTML = `<option value="">${t('nav_all_models')}</option>`;
+      for (const m of state.agentModels) {
+        if (!m) continue;
+        const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = m;
+        el.agentModelFilterSelect.appendChild(opt);
+      }
+      el.agentModelFilterSelect.value = current;
+    }
+  }
+
   async function updateCounts() {
     try {
-      const [allRes, workflowsRes, toolsRes, promptsRes, favRes] = await Promise.all([
+      const [allRes, agentsRes, workflowsRes, toolsRes, promptsRes, favRes] = await Promise.all([
         apiFetch('/api/resources?limit=1'),
+        apiFetch('/api/agents?limit=1'),
         apiFetch('/api/workflows?limit=1'),
         apiFetch('/api/tools?limit=1'),
         apiFetch('/api/prompts?limit=1'),
@@ -923,6 +1118,7 @@
       ]);
 
       el.badgeAllResourcesCount.textContent = allRes.meta?.total ?? 0;
+      if (el.badgeAgentsCount) el.badgeAgentsCount.textContent = agentsRes.meta?.total ?? 0;
       if (el.badgeWorkflowsCount) el.badgeWorkflowsCount.textContent = workflowsRes.meta?.total ?? 0;
       el.badgeToolsCount.textContent = toolsRes.meta?.total ?? 0;
       el.badgePromptsCount.textContent = promptsRes.meta?.total ?? 0;
@@ -1034,6 +1230,8 @@
         showEmptyState(t('empty_no_favs'), t('empty_no_favs_desc'));
       } else if (state.tag) {
         showEmptyState(t('empty_tag_no_match', state.tag), t('empty_tag_desc'));
+      } else if (state.currentNav === 'agents') {
+        showEmptyState(t('empty_no_agents'), t('empty_no_agents_desc'));
       } else if (state.currentNav === 'workflows') {
         showEmptyState(t('empty_no_workflows'), t('empty_no_workflows_desc'));
       } else if (state.currentNav === 'tools') {
@@ -1051,12 +1249,15 @@
 
     const sliceItems = append ? state.items.slice(state.offset) : state.items;
     for (const item of sliceItems) {
-      const itemType = item.type || (item.content !== undefined ? 'prompt' : (item.steps !== undefined || item.extra?.stepCount !== undefined ? 'workflow' : 'tool'));
+      const itemType = item.type || (item.content !== undefined ? 'prompt' : (item.steps !== undefined || item.extra?.stepCount !== undefined ? 'workflow' : (item.role !== undefined || item.instructions !== undefined || item.extra?.role !== undefined ? 'agent' : 'tool')));
       if (itemType === 'prompt') {
         const card = createPromptCardElement(item);
         el.resourcesList.appendChild(card);
       } else if (itemType === 'workflow') {
         const card = createWorkflowCardElement(item);
+        el.resourcesList.appendChild(card);
+      } else if (itemType === 'agent') {
+        const card = createAgentCardElement(item);
         el.resourcesList.appendChild(card);
       } else {
         const card = createToolCardElement(item);
@@ -1539,6 +1740,188 @@
     return card;
   }
 
+  function createAgentCardElement(agent) {
+    const card = document.createElement('article');
+    card.className = 'prompt-card';
+    card.setAttribute('data-id', agent.id);
+
+    // Header row: Title + Actions (Favorite + Copy Instructions)
+    const headerRow = document.createElement('div');
+    headerRow.className = 'card-header-row';
+
+    const titleGroup = document.createElement('div');
+    titleGroup.className = 'card-title-group';
+
+    // Favorite button
+    const favBtn = document.createElement('button');
+    favBtn.className = `favorite-star-btn ${agent.favorite ? 'active' : ''}`;
+    favBtn.title = agent.favorite ? 'Unfavorite' : 'Favorite';
+    favBtn.setAttribute('aria-label', favBtn.title);
+    favBtn.innerHTML = `
+      <svg class="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="${agent.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+    `;
+    favBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleAgentFavorite(agent, favBtn);
+    });
+
+    const title = document.createElement('h2');
+    title.className = 'card-title';
+    title.textContent = agent.title;
+
+    titleGroup.appendChild(favBtn);
+    titleGroup.appendChild(title);
+
+    // Agent Badge
+    const agBadge = document.createElement('span');
+    agBadge.className = 'badge badge-agent';
+    agBadge.textContent = t('badge_agent');
+    titleGroup.appendChild(agBadge);
+
+    // Autonomy badge
+    const autonomy = agent.autonomyLevel || agent.extra?.autonomyLevel || 'Manual';
+    const autoBadge = document.createElement('span');
+    autoBadge.className = `badge badge-autonomy autonomy-${autonomy.toLowerCase()}`;
+    autoBadge.textContent = autonomy;
+    titleGroup.appendChild(autoBadge);
+
+    // Status badge if Draft or Archived
+    const status = agent.status || agent.extra?.status || 'Active';
+    if (status !== 'Active') {
+      const statusBadge = document.createElement('span');
+      statusBadge.className = `badge badge-status status-${status.toLowerCase()}`;
+      statusBadge.textContent = status;
+      titleGroup.appendChild(statusBadge);
+    }
+
+    const quickActions = document.createElement('div');
+    quickActions.className = 'card-actions-quick';
+
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'btn btn-copy';
+    copyBtn.innerHTML = `
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <span>${t('btn_copy_instructions')}</span>
+    `;
+    copyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const instructions = agent.instructions || agent.extra?.instructions || '';
+      copyToClipboard(instructions, copyBtn);
+    });
+
+    quickActions.appendChild(copyBtn);
+
+    headerRow.appendChild(titleGroup);
+    headerRow.appendChild(quickActions);
+    card.appendChild(headerRow);
+
+    // Role Subtitle row
+    const roleText = agent.role || agent.extra?.role;
+    if (roleText) {
+      const roleRow = document.createElement('div');
+      roleRow.className = 'card-role-row';
+      roleRow.textContent = roleText;
+      card.appendChild(roleRow);
+    }
+
+    // Goal or description
+    const goalText = agent.goal || agent.extra?.goal;
+    const descText = agent.description || agent.extra?.description;
+    if (goalText) {
+      const goalEl = document.createElement('div');
+      goalEl.className = 'card-goal-preview';
+      const goalLabel = document.createElement('strong');
+      goalLabel.textContent = `${t('label_goal')}: `;
+      goalEl.appendChild(goalLabel);
+      goalEl.appendChild(document.createTextNode(goalText));
+      card.appendChild(goalEl);
+    } else if (descText) {
+      const desc = document.createElement('p');
+      desc.className = 'card-description';
+      desc.textContent = descText;
+      card.appendChild(desc);
+    }
+
+    // Instructions Preview (first ~2-3 lines)
+    const instructions = agent.instructions || agent.extra?.instructions;
+    if (instructions) {
+      const preview = document.createElement('div');
+      preview.className = 'card-content-preview';
+      preview.textContent = instructions;
+      card.appendChild(preview);
+    }
+
+    // Footer row: Runtime, Model, Linked resource count, Tags, Date
+    const footerRow = document.createElement('div');
+    footerRow.className = 'card-footer-row';
+
+    const metaLeft = document.createElement('div');
+    metaLeft.className = 'card-meta-left';
+
+    const runtime = agent.runtime || agent.extra?.runtime;
+    if (runtime) {
+      const rtBadge = document.createElement('span');
+      rtBadge.className = 'badge badge-runtime';
+      rtBadge.textContent = runtime;
+      metaLeft.appendChild(rtBadge);
+    }
+
+    const model = agent.model || agent.extra?.model;
+    if (model) {
+      const modelBadge = document.createElement('span');
+      modelBadge.className = 'model-badge';
+      modelBadge.textContent = model;
+      metaLeft.appendChild(modelBadge);
+    }
+
+    const linkedCount = agent.linkedResourceCount !== undefined
+      ? agent.linkedResourceCount
+      : (Array.isArray(agent.linkedResources) ? agent.linkedResources.length : (agent.extra?.linkedResourceCount ?? 0));
+    if (linkedCount > 0) {
+      const linksPill = document.createElement('span');
+      linksPill.className = 'workflow-step-count-pill';
+      linksPill.textContent = `🔗 ${linkedCount} ${linkedCount === 1 ? 'link' : 'links'}`;
+      metaLeft.appendChild(linksPill);
+    }
+
+    const tags = Array.isArray(agent.tags) ? agent.tags : [];
+    if (tags.length > 0) {
+      for (const tag of tags.slice(0, 4)) {
+        const tagPill = document.createElement('span');
+        tagPill.className = 'card-tag';
+        tagPill.textContent = `#${tag}`;
+        tagPill.addEventListener('click', (e) => {
+          e.stopPropagation();
+          state.tag = tag;
+          loadData();
+          renderTagsList();
+        });
+        metaLeft.appendChild(tagPill);
+      }
+      if (tags.length > 4) {
+        const moreTag = document.createElement('span');
+        moreTag.className = 'card-tag';
+        moreTag.textContent = `+${tags.length - 4}`;
+        metaLeft.appendChild(moreTag);
+      }
+    }
+
+    const timeSpan = document.createElement('span');
+    timeSpan.textContent = formatRelativeDate(agent.updatedAt);
+    metaLeft.appendChild(timeSpan);
+
+    footerRow.appendChild(metaLeft);
+    card.appendChild(footerRow);
+
+    card.addEventListener('click', () => {
+      openAgentDetailDialog(agent);
+    });
+
+    return card;
+  }
+
   async function getWorkflowMarkdown(wf) {
     let full = wf;
     if (!full.steps) {
@@ -1604,6 +1987,8 @@
     // Title text
     if (state.currentNav === 'favorites') {
       el.currentViewTitle.textContent = t('nav_favorites');
+    } else if (state.currentNav === 'agents') {
+      el.currentViewTitle.textContent = t('nav_agents');
     } else if (state.currentNav === 'workflows') {
       el.currentViewTitle.textContent = t('nav_workflows');
     } else if (state.currentNav === 'tools') {
@@ -1631,6 +2016,46 @@
         state.tag = null;
         loadData();
         renderTagsList();
+      });
+      el.activeFiltersContainer.appendChild(pill);
+    }
+
+    // Pill for Agent Status
+    if (state.agentStatus) {
+      const pill = createFilterPill(t('filter_status', state.agentStatus), () => {
+        state.agentStatus = null;
+        if (el.agentStatusFilterSelect) el.agentStatusFilterSelect.value = '';
+        loadData();
+      });
+      el.activeFiltersContainer.appendChild(pill);
+    }
+
+    // Pill for Agent Autonomy
+    if (state.agentAutonomy) {
+      const pill = createFilterPill(t('filter_autonomy', state.agentAutonomy), () => {
+        state.agentAutonomy = null;
+        if (el.agentAutonomyFilterSelect) el.agentAutonomyFilterSelect.value = '';
+        loadData();
+      });
+      el.activeFiltersContainer.appendChild(pill);
+    }
+
+    // Pill for Agent Runtime
+    if (state.agentRuntime) {
+      const pill = createFilterPill(t('filter_runtime', state.agentRuntime), () => {
+        state.agentRuntime = null;
+        if (el.agentRuntimeFilterSelect) el.agentRuntimeFilterSelect.value = '';
+        loadData();
+      });
+      el.activeFiltersContainer.appendChild(pill);
+    }
+
+    // Pill for Agent Model
+    if (state.agentModel) {
+      const pill = createFilterPill(t('filter_model', state.agentModel), () => {
+        state.agentModel = null;
+        if (el.agentModelFilterSelect) el.agentModelFilterSelect.value = '';
+        loadData();
       });
       el.activeFiltersContainer.appendChild(pill);
     }
@@ -1800,6 +2225,37 @@
       }
     } catch (err) {
       wf.favorite = !nextState;
+      if (starButtonElement) {
+        starButtonElement.classList.toggle('active', !nextState);
+      }
+      showToast(err.message, 'error');
+    }
+  }
+
+  async function toggleAgentFavorite(agent, starButtonElement) {
+    const nextState = !agent.favorite;
+    agent.favorite = nextState;
+
+    if (starButtonElement) {
+      starButtonElement.classList.toggle('active', nextState);
+      const starIcon = starButtonElement.querySelector('.star-icon');
+      if (starIcon) {
+        starIcon.setAttribute('fill', nextState ? 'currentColor' : 'none');
+      }
+    }
+
+    try {
+      await apiFetch(`/api/agents/${agent.id}/favorite`, {
+        method: 'PATCH',
+        body: JSON.stringify({ favorite: nextState }),
+      });
+      updateCounts();
+      showToast(nextState ? t('toast_fav_added') : t('toast_fav_removed'));
+      if (state.currentNav === 'favorites' && !nextState) {
+        loadData();
+      }
+    } catch (err) {
+      agent.favorite = !nextState;
       if (starButtonElement) {
         starButtonElement.classList.toggle('active', !nextState);
       }
@@ -2258,6 +2714,243 @@
 
       el.workflowDetailStepsList.appendChild(card);
     });
+  }
+
+  // --- Agent Detail Dialog ---
+
+  async function openAgentDetailDialog(agentOrId) {
+    let agent = typeof agentOrId === 'string' ? null : agentOrId;
+
+    if (!agent || !agent.instructions) {
+      const id = typeof agentOrId === 'string' ? agentOrId : agentOrId.id;
+      try {
+        const res = await apiFetch(`/api/agents/${id}`);
+        agent = res.data;
+      } catch {
+        showToast('Failed to load agent details', 'error');
+        return;
+      }
+    }
+
+    state.activeDetailAgent = agent;
+
+    el.agentDetailTitle.textContent = agent.title;
+    el.agentDetailRole.textContent = agent.role || '';
+    el.agentDetailFavBtn.classList.toggle('active', Boolean(agent.favorite));
+    const starIcon = el.agentDetailFavBtn.querySelector('.star-icon');
+    if (starIcon) {
+      starIcon.setAttribute('fill', agent.favorite ? 'currentColor' : 'none');
+    }
+
+    // Status badge
+    const status = agent.status || 'Active';
+    el.agentDetailStatus.textContent = status;
+    el.agentDetailStatus.className = `badge badge-status status-${status.toLowerCase()}`;
+
+    // Autonomy badge
+    const autonomy = agent.autonomyLevel || 'Manual';
+    el.agentDetailAutonomy.textContent = autonomy;
+    el.agentDetailAutonomy.className = `badge badge-autonomy autonomy-${autonomy.toLowerCase()}`;
+
+    // Runtime badge
+    if (agent.runtime) {
+      el.agentDetailRuntime.textContent = agent.runtime;
+      el.agentDetailRuntime.classList.remove('hidden');
+    } else {
+      el.agentDetailRuntime.classList.add('hidden');
+    }
+
+    // Model badge
+    if (agent.model) {
+      el.agentDetailModel.textContent = agent.model;
+      el.agentDetailModel.classList.remove('hidden');
+    } else {
+      el.agentDetailModel.classList.add('hidden');
+    }
+
+    el.agentDetailUpdated.textContent = t('updated_at', formatRelativeDate(agent.updatedAt));
+
+    // Goal Box
+    if (agent.goal) {
+      el.agentDetailGoal.textContent = agent.goal;
+      el.agentDetailGoalBox.classList.remove('hidden');
+    } else {
+      el.agentDetailGoalBox.classList.add('hidden');
+    }
+
+    // Description
+    if (agent.description && agent.description !== agent.goal) {
+      el.agentDetailDescription.textContent = agent.description;
+      el.agentDetailDescription.classList.remove('hidden');
+    } else {
+      el.agentDetailDescription.classList.add('hidden');
+    }
+
+    // Instructions
+    el.agentDetailInstructions.textContent = agent.instructions || '';
+
+    // Contract Grid (Expected Input / Expected Output)
+    const hasInput = Boolean(agent.inputDescription);
+    const hasOutput = Boolean(agent.outputDescription);
+    if (hasInput || hasOutput) {
+      el.agentDetailContractGrid.classList.remove('hidden');
+      if (hasInput) {
+        el.agentDetailInput.textContent = agent.inputDescription;
+        el.agentDetailInputCard.classList.remove('hidden');
+      } else {
+        el.agentDetailInputCard.classList.add('hidden');
+      }
+      if (hasOutput) {
+        el.agentDetailOutput.textContent = agent.outputDescription;
+        el.agentDetailOutputCard.classList.remove('hidden');
+      } else {
+        el.agentDetailOutputCard.classList.add('hidden');
+      }
+    } else {
+      el.agentDetailContractGrid.classList.add('hidden');
+    }
+
+    // Linked Resources Section
+    renderAgentDetailLinkedResources(agent);
+
+    // Notes
+    if (agent.notes) {
+      el.agentDetailNotes.textContent = agent.notes;
+      el.agentDetailNotesWrapper.classList.remove('hidden');
+    } else {
+      el.agentDetailNotesWrapper.classList.add('hidden');
+    }
+
+    // Tags
+    el.agentDetailTagsRow.innerHTML = '';
+    const tags = Array.isArray(agent.tags) ? agent.tags : [];
+    if (tags.length > 0) {
+      for (const tag of tags) {
+        const tagSpan = document.createElement('span');
+        tagSpan.className = 'card-tag';
+        tagSpan.textContent = `#${tag}`;
+        tagSpan.addEventListener('click', () => {
+          el.agentDetailDialog.close();
+          state.tag = tag;
+          loadData();
+          renderTagsList();
+        });
+        el.agentDetailTagsRow.appendChild(tagSpan);
+      }
+      el.agentDetailTagsRow.classList.remove('hidden');
+    } else {
+      el.agentDetailTagsRow.classList.add('hidden');
+    }
+
+    // Update URL query param without reload
+    const currentUrl = new URL(window.location);
+    currentUrl.searchParams.set('agent', agent.id);
+    currentUrl.searchParams.delete('tool');
+    currentUrl.searchParams.delete('prompt');
+    currentUrl.searchParams.delete('workflow');
+    window.history.replaceState({}, '', currentUrl);
+
+    el.agentDetailDialog.showModal();
+  }
+
+  function closeAgentDetailDialog() {
+    state.activeDetailAgent = null;
+    el.agentDetailDialog.close();
+
+    const currentUrl = new URL(window.location);
+    currentUrl.searchParams.delete('agent');
+    window.history.replaceState({}, '', currentUrl);
+  }
+
+  function renderAgentDetailLinkedResources(agent) {
+    el.agentDetailLinkedGroups.innerHTML = '';
+    const linked = Array.isArray(agent.linkedResources) ? agent.linkedResources : [];
+
+    if (linked.length === 0) {
+      el.agentDetailLinkedSection.classList.add('hidden');
+      return;
+    }
+
+    el.agentDetailLinkedSection.classList.remove('hidden');
+
+    const groups = {
+      USES: [],
+      FOLLOWS: [],
+      REFERENCES: [],
+      ASSIGNS_TO: [],
+    };
+
+    for (const item of linked) {
+      const rel = item.relationshipType || 'USES';
+      if (groups[rel]) {
+        groups[rel].push(item);
+      } else {
+        groups.USES.push(item);
+      }
+    }
+
+    const relLabels = {
+      USES: t('rel_uses'),
+      FOLLOWS: t('rel_follows'),
+      REFERENCES: t('rel_references'),
+      ASSIGNS_TO: t('rel_assigns_to'),
+    };
+
+    for (const [relKey, items] of Object.entries(groups)) {
+      if (items.length === 0) continue;
+
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'agent-rel-group';
+
+      const groupHeader = document.createElement('div');
+      groupHeader.className = 'agent-rel-header';
+      groupHeader.textContent = relLabels[relKey] || relKey;
+      groupDiv.appendChild(groupHeader);
+
+      const chipsWrap = document.createElement('div');
+      chipsWrap.className = 'step-linked-chips';
+
+      for (const lr of items) {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'linked-chip';
+
+        const type = lr.targetResourceType || 'tool';
+        const typeBadge = document.createElement('span');
+        typeBadge.className = `badge badge-kind kind-${type}`;
+        typeBadge.textContent = type === 'prompt' ? t('badge_prompt') : (type === 'workflow' ? t('badge_workflow') : (type === 'agent' ? t('badge_agent') : (type === 'website' ? t('badge_website') : t('badge_tool'))));
+
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'chip-title';
+        nameSpan.textContent = lr.targetResourceTitle || lr.targetResourceId;
+
+        const arrowIcon = document.createElement('span');
+        arrowIcon.className = 'chip-arrow';
+        arrowIcon.innerHTML = '&nearr;';
+
+        chip.appendChild(typeBadge);
+        chip.appendChild(nameSpan);
+        chip.appendChild(arrowIcon);
+
+        chip.addEventListener('click', () => {
+          el.agentDetailDialog.close();
+          if (lr.targetResourceType === 'prompt') {
+            openPromptDetailDialog(lr.targetResourceId);
+          } else if (lr.targetResourceType === 'workflow') {
+            openWorkflowDetailDialog(lr.targetResourceId);
+          } else if (lr.targetResourceType === 'agent') {
+            openAgentDetailDialog(lr.targetResourceId);
+          } else {
+            openToolDetailDialog(lr.targetResourceId);
+          }
+        });
+
+        chipsWrap.appendChild(chip);
+      }
+
+      groupDiv.appendChild(chipsWrap);
+      el.agentDetailLinkedGroups.appendChild(groupDiv);
+    }
   }
 
   // --- Tool Form Dialog (Create / Edit) ---
@@ -2853,10 +3546,265 @@
     }
   }
 
+  // --- Agent Form Dialog (Create / Edit) ---
+
+  function openAgentFormDialog(agentToEdit = null) {
+    if (agentToEdit) {
+      el.agentFormTitle.textContent = t('modal_edit_agent');
+      el.inputAgentId.value = agentToEdit.id;
+      el.inputAgentTitle.value = agentToEdit.title || '';
+      el.inputAgentRole.value = agentToEdit.role || '';
+      el.inputAgentGoal.value = agentToEdit.goal || '';
+      el.inputAgentDescription.value = agentToEdit.description || '';
+      el.inputAgentInstructions.value = agentToEdit.instructions || '';
+      el.inputAgentRuntime.value = agentToEdit.runtime || '';
+      el.inputAgentModel.value = agentToEdit.model || '';
+      el.inputAgentStatus.value = agentToEdit.status || 'Active';
+      el.inputAgentAutonomy.value = agentToEdit.autonomyLevel || 'Manual';
+      el.inputAgentInputDesc.value = agentToEdit.inputDescription || '';
+      el.inputAgentOutputDesc.value = agentToEdit.outputDescription || '';
+      el.inputAgentFavorite.checked = Boolean(agentToEdit.favorite);
+      el.inputAgentTags.value = Array.isArray(agentToEdit.tags) ? agentToEdit.tags.join(', ') : '';
+      el.inputAgentNotes.value = agentToEdit.notes || '';
+
+      state.currentEditingAgentResources = Array.isArray(agentToEdit.linkedResources)
+        ? JSON.parse(JSON.stringify(agentToEdit.linkedResources))
+        : [];
+      el.agentFormSubmitBtn.querySelector('span').textContent = t('btn_save_changes');
+    } else {
+      el.agentFormTitle.textContent = t('modal_new_agent');
+      el.agentForm.reset();
+      el.inputAgentId.value = '';
+      el.inputAgentStatus.value = 'Active';
+      el.inputAgentAutonomy.value = 'Manual';
+      el.inputAgentFavorite.checked = state.currentNav === 'favorites';
+      if (state.tag) el.inputAgentTags.value = state.tag;
+      state.currentEditingAgentResources = [];
+      el.agentFormSubmitBtn.querySelector('span').textContent = t('btn_save_agent');
+    }
+
+    updateAgentInstructionsCounter();
+    renderAgentFormResources();
+    el.agentFormDialog.showModal();
+    setTimeout(() => el.inputAgentTitle.focus(), 50);
+  }
+
+  function closeAgentFormDialog() {
+    el.agentFormDialog.close();
+  }
+
+  function updateAgentInstructionsCounter() {
+    const len = el.inputAgentInstructions.value.length;
+    el.agentInstructionsCounter.textContent = `${len} chars`;
+  }
+
+  function renderAgentFormResources() {
+    el.agentFormResourcesList.innerHTML = '';
+
+    if (state.currentEditingAgentResources.length === 0) {
+      const hint = document.createElement('div');
+      hint.className = 'empty-hint';
+      hint.style.padding = '0.75rem';
+      hint.textContent = 'No resources linked yet. Click "+ Link Resource" to attach prompts, tools, websites, or workflows.';
+      el.agentFormResourcesList.appendChild(hint);
+      return;
+    }
+
+    state.currentEditingAgentResources.forEach((item, idx) => {
+      const row = document.createElement('div');
+      row.className = 'agent-resource-item-row';
+
+      const left = document.createElement('div');
+      left.className = 'item-row-left';
+
+      const kindBadge = document.createElement('span');
+      const type = item.targetResourceType || 'tool';
+      kindBadge.className = `badge badge-kind kind-${type}`;
+      kindBadge.textContent = type === 'prompt' ? t('badge_prompt') : (type === 'workflow' ? t('badge_workflow') : (type === 'agent' ? t('badge_agent') : (type === 'website' ? t('badge_website') : t('badge_tool'))));
+
+      const titleSpan = document.createElement('span');
+      titleSpan.className = 'item-row-title';
+      titleSpan.textContent = item.targetResourceTitle || item.targetResourceId;
+
+      left.appendChild(kindBadge);
+      left.appendChild(titleSpan);
+
+      const right = document.createElement('div');
+      right.className = 'item-row-right';
+
+      const relSelect = document.createElement('select');
+      relSelect.className = 'item-rel-select';
+      relSelect.innerHTML = `
+        <option value="USES">${t('rel_uses')}</option>
+        <option value="FOLLOWS">${t('rel_follows')}</option>
+        <option value="REFERENCES">${t('rel_references')}</option>
+        <option value="ASSIGNS_TO">${t('rel_assigns_to')}</option>
+      `;
+      relSelect.value = item.relationshipType || 'USES';
+      relSelect.addEventListener('change', (e) => {
+        item.relationshipType = e.target.value;
+      });
+
+      const delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'btn btn-icon btn-danger btn-sm';
+      delBtn.title = 'Remove';
+      delBtn.textContent = '✕';
+      delBtn.addEventListener('click', () => {
+        state.currentEditingAgentResources.splice(idx, 1);
+        renderAgentFormResources();
+      });
+
+      right.appendChild(relSelect);
+      right.appendChild(delBtn);
+
+      row.appendChild(left);
+      row.appendChild(right);
+      el.agentFormResourcesList.appendChild(row);
+    });
+  }
+
+  async function handleAgentFormSubmit(e) {
+    if (e) e.preventDefault();
+
+    const title = el.inputAgentTitle.value.trim();
+    const role = el.inputAgentRole.value.trim();
+    const instructions = el.inputAgentInstructions.value; // preserves exact whitespace
+    const goal = el.inputAgentGoal.value.trim() || null;
+    const description = el.inputAgentDescription.value.trim() || null;
+    const runtime = el.inputAgentRuntime.value.trim() || null;
+    const model = el.inputAgentModel.value.trim() || null;
+    const status = el.inputAgentStatus.value;
+    const autonomyLevel = el.inputAgentAutonomy.value;
+    const inputDescription = el.inputAgentInputDesc.value.trim() || null;
+    const outputDescription = el.inputAgentOutputDesc.value.trim() || null;
+    const favorite = el.inputAgentFavorite.checked;
+    const notes = el.inputAgentNotes.value.trim() || null;
+    const tags = el.inputAgentTags.value
+      .split(',')
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+
+    if (!title) {
+      showToast(t('err_title_required'), 'error');
+      el.inputAgentTitle.focus();
+      return;
+    }
+
+    if (!role) {
+      showToast('Role is required', 'error');
+      el.inputAgentRole.focus();
+      return;
+    }
+
+    if (!instructions || !instructions.trim()) {
+      showToast('Instructions are required', 'error');
+      el.inputAgentInstructions.focus();
+      return;
+    }
+
+    const agentId = el.inputAgentId.value;
+    const isEdit = Boolean(agentId);
+
+    el.agentFormSubmitBtn.disabled = true;
+
+    try {
+      const payload = {
+        title,
+        role,
+        instructions,
+        goal,
+        description,
+        runtime,
+        model,
+        status,
+        autonomyLevel,
+        inputDescription,
+        outputDescription,
+        favorite,
+        notes,
+        tags,
+        linkedResources: state.currentEditingAgentResources.map((r) => ({
+          targetResourceId: r.targetResourceId,
+          relationshipType: r.relationshipType || 'USES',
+        })),
+      };
+
+      let saved;
+      if (isEdit) {
+        const res = await apiFetch(`/api/agents/${agentId}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload),
+        });
+        saved = res.data;
+        showToast('Agent updated successfully');
+      } else {
+        const res = await apiFetch('/api/agents', {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        });
+        saved = res.data;
+        showToast('Agent saved successfully');
+      }
+
+      closeAgentFormDialog();
+      await loadData();
+      await loadTags();
+      await loadAgentMetadataOptions();
+
+      if (isEdit && state.activeDetailAgent?.id === agentId) {
+        openAgentDetailDialog(saved);
+      }
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      el.agentFormSubmitBtn.disabled = false;
+    }
+  }
+
+  async function duplicateAgent(agent) {
+    try {
+      const res = await apiFetch(`/api/agents/${agent.id}/duplicate`, { method: 'POST' });
+      showToast(t('toast_duplicated', agent.title));
+      await loadData();
+      await loadTags();
+      await loadAgentMetadataOptions();
+      if (res.data) {
+        openAgentDetailDialog(res.data);
+      }
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
+
+  async function copyFullAgent(agent, btn) {
+    try {
+      const res = await apiFetch(`/api/agents/${agent.id}/full-text`);
+      const fullText = res.data?.fullText;
+      if (fullText) {
+        copyToClipboard(fullText, btn);
+      } else {
+        throw new Error('Full text unavailable');
+      }
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
+
   // --- Resource Picker Dialog ---
 
-  async function openResourcePicker(stepIndex) {
-    state.activeStepIndexForPicker = stepIndex;
+  async function openResourcePicker(modeOrIndex, stepIndex = null) {
+    if (typeof modeOrIndex === 'number') {
+      state.pickerMode = 'workflow_step';
+      state.activeStepIndexForPicker = modeOrIndex;
+    } else if (modeOrIndex === 'agent_resource') {
+      state.pickerMode = 'agent_resource';
+      state.activeStepIndexForPicker = null;
+    } else {
+      state.pickerMode = 'workflow_step';
+      state.activeStepIndexForPicker = stepIndex;
+    }
+
     el.resourcePickerSearch.value = '';
     el.resourcePickerDialog.showModal();
     setTimeout(() => el.resourcePickerSearch.focus(), 50);
@@ -2876,7 +3824,16 @@
       params.set('limit', '40');
 
       const res = await apiFetch(`/api/resources?${params.toString()}`);
-      const items = (res.data || []).filter((item) => item.type !== 'workflow'); // cannot link workflow to itself
+      let items = res.data || [];
+
+      if (state.pickerMode === 'agent_resource') {
+        const currentAgentId = el.inputAgentId?.value;
+        if (currentAgentId) {
+          items = items.filter((item) => item.id !== currentAgentId);
+        }
+      } else {
+        items = items.filter((item) => item.type !== 'workflow');
+      }
 
       el.resourcePickerResults.innerHTML = '';
       if (items.length === 0) {
@@ -2884,8 +3841,13 @@
         return;
       }
 
-      const activeStep = state.currentEditingWorkflowSteps[state.activeStepIndexForPicker];
-      const linkedIds = new Set((activeStep?.linkedResources || []).map((lr) => lr.targetResourceId));
+      let linkedIds = new Set();
+      if (state.pickerMode === 'agent_resource') {
+        linkedIds = new Set((state.currentEditingAgentResources || []).map((r) => r.targetResourceId));
+      } else {
+        const activeStep = state.currentEditingWorkflowSteps[state.activeStepIndexForPicker];
+        linkedIds = new Set((activeStep?.linkedResources || []).map((lr) => lr.targetResourceId));
+      }
 
       items.forEach((item) => {
         const row = document.createElement('div');
@@ -2895,8 +3857,9 @@
         left.className = 'picker-row-left';
 
         const kindBadge = document.createElement('span');
-        kindBadge.className = `badge badge-kind kind-${item.type || 'tool'}`;
-        kindBadge.textContent = item.type === 'prompt' ? t('badge_prompt') : (item.type === 'website' ? t('badge_website') : t('badge_tool'));
+        const type = item.type || 'tool';
+        kindBadge.className = `badge badge-kind kind-${type}`;
+        kindBadge.textContent = type === 'prompt' ? t('badge_prompt') : (type === 'workflow' ? t('badge_workflow') : (type === 'agent' ? t('badge_agent') : (type === 'website' ? t('badge_website') : t('badge_tool'))));
 
         const titleSpan = document.createElement('span');
         titleSpan.className = 'picker-resource-title';
@@ -2913,14 +3876,29 @@
         actionBtn.disabled = isAlreadyLinked;
 
         actionBtn.addEventListener('click', () => {
-          if (!activeStep.linkedResources) activeStep.linkedResources = [];
-          activeStep.linkedResources.push({
-            targetResourceId: item.id,
-            targetResourceType: item.type,
-            targetResourceTitle: item.title,
-          });
-          closeResourcePicker();
-          renderWorkflowFormSteps();
+          if (state.pickerMode === 'agent_resource') {
+            if (!state.currentEditingAgentResources) state.currentEditingAgentResources = [];
+            state.currentEditingAgentResources.push({
+              targetResourceId: item.id,
+              targetResourceType: item.type,
+              targetResourceTitle: item.title,
+              relationshipType: 'USES',
+            });
+            closeResourcePicker();
+            renderAgentFormResources();
+          } else {
+            const activeStep = state.currentEditingWorkflowSteps[state.activeStepIndexForPicker];
+            if (activeStep) {
+              if (!activeStep.linkedResources) activeStep.linkedResources = [];
+              activeStep.linkedResources.push({
+                targetResourceId: item.id,
+                targetResourceType: item.type,
+                targetResourceTitle: item.title,
+              });
+            }
+            closeResourcePicker();
+            renderWorkflowFormSteps();
+          }
         });
 
         row.appendChild(left);
@@ -2982,7 +3960,7 @@
     state.itemToDelete = { id: item.id, title: item.title, type };
     el.deletePromptName.textContent = `"${item.title}"`;
     el.deleteDialogTitle.textContent =
-      type === 'prompt' ? t('delete_prompt_title') : (type === 'workflow' ? t('delete_workflow_title') : t('delete_resource_title'));
+      type === 'prompt' ? t('delete_prompt_title') : (type === 'workflow' ? t('delete_workflow_title') : (type === 'agent' ? 'Delete Agent' : t('delete_resource_title')));
     el.deleteConfirmPromptMsg.textContent =
       state.lang === 'vi' ? 'Bạn có chắc chắn muốn xóa vĩnh viễn' : 'Are you sure you want to permanently delete';
     el.deleteDialog.showModal();
@@ -2998,6 +3976,7 @@
       let endpoint = `/api/tools/${item.id}`;
       if (item.type === 'prompt') endpoint = `/api/prompts/${item.id}`;
       else if (item.type === 'workflow') endpoint = `/api/workflows/${item.id}`;
+      else if (item.type === 'agent') endpoint = `/api/agents/${item.id}`;
 
       await apiFetch(endpoint, { method: 'DELETE' });
       showToast(t('toast_deleted', item.title));
@@ -3012,10 +3991,14 @@
       if (state.activeDetailWorkflow?.id === item.id) {
         closeWorkflowDetailDialog();
       }
+      if (state.activeDetailAgent?.id === item.id) {
+        closeAgentDetailDialog();
+      }
 
       await loadData();
       await loadTags();
       if (item.type === 'prompt') await loadModels();
+      else if (item.type === 'agent') await loadAgentMetadataOptions();
       else if (item.type !== 'workflow') await loadToolMetadataOptions();
     } catch (err) {
       showToast(err.message, 'error');
@@ -3067,6 +4050,14 @@
       }
     });
 
+    if (el.menuAddAgentBtn) {
+      el.menuAddAgentBtn.addEventListener('click', () => {
+        el.addDropdownMenu.classList.add('hidden');
+        el.addBtn.closest('.dropdown-wrapper')?.classList.remove('open');
+        openAgentFormDialog();
+      });
+    }
+
     if (el.menuAddWorkflowBtn) {
       el.menuAddWorkflowBtn.addEventListener('click', () => {
         el.addDropdownMenu.classList.add('hidden');
@@ -3088,6 +4079,7 @@
     });
 
     // Empty state buttons
+    if (el.emptyAddAgentBtn) el.emptyAddAgentBtn.addEventListener('click', () => openAgentFormDialog());
     if (el.emptyAddWorkflowBtn) el.emptyAddWorkflowBtn.addEventListener('click', () => openWorkflowFormDialog());
     el.emptyAddToolBtn.addEventListener('click', () => openToolFormDialog());
     el.emptyAddPromptBtn.addEventListener('click', () => openPromptFormDialog());
@@ -3115,7 +4107,7 @@
     el.viewListBtn.addEventListener('click', () => setViewMode('list'));
     el.viewGridBtn.addEventListener('click', () => setViewMode('grid'));
 
-    // Navigation buttons (All Resources, Workflows, Tools, Prompts, Favorites)
+    // Navigation buttons (All Resources, Agents, Workflows, Tools, Prompts, Favorites)
     document.querySelectorAll('[data-filter-view]').forEach((btn) => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('[data-filter-view]').forEach((b) => b.classList.remove('active'));
@@ -3131,19 +4123,28 @@
         }
 
         // Sidebar filters visibility toggle
-        if (view === 'workflows') {
+        if (view === 'agents') {
+          if (el.sidebarAgentsFilters) el.sidebarAgentsFilters.style.display = 'block';
+          if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'none';
+          el.sidebarToolsFilters.style.display = 'none';
+          el.sidebarPromptsFilters.style.display = 'none';
+        } else if (view === 'workflows') {
+          if (el.sidebarAgentsFilters) el.sidebarAgentsFilters.style.display = 'none';
           if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'block';
           el.sidebarToolsFilters.style.display = 'none';
           el.sidebarPromptsFilters.style.display = 'none';
         } else if (view === 'tools') {
+          if (el.sidebarAgentsFilters) el.sidebarAgentsFilters.style.display = 'none';
           if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'none';
           el.sidebarToolsFilters.style.display = 'block';
           el.sidebarPromptsFilters.style.display = 'none';
         } else if (view === 'prompts') {
+          if (el.sidebarAgentsFilters) el.sidebarAgentsFilters.style.display = 'none';
           if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'none';
           el.sidebarToolsFilters.style.display = 'none';
           el.sidebarPromptsFilters.style.display = 'block';
         } else {
+          if (el.sidebarAgentsFilters) el.sidebarAgentsFilters.style.display = 'block';
           if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'block';
           el.sidebarToolsFilters.style.display = 'block';
           el.sidebarPromptsFilters.style.display = 'block';
@@ -3152,6 +4153,35 @@
         loadData();
       });
     });
+
+    // Agent filters in sidebar
+    if (el.agentStatusFilterSelect) {
+      el.agentStatusFilterSelect.addEventListener('change', (e) => {
+        state.agentStatus = e.target.value || null;
+        loadData();
+      });
+    }
+
+    if (el.agentAutonomyFilterSelect) {
+      el.agentAutonomyFilterSelect.addEventListener('change', (e) => {
+        state.agentAutonomy = e.target.value || null;
+        loadData();
+      });
+    }
+
+    if (el.agentRuntimeFilterSelect) {
+      el.agentRuntimeFilterSelect.addEventListener('change', (e) => {
+        state.agentRuntime = e.target.value || null;
+        loadData();
+      });
+    }
+
+    if (el.agentModelFilterSelect) {
+      el.agentModelFilterSelect.addEventListener('change', (e) => {
+        state.agentModel = e.target.value || null;
+        loadData();
+      });
+    }
 
     // Workflow filters in sidebar
     if (el.workflowStatusFilterSelect) {
@@ -3235,6 +4265,60 @@
       }, 200);
       el.resourcePickerSearch.addEventListener('input', (e) => {
         handlePickerSearchDebounced(e.target.value);
+      });
+    }
+
+    // Agent Form Dialog events
+    if (el.agentForm) el.agentForm.addEventListener('submit', handleAgentFormSubmit);
+    if (el.agentFormCloseBtn) el.agentFormCloseBtn.addEventListener('click', closeAgentFormDialog);
+    if (el.agentFormCancelBtn) el.agentFormCancelBtn.addEventListener('click', closeAgentFormDialog);
+    if (el.inputAgentInstructions) el.inputAgentInstructions.addEventListener('input', updateAgentInstructionsCounter);
+    if (el.agentAddResourceBtn) el.agentAddResourceBtn.addEventListener('click', () => openResourcePicker('agent_resource'));
+
+    // Agent Detail Dialog events
+    if (el.agentDetailCloseBtn) el.agentDetailCloseBtn.addEventListener('click', closeAgentDetailDialog);
+    if (el.agentDetailFavBtn) {
+      el.agentDetailFavBtn.addEventListener('click', () => {
+        if (state.activeDetailAgent) {
+          toggleAgentFavorite(state.activeDetailAgent, el.agentDetailFavBtn);
+        }
+      });
+    }
+    if (el.agentDetailCopyInstructionsBtn) {
+      el.agentDetailCopyInstructionsBtn.addEventListener('click', () => {
+        if (state.activeDetailAgent) {
+          copyToClipboard(state.activeDetailAgent.instructions || '', el.agentDetailCopyInstructionsBtn);
+        }
+      });
+    }
+    if (el.agentDetailCopyFullBtn) {
+      el.agentDetailCopyFullBtn.addEventListener('click', () => {
+        if (state.activeDetailAgent) {
+          copyFullAgent(state.activeDetailAgent, el.agentDetailCopyFullBtn);
+        }
+      });
+    }
+    if (el.agentDetailEditBtn) {
+      el.agentDetailEditBtn.addEventListener('click', () => {
+        if (state.activeDetailAgent) {
+          const a = state.activeDetailAgent;
+          closeAgentDetailDialog();
+          openAgentFormDialog(a);
+        }
+      });
+    }
+    if (el.agentDetailDuplicateBtn) {
+      el.agentDetailDuplicateBtn.addEventListener('click', () => {
+        if (state.activeDetailAgent) {
+          duplicateAgent(state.activeDetailAgent);
+        }
+      });
+    }
+    if (el.agentDetailDeleteBtn) {
+      el.agentDetailDeleteBtn.addEventListener('click', () => {
+        if (state.activeDetailAgent) {
+          openDeleteDialog(state.activeDetailAgent, 'agent');
+        }
       });
     }
 
@@ -3370,6 +4454,8 @@
 
     // Close dialogs on outside click
     [
+      el.agentFormDialog,
+      el.agentDetailDialog,
       el.workflowFormDialog,
       el.workflowDetailDialog,
       el.resourcePickerDialog,
@@ -3388,6 +4474,7 @@
           e.clientX <= rect.left + rect.width;
         if (!isInDialog) {
           dialog.close();
+          if (dialog === el.agentDetailDialog) closeAgentDetailDialog();
           if (dialog === el.workflowDetailDialog) closeWorkflowDetailDialog();
           if (dialog === el.promptDetailDialog) closePromptDetailDialog();
           if (dialog === el.toolDetailDialog) closeToolDetailDialog();
@@ -3413,6 +4500,14 @@
         }
         if (el.resourcePickerDialog?.open) {
           closeResourcePicker();
+          return;
+        }
+        if (el.agentFormDialog?.open) {
+          closeAgentFormDialog();
+          return;
+        }
+        if (el.agentDetailDialog?.open) {
+          closeAgentDetailDialog();
           return;
         }
         if (el.workflowFormDialog?.open) {
@@ -3450,6 +4545,11 @@
 
       // Cmd/Ctrl + Enter in Form Dialog -> Save
       if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        if (el.agentFormDialog?.open) {
+          e.preventDefault();
+          handleAgentFormSubmit();
+          return;
+        }
         if (el.workflowFormDialog?.open) {
           e.preventDefault();
           handleWorkflowFormSubmit();
@@ -3476,6 +4576,15 @@
 
   async function checkUrlNavigation() {
     const urlParams = new URLSearchParams(window.location.search);
+
+    const agentId = urlParams.get('agent');
+    const agentMatch = window.location.pathname.match(/^\/agent\/([^/]+)$/);
+    const targetAgentId = agentId || (agentMatch ? agentMatch[1] : null);
+
+    if (targetAgentId) {
+      await openAgentDetailDialog(targetAgentId);
+      return;
+    }
 
     const workflowId = urlParams.get('workflow');
     const workflowMatch = window.location.pathname.match(/^\/workflow\/([^/]+)$/);
@@ -3516,7 +4625,13 @@
       el.searchKbd.textContent = '⌘K';
     }
 
-    await Promise.all([loadData(), loadTags(), loadModels(), loadToolMetadataOptions()]);
+    await Promise.all([
+      loadData(),
+      loadTags(),
+      loadModels(),
+      loadToolMetadataOptions(),
+      loadAgentMetadataOptions(),
+    ]);
     await checkUrlNavigation();
   }
 
