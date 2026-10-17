@@ -17,8 +17,8 @@ export default {
         return assetResponse;
       }
 
-      // Single-page navigation fallback for /prompt/:id and /tool/:id routes
-      if (url.pathname.startsWith('/prompt/') || url.pathname.startsWith('/tool/')) {
+      // Single-page navigation fallback for /prompt/:id, /tool/:id, and /workflow/:id routes
+      if (url.pathname.startsWith('/prompt/') || url.pathname.startsWith('/tool/') || url.pathname.startsWith('/workflow/')) {
         const indexRequest = new Request(new URL('/', request.url).toString(), request);
         return env.ASSETS.fetch(indexRequest);
       }

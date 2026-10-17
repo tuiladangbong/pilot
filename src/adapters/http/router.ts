@@ -19,6 +19,15 @@ import { DuplicateToolUseCase } from '../../modules/tools/application/DuplicateT
 import { ToggleToolFavoriteUseCase } from '../../modules/tools/application/ToggleToolFavoriteUseCase';
 import { FetchToolMetadataUseCase } from '../../modules/tools/application/FetchToolMetadataUseCase';
 import { ToolKind, ToolPricing } from '../../modules/tools/domain/Tool';
+import { D1WorkflowRepository } from '../persistence/d1/D1WorkflowRepository';
+import { CreateWorkflowUseCase } from '../../modules/workflows/application/CreateWorkflowUseCase';
+import { GetWorkflowUseCase } from '../../modules/workflows/application/GetWorkflowUseCase';
+import { ListWorkflowsUseCase } from '../../modules/workflows/application/ListWorkflowsUseCase';
+import { UpdateWorkflowUseCase } from '../../modules/workflows/application/UpdateWorkflowUseCase';
+import { DeleteWorkflowUseCase } from '../../modules/workflows/application/DeleteWorkflowUseCase';
+import { DuplicateWorkflowUseCase } from '../../modules/workflows/application/DuplicateWorkflowUseCase';
+import { ToggleWorkflowFavoriteUseCase } from '../../modules/workflows/application/ToggleWorkflowFavoriteUseCase';
+import { WorkflowDifficulty, WorkflowStatus } from '../../modules/workflows/domain/Workflow';
 import { toResourceSummaryDto } from '../../core/application/ResourceDto';
 
 function json(data: unknown, status = 200): Response {
@@ -64,12 +73,13 @@ export async function handleRequest(request: Request, env: Env): Promise<Respons
       application: 'Pilot',
       architecture: 'modular-monolith',
       style: 'hexagonal',
-      modules: ['prompts', 'tools'],
+      modules: ['prompts', 'tools', 'workflows'],
     });
   }
 
   const promptRepo = new D1PromptRepository(env.DB);
   const toolRepo = new D1ToolRepository(env.DB);
+  const workflowRepo = new D1WorkflowRepository(env.DB);
   const resourceRepo = new D1ResourceRepository(env.DB);
 
   // GET /api/resources (Generic resource listing across modules)
@@ -616,8 +626,245 @@ export async function handleRequest(request: Request, env: Env): Promise<Respons
     return jsonError('METHOD_NOT_ALLOWED', `Method ${method} not allowed on /api/prompts`, 405);
   }
 
-  // Fallback for root / prompt / tool routes if not intercepted by static assets
-  if (pathname === '/' || pathname.startsWith('/prompt/') || pathname.startsWith('/tool/')) {
+  // --- Workflows API ---
+
+  function mapRequestWorkflowSteps(steps: any) {
+    if (!Array.isArray(steps)) return [];
+    return steps.map((s: any, idx: number) => {
+      const rawInstruction = s.instruction ?? s.instructions ?? '';
+      const instruction =
+        typeof rawInstruction === 'string' && rawInstruction.trim().length > 0
+          ? rawInstruction.trim()
+          : (typeof s.title === 'string' && s.title.trim().length > 0 ? s.title.trim() : `Step ${idx + 1}`);
+
+      const linkedResourceIds: string[] = [];
+      if (Array.isArray(s.linkedResources)) {
+        for (const lr of s.linkedResources) {
+          const id = lr?.targetResourceId || lr?.resourceId || lr?.id || (typeof lr === 'string' ? lr : null);
+          if (id && typeof id === 'string' && id.trim().length > 0) linkedResourceIds.push(id.trim());
+        }
+      } else if (Array.isArray(s.linkedResourceIds)) {
+        for (const id of s.linkedResourceIds) {
+          if (id && typeof id === 'string' && id.trim().length > 0) linkedResourceIds.push(id.trim());
+        }
+      }
+
+      return {
+        id: s.id,
+        title: typeof s.title === 'string' && s.title.trim().length > 0 ? s.title.trim() : `Step ${idx + 1}`,
+        instruction,
+        instructions: instruction,
+        notes: typeof s.notes === 'string' ? s.notes.trim() : null,
+        optional: Boolean(s.optional),
+        position: typeof s.position === 'number' ? s.position : (typeof s.stepOrder === 'number' ? s.stepOrder : idx + 1),
+        linkedResourceIds,
+      };
+    });
+  }
+
+  // POST /api/workflows/:id/duplicate
+  const workflowDupMatch = pathname.match(/^\/api\/workflows\/([^/]+)\/duplicate$/);
+  if (workflowDupMatch && method === 'POST') {
+    const id = decodeURIComponent(workflowDupMatch[1]);
+    try {
+      const useCase = new DuplicateWorkflowUseCase(workflowRepo);
+      const duplicate = await useCase.execute(id);
+      if (!duplicate) {
+        return jsonError('NOT_FOUND', `Workflow with id "${id}" not found`, 404);
+      }
+      return json({ ok: true, data: duplicate }, 201);
+    } catch (err: any) {
+      return jsonError('DUPLICATION_ERROR', err.message ?? 'Failed to duplicate workflow', 500);
+    }
+  }
+
+  // PATCH /api/workflows/:id/favorite or POST /api/workflows/:id/favorite
+  const workflowFavMatch = pathname.match(/^\/api\/workflows\/([^/]+)\/favorite$/);
+  if (workflowFavMatch && (method === 'PATCH' || method === 'POST')) {
+    const id = decodeURIComponent(workflowFavMatch[1]);
+    let explicitFavorite: boolean | undefined;
+
+    try {
+      const body = await request.json().catch(() => null);
+      if (body && typeof (body as any).favorite === 'boolean') {
+        explicitFavorite = (body as any).favorite;
+      }
+    } catch {
+      // Optional body
+    }
+
+    try {
+      const useCase = new ToggleWorkflowFavoriteUseCase(workflowRepo);
+      const result = await useCase.execute(id, explicitFavorite);
+      return json({ ok: true, data: result });
+    } catch (err: any) {
+      if (err.message?.includes('not found')) {
+        return jsonError('NOT_FOUND', err.message, 404);
+      }
+      return jsonError('FAVORITE_ERROR', err.message ?? 'Failed to toggle favorite', 500);
+    }
+  }
+
+  // GET /api/workflows/:id, PUT /api/workflows/:id, DELETE /api/workflows/:id
+  const workflowIdMatch = pathname.match(/^\/api\/workflows\/([^/]+)$/);
+  if (workflowIdMatch) {
+    const id = decodeURIComponent(workflowIdMatch[1]);
+
+    if (method === 'GET') {
+      const useCase = new GetWorkflowUseCase(workflowRepo);
+      const workflow = await useCase.execute(id);
+      if (!workflow) {
+        return jsonError('NOT_FOUND', `Workflow with id "${id}" not found`, 404);
+      }
+      return json({ ok: true, data: workflow });
+    }
+
+    if (method === 'PUT') {
+      let body: any;
+      try {
+        body = await request.json();
+      } catch {
+        return jsonError('INVALID_JSON', 'Request body must be valid JSON', 400);
+      }
+
+      if (!body || typeof body !== 'object') {
+        return jsonError('VALIDATION_ERROR', 'Request body must be an object', 400);
+      }
+
+      try {
+        const useCase = new UpdateWorkflowUseCase(workflowRepo);
+        const updated = await useCase.execute(id, {
+          title: body.title,
+          description: body.description,
+          purpose: body.purpose,
+          status: body.status,
+          difficulty: body.difficulty,
+          estimatedTime: body.estimatedTime,
+          notes: body.notes,
+          favorite: body.favorite,
+          tags: body.tags,
+          steps: mapRequestWorkflowSteps(body.steps),
+          linkedResourceIds: body.linkedResourceIds,
+        });
+
+        if (!updated) {
+          return jsonError('NOT_FOUND', `Workflow with id "${id}" not found`, 404);
+        }
+
+        return json({ ok: true, data: updated });
+      } catch (err: any) {
+        return jsonError('VALIDATION_ERROR', err.message ?? 'Failed to update workflow', 400);
+      }
+    }
+
+    if (method === 'DELETE') {
+      try {
+        const useCase = new DeleteWorkflowUseCase(workflowRepo);
+        const deleted = await useCase.execute(id);
+        return json({ ok: true, data: { id, deleted } });
+      } catch (err: any) {
+        return jsonError('DELETE_ERROR', err.message ?? 'Failed to delete workflow', 500);
+      }
+    }
+
+    return jsonError('METHOD_NOT_ALLOWED', `Method ${method} not allowed on /api/workflows/:id`, 405);
+  }
+
+  // /api/workflows (Collection level)
+  if (pathname === '/api/workflows') {
+    if (method === 'GET') {
+      const q = url.searchParams.get('q') ?? undefined;
+      const status = (url.searchParams.get('status') as WorkflowStatus) ?? undefined;
+      const difficulty = (url.searchParams.get('difficulty') as WorkflowDifficulty) ?? undefined;
+      const tag = url.searchParams.get('tag') ?? undefined;
+      const favoriteParam = url.searchParams.get('favorite');
+      const favorite = favoriteParam !== null ? favoriteParam === 'true' || favoriteParam === '1' : undefined;
+
+      const sortParam = url.searchParams.get('sort');
+      let sort: 'updated_at' | 'created_at' | 'title' = 'updated_at';
+      if (sortParam === 'created_at' || sortParam === 'title') {
+        sort = sortParam;
+      }
+
+      const orderParam = url.searchParams.get('order')?.toLowerCase();
+      const order: 'asc' | 'desc' = orderParam === 'asc' ? 'asc' : 'desc';
+
+      const limit = parseInt(url.searchParams.get('limit') ?? '50', 10);
+      const offset = parseInt(url.searchParams.get('offset') ?? '0', 10);
+
+      const useCase = new ListWorkflowsUseCase(workflowRepo);
+      const result = await useCase.execute({
+        q,
+        status,
+        difficulty,
+        tag,
+        favorite,
+        sort,
+        order,
+        limit,
+        offset,
+      });
+
+      return json({
+        ok: true,
+        data: result.workflows,
+        tags: result.tags,
+        meta: {
+          total: result.total,
+          limit,
+          offset,
+        },
+      });
+    }
+
+    if (method === 'POST') {
+      let body: any;
+      try {
+        body = await request.json();
+      } catch {
+        return jsonError('INVALID_JSON', 'Request body must be valid JSON', 400);
+      }
+
+      if (!body || typeof body !== 'object') {
+        return jsonError('VALIDATION_ERROR', 'Request body must be an object', 400);
+      }
+
+      if (!body.title || typeof body.title !== 'string' || body.title.trim() === '') {
+        return jsonError('VALIDATION_ERROR', 'Title is required', 400);
+      }
+
+      try {
+        const useCase = new CreateWorkflowUseCase(workflowRepo);
+        const created = await useCase.execute({
+          id: body.id,
+          title: body.title,
+          description: body.description,
+          purpose: body.purpose,
+          status: body.status,
+          difficulty: body.difficulty,
+          estimatedTime: body.estimatedTime,
+          notes: body.notes,
+          favorite: Boolean(body.favorite),
+          tags: Array.isArray(body.tags) ? body.tags : [],
+          steps: mapRequestWorkflowSteps(body.steps),
+          linkedResourceIds: Array.isArray(body.linkedResourceIds) ? body.linkedResourceIds : [],
+        });
+        return json({ ok: true, data: created }, 201);
+      } catch (err: any) {
+        return jsonError('CREATION_ERROR', err.message ?? 'Failed to create workflow', 400);
+      }
+    }
+
+    return jsonError('METHOD_NOT_ALLOWED', `Method ${method} not allowed on /api/workflows`, 405);
+  }
+
+  // Fallback for root / prompt / tool / workflow routes if not intercepted by static assets
+  if (
+    pathname === '/' ||
+    pathname.startsWith('/prompt/') ||
+    pathname.startsWith('/tool/') ||
+    pathname.startsWith('/workflow/')
+  ) {
     if (env.ASSETS) {
       const assetReq = new Request(new URL('/', request.url).toString(), request);
       return env.ASSETS.fetch(assetReq);

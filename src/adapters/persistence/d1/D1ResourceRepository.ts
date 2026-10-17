@@ -21,6 +21,11 @@ interface ResourceExtendedRow {
   tool_kind: string | null;
   tool_category: string | null;
   tool_pricing: string | null;
+  workflow_purpose: string | null;
+  workflow_status: string | null;
+  workflow_difficulty: string | null;
+  workflow_estimated_time: string | null;
+  workflow_step_count: number | null;
 }
 
 export class D1ResourceRepository implements ResourceRepository {
@@ -43,10 +48,15 @@ export class D1ResourceRepository implements ResourceRepository {
              GROUP_CONCAT(DISTINCT t.name) as tag_names,
              p.content as prompt_content, p.model as prompt_model,
              tl.url as tool_url, tl.hostname as tool_hostname, tl.kind as tool_kind,
-             tl.category as tool_category, tl.pricing as tool_pricing
+             tl.category as tool_category, tl.pricing as tool_pricing,
+             w.purpose as workflow_purpose, w.status as workflow_status,
+             w.difficulty as workflow_difficulty, w.estimated_time as workflow_estimated_time,
+             COUNT(DISTINCT ws.id) as workflow_step_count
       FROM resources r
       LEFT JOIN prompts p ON p.resource_id = r.id
       LEFT JOIN tools tl ON tl.resource_id = r.id
+      LEFT JOIN workflows w ON w.resource_id = r.id
+      LEFT JOIN workflow_steps ws ON ws.workflow_id = r.id
       LEFT JOIN resource_tags rt ON rt.resource_id = r.id
       LEFT JOIN tags t ON t.id = rt.tag_id
       WHERE r.id = ?
@@ -99,16 +109,19 @@ export class D1ResourceRepository implements ResourceRepository {
           r.id IN (SELECT resource_id FROM prompts_fts WHERE prompts_fts MATCH ?)
           OR
           r.id IN (SELECT resource_id FROM tools_fts WHERE tools_fts MATCH ?)
+          OR
+          r.id IN (SELECT resource_id FROM workflows_fts WHERE workflows_fts MATCH ?)
         )`);
-        bindings.push(ftsFormatted, ftsFormatted);
+        bindings.push(ftsFormatted, ftsFormatted, ftsFormatted);
       } else {
         conditions.push(`(
           r.title LIKE ? OR r.description LIKE ?
           OR EXISTS (SELECT 1 FROM prompts p2 WHERE p2.resource_id = r.id AND p2.content LIKE ?)
           OR EXISTS (SELECT 1 FROM tools tl2 WHERE tl2.resource_id = r.id AND (tl2.url LIKE ? OR tl2.notes LIKE ?))
+          OR EXISTS (SELECT 1 FROM workflows w2 WHERE w2.resource_id = r.id AND (w2.purpose LIKE ? OR w2.notes LIKE ?))
         )`);
         const likeTerm = `%${rawQ}%`;
-        bindings.push(likeTerm, likeTerm, likeTerm, likeTerm, likeTerm);
+        bindings.push(likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm, likeTerm);
       }
     }
 
@@ -135,10 +148,15 @@ export class D1ResourceRepository implements ResourceRepository {
              GROUP_CONCAT(DISTINCT t.name) as tag_names,
              p.content as prompt_content, p.model as prompt_model,
              tl.url as tool_url, tl.hostname as tool_hostname, tl.kind as tool_kind,
-             tl.category as tool_category, tl.pricing as tool_pricing
+             tl.category as tool_category, tl.pricing as tool_pricing,
+             w.purpose as workflow_purpose, w.status as workflow_status,
+             w.difficulty as workflow_difficulty, w.estimated_time as workflow_estimated_time,
+             COUNT(DISTINCT ws.id) as workflow_step_count
       FROM resources r
       LEFT JOIN prompts p ON p.resource_id = r.id
       LEFT JOIN tools tl ON tl.resource_id = r.id
+      LEFT JOIN workflows w ON w.resource_id = r.id
+      LEFT JOIN workflow_steps ws ON ws.workflow_id = r.id
       LEFT JOIN resource_tags rt ON rt.resource_id = r.id
       LEFT JOIN tags t ON t.id = rt.tag_id
       ${whereClause}
@@ -211,6 +229,14 @@ export class D1ResourceRepository implements ResourceRepository {
       if (row.tool_kind) extra.kind = row.tool_kind;
       if (row.tool_category) extra.category = row.tool_category;
       if (row.tool_pricing) extra.pricing = row.tool_pricing;
+    } else if (row.type === 'workflow') {
+      if (row.workflow_purpose) extra.purpose = row.workflow_purpose;
+      if (row.workflow_status) extra.status = row.workflow_status;
+      if (row.workflow_difficulty) extra.difficulty = row.workflow_difficulty;
+      if (row.workflow_estimated_time) extra.estimatedTime = row.workflow_estimated_time;
+      if (row.workflow_step_count !== null && row.workflow_step_count !== undefined) {
+        extra.stepCount = row.workflow_step_count;
+      }
     }
 
     return {

@@ -8,11 +8,11 @@ Production: [https://pilot.nodbits.com](https://pilot.nodbits.com)
 
 Pilot is an operating library for organizing, searching, connecting, and reusing AI-related knowledge and resources.
 
-**Prompts** is the first fully functional resource module. Pilot is designed from the core as a modular resource platform rather than a prompt-only application. Future modules will include:
+**Prompts**, **AI Tools & Websites**, and **Workflows** are the implemented resource modules. Pilot is designed from the core as a modular resource platform rather than a prompt-only application. Modules include:
 
-- Prompts (Implemented in V1)
-- AI Tools & Websites (Planned)
-- Workflows (Planned)
+- Prompts (Implemented)
+- AI Tools & Websites (Implemented)
+- Workflows (Implemented)
 - Agents (Planned)
 - Models & APIs (Planned)
 - Coding & Automation Recipes (Planned)
@@ -93,7 +93,28 @@ npm run deploy
 - `GET /api/architecture` - Architectural metadata
 
 ### Core Resources
-- `GET /api/resources` - Universal list of all resources across modules
+- `GET /api/resources` - Universal list of all resources across modules (supports `q`, `type`, `tag`, `favorite`, `sort`, `order`, `limit`, `offset`)
+
+### Workflows Module
+- `GET /api/workflows` - List workflows (supports `q`, `tag`, `status`, `difficulty`, `favorite`, `sort`, `order`, `limit`, `offset`)
+- `GET /api/workflows/:id` - Get workflow by ID (includes ordered steps and linked resources)
+- `POST /api/workflows` - Create new workflow (`title`, `purpose`, `status`, `difficulty`, `estimatedTime`, `favorite`, `description`, `notes`, `tags`, `steps`)
+- `PUT /api/workflows/:id` - Update workflow and its steps / resource links
+- `DELETE /api/workflows/:id` - Delete workflow (cascades to steps and relationships)
+- `POST /api/workflows/:id/duplicate` - Duplicate workflow and steps
+- `PATCH /api/workflows/:id/favorite` - Toggle or set favorite state
+
+### AI Tools & Websites Module
+- `GET /api/tools` - List tools & websites (supports `q`, `tag`, `kind`, `category`, `pricing`, `favorite`, `sort`, `order`, `limit`, `offset`)
+- `GET /api/tools/:id` - Get tool or website by ID
+- `POST /api/tools` - Create new tool/website (`url`, `title`, `kind`, `pricing`, `provider`, `category`, `description`, `notes`, `favorite`, `tags`)
+- `PUT /api/tools/:id` - Update tool/website
+- `DELETE /api/tools/:id` - Delete tool/website
+- `POST /api/tools/:id/duplicate` - Duplicate tool/website
+- `PATCH /api/tools/:id/favorite` - Toggle favorite state
+- `POST /api/tools/fetch-metadata` - Automatically extract title, description, favicon from URL
+- `GET /api/tools/categories` - Distinct categories
+- `GET /api/tools/providers` - Distinct providers
 
 ### Prompts Module
 - `GET /api/prompts` - List prompts (supports `q`, `tag`, `model`, `favorite`, `sort`, `order`, `limit`, `offset`)
@@ -105,7 +126,7 @@ npm run deploy
 - `PATCH /api/prompts/:id/favorite` - Toggle or set favorite state
 
 ### Search & Taxonomy
-- `GET /api/search?q=:query` - Full-text search across prompt titles, descriptions, and content
+- `GET /api/search?q=:query` - Full-text search across resources, prompts, tools, websites, and workflows
 - `GET /api/tags` - List all tags with resource count
 - `GET /api/models` - List distinct models used across prompts
 
@@ -113,4 +134,4 @@ npm run deploy
 
 - `Cmd/Ctrl + K` - Focus global search
 - `Escape` - Close open modal or drawer
-- `Cmd/Ctrl + Enter` - Save prompt in form
+- `Cmd/Ctrl + Enter` - Save item in form

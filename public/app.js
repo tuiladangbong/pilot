@@ -13,6 +13,8 @@
       view_list: 'List View',
       view_grid: 'Grid View',
       add_btn: '+ Add',
+      menu_new_workflow: 'New Workflow',
+      menu_new_workflow_desc: 'Structured steps & reusable AI process',
       menu_new_tool: 'New Tool / Website',
       menu_new_tool_desc: 'Save AI web app, service, or documentation',
       menu_new_prompt: 'New Prompt',
@@ -21,9 +23,19 @@
       // Sidebar
       nav_resources: 'Resources',
       nav_all_resources: 'All Resources',
+      nav_workflows: 'Workflows',
       nav_tools: 'Tools & Websites',
       nav_prompts: 'Prompts',
       nav_favorites: 'Favorites',
+      nav_filter_workflows: 'Filter Workflows',
+      nav_all_statuses: 'All Statuses',
+      nav_status_active: 'Active',
+      nav_status_draft: 'Draft',
+      nav_status_archived: 'Archived',
+      nav_all_difficulties: 'All Difficulties',
+      diff_easy: 'Easy',
+      diff_medium: 'Medium',
+      diff_advanced: 'Advanced',
       nav_filter_tools: 'Filter Tools',
       nav_all_types: 'All Types (Tools & Sites)',
       nav_tools_only: 'Tools only',
@@ -58,6 +70,7 @@
       badge_tool: 'Tool',
       badge_website: 'Website',
       badge_prompt: 'Prompt',
+      badge_workflow: 'Workflow',
       btn_copy: 'Copy',
       btn_copy_prompt: 'Copy Prompt',
       btn_copy_url: 'Copy URL',
@@ -69,25 +82,51 @@
       loading_resources: 'Loading resources...',
       empty_no_resources: 'No resources found',
       empty_no_resources_desc: 'Save your first AI tool, website, or prompt to build your operating library.',
+      empty_no_workflows: 'No workflows yet',
+      empty_no_workflows_desc: 'Create structured AI processes to streamline your work.',
       empty_no_tools: 'No AI tools or websites yet',
       empty_no_tools_desc: 'Save your first AI tool or reference site to build your collection.',
       empty_no_prompts: 'No prompts yet',
       empty_no_prompts_desc: 'Save your first AI prompt to build your operating library.',
       empty_no_favs: 'Nothing favorited yet',
-      empty_no_favs_desc: 'Star useful prompts, tools, and websites to find them here.',
+      empty_no_favs_desc: 'Star useful prompts, tools, websites, and workflows to find them here.',
       empty_search_no_match: 'No resources match this search',
       empty_search_desc: (q) => `No items matching "${q}".`,
       empty_tag_no_match: (tag) => `No resources tagged #${tag}`,
       empty_tag_desc: 'Try selecting another tag or clearing the filter.',
+      btn_add_workflow: '+ Add Workflow',
       btn_add_tool: '+ Add Tool / Website',
       btn_add_prompt: '+ Add Prompt',
       btn_load_more: 'Load More',
 
       // Modals
+      modal_new_workflow: 'New Workflow',
+      modal_edit_workflow: 'Edit Workflow',
       modal_new_tool: 'New Tool / Website',
       modal_edit_tool: 'Edit Tool / Website',
       modal_new_prompt: 'New Prompt',
       modal_edit_prompt: 'Edit Prompt',
+      label_purpose: 'Purpose / Goal',
+      label_purpose_hint: '(what this workflow achieves)',
+      label_status: 'Status',
+      label_difficulty: 'Difficulty',
+      label_estimated_time: 'Estimated Time',
+      label_estimated_time_hint: '(e.g. 15 min, 1h)',
+      label_steps: 'Workflow Steps',
+      label_steps_hint: 'Ordered sequence of steps',
+      btn_add_step: '+ Add Step',
+      label_step_title: 'Step Title',
+      label_step_instruction: 'Instructions & Prompts',
+      label_step_optional: 'Optional step',
+      label_step_notes: 'Notes / Tips',
+      label_linked_resources: 'Linked Resources',
+      btn_link_resource: '+ Link Resource',
+      picker_title: 'Link a Resource',
+      picker_search_placeholder: 'Search prompts, tools, websites...',
+      picker_select: 'Link',
+      picker_no_results: 'No matching resources found',
+      btn_save_workflow: 'Save Workflow',
+      btn_copy_workflow: 'Copy Markdown',
       label_url: 'URL',
       label_url_hint: 'Paste full URL with http:// or https://',
       btn_fetch_info: '⚡ Fetch Info',
@@ -139,6 +178,8 @@
       toast_fav_removed: 'Removed from favorites',
       toast_site_fetched: 'Site info fetched successfully!',
       toast_enter_url: 'Enter a URL to fetch info',
+      toast_workflow_created: 'Workflow saved successfully',
+      toast_workflow_updated: 'Workflow updated successfully',
       toast_tool_created: 'Tool saved successfully',
       toast_tool_updated: 'Tool updated successfully',
       toast_prompt_created: 'Prompt created successfully',
@@ -148,6 +189,7 @@
       err_title_required: 'Title is required',
       err_url_required: 'URL is required',
       err_prompt_content_required: 'Prompt content is required',
+      err_step_title_required: 'All steps must have a title and instruction',
 
       // Relative Dates
       time_just_now: 'just now',
@@ -162,6 +204,9 @@
       filter_category: (c) => `Category: ${c}`,
       filter_pricing: (p) => `Pricing: ${p}`,
       filter_model: (m) => `Model: ${m}`,
+      filter_status: (s) => `Status: ${s}`,
+      filter_difficulty: (d) => `Difficulty: ${d}`,
+      workflow_progress: (done, total) => `${done}/${total} steps completed`,
     },
 
     vi: {
@@ -171,6 +216,8 @@
       view_list: 'Xem danh sách',
       view_grid: 'Xem lưới',
       add_btn: '+ Thêm',
+      menu_new_workflow: 'Thêm Quy trình',
+      menu_new_workflow_desc: 'Các bước tuần tự & quy trình AI tái sử dụng',
       menu_new_tool: 'Thêm Công cụ / Website',
       menu_new_tool_desc: 'Lưu web app AI, dịch vụ hoặc trang tài liệu tham khảo',
       menu_new_prompt: 'Thêm Prompt',
@@ -179,9 +226,19 @@
       // Sidebar
       nav_resources: 'Tài nguyên',
       nav_all_resources: 'Tất cả tài nguyên',
+      nav_workflows: 'Quy trình',
       nav_tools: 'Công cụ & Website',
       nav_prompts: 'Prompts',
       nav_favorites: 'Yêu thích',
+      nav_filter_workflows: 'Lọc quy trình',
+      nav_all_statuses: 'Tất cả trạng thái',
+      nav_status_active: 'Đang dùng',
+      nav_status_draft: 'Bản nháp',
+      nav_status_archived: 'Lưu trữ',
+      nav_all_difficulties: 'Mọi mức độ',
+      diff_easy: 'Dễ',
+      diff_medium: 'Trung bình',
+      diff_advanced: 'Nâng cao',
       nav_filter_tools: 'Lọc công cụ',
       nav_all_types: 'Tất cả loại (Công cụ & Trang)',
       nav_tools_only: 'Chỉ công cụ',
@@ -216,6 +273,7 @@
       badge_tool: 'Công cụ',
       badge_website: 'Website',
       badge_prompt: 'Prompt',
+      badge_workflow: 'Quy trình',
       btn_copy: 'Sao chép',
       btn_copy_prompt: 'Sao chép Prompt',
       btn_copy_url: 'Chép URL',
@@ -227,25 +285,51 @@
       loading_resources: 'Đang tải tài nguyên...',
       empty_no_resources: 'Không tìm thấy tài nguyên nào',
       empty_no_resources_desc: 'Lưu công cụ AI, website hoặc prompt đầu tiên của bạn để xây dựng kho vận hành.',
+      empty_no_workflows: 'Chưa có quy trình nào',
+      empty_no_workflows_desc: 'Tạo các quy trình làm việc có cấu trúc để tối ưu hóa công việc của bạn.',
       empty_no_tools: 'Chưa có công cụ hoặc website AI nào',
       empty_no_tools_desc: 'Lưu công cụ hoặc trang web AI đầu tiên để bắt đầu bộ sưu tập.',
       empty_no_prompts: 'Chưa có prompt nào',
       empty_no_prompts_desc: 'Lưu prompt AI đầu tiên để xây dựng thư viện vận hành cá nhân.',
       empty_no_favs: 'Chưa có mục yêu thích nào',
-      empty_no_favs_desc: 'Đánh dấu sao các prompt, công cụ và website hữu ích để tìm nhanh tại đây.',
+      empty_no_favs_desc: 'Đánh dấu sao các prompt, công cụ, website và quy trình hữu ích để tìm nhanh tại đây.',
       empty_search_no_match: 'Không tìm thấy tài nguyên phù hợp',
       empty_search_desc: (q) => `Không có mục nào khớp với "${q}".`,
       empty_tag_no_match: (tag) => `Không có tài nguyên gắn thẻ #${tag}`,
       empty_tag_desc: 'Thử chọn một thẻ khác hoặc xóa bộ lọc.',
+      btn_add_workflow: '+ Thêm Quy trình',
       btn_add_tool: '+ Thêm Công cụ / Website',
       btn_add_prompt: '+ Thêm Prompt',
       btn_load_more: 'Tải thêm',
 
       // Modals
+      modal_new_workflow: 'Thêm Quy trình mới',
+      modal_edit_workflow: 'Chỉnh sửa Quy trình',
       modal_new_tool: 'Thêm Công cụ / Website mới',
       modal_edit_tool: 'Chỉnh sửa Công cụ / Website',
       modal_new_prompt: 'Thêm Prompt mới',
       modal_edit_prompt: 'Chỉnh sửa Prompt',
+      label_purpose: 'Mục tiêu / Mục đích',
+      label_purpose_hint: '(mục đích đạt được của quy trình)',
+      label_status: 'Trạng thái',
+      label_difficulty: 'Độ khó',
+      label_estimated_time: 'Thời gian ước tính',
+      label_estimated_time_hint: '(ví dụ: 15 phút, 1 giờ)',
+      label_steps: 'Các bước thực hiện',
+      label_steps_hint: 'Trình tự các bước thực hiện',
+      btn_add_step: '+ Thêm bước',
+      label_step_title: 'Tiêu đề bước',
+      label_step_instruction: 'Hướng dẫn & Prompts',
+      label_step_optional: 'Bước tùy chọn (không bắt buộc)',
+      label_step_notes: 'Ghi chú / Mẹo',
+      label_linked_resources: 'Tài nguyên liên kết',
+      btn_link_resource: '+ Liên kết tài nguyên',
+      picker_title: 'Chọn tài nguyên liên kết',
+      picker_search_placeholder: 'Tìm kiếm prompt, công cụ, website...',
+      picker_select: 'Chọn',
+      picker_no_results: 'Không tìm thấy tài nguyên phù hợp',
+      btn_save_workflow: 'Lưu Quy trình',
+      btn_copy_workflow: 'Chép Markdown',
       label_url: 'URL',
       label_url_hint: 'Dán URL đầy đủ có http:// hoặc https://',
       btn_fetch_info: '⚡ Lấy thông tin',
@@ -297,6 +381,8 @@
       toast_fav_removed: 'Đã xóa khỏi mục yêu thích',
       toast_site_fetched: 'Đã lấy thông tin trang thành công!',
       toast_enter_url: 'Vui lòng nhập URL để lấy thông tin',
+      toast_workflow_created: 'Đã lưu quy trình thành công',
+      toast_workflow_updated: 'Đã cập nhật quy trình thành công',
       toast_tool_created: 'Đã lưu công cụ thành công',
       toast_tool_updated: 'Đã cập nhật công cụ thành công',
       toast_prompt_created: 'Đã tạo prompt thành công',
@@ -306,6 +392,7 @@
       err_title_required: 'Tiêu đề là bắt buộc',
       err_url_required: 'URL là bắt buộc',
       err_prompt_content_required: 'Nội dung Prompt là bắt buộc',
+      err_step_title_required: 'Mỗi bước phải có tiêu đề và hướng dẫn',
 
       // Relative Dates
       time_just_now: 'vừa xong',
@@ -320,6 +407,9 @@
       filter_category: (c) => `Danh mục: ${c}`,
       filter_pricing: (p) => `Mức giá: ${p}`,
       filter_model: (m) => `Mô hình: ${m}`,
+      filter_status: (s) => `Trạng thái: ${s}`,
+      filter_difficulty: (d) => `Độ khó: ${d}`,
+      workflow_progress: (done, total) => `Đã hoàn thành ${done}/${total} bước`,
     },
   };
 
@@ -336,14 +426,20 @@
     toolKind: null,
     toolCategory: null,
     toolPricing: null,
+    workflowStatus: null,
+    workflowDifficulty: null,
     favorite: null, // true | null
     sort: 'updated_at',
     order: 'desc',
     viewMode: localStorage.getItem('pilot_view_mode') || 'list',
-    currentNav: 'all-resources', // 'all-resources' | 'tools' | 'prompts' | 'favorites'
+    currentNav: 'all-resources', // 'all-resources' | 'workflows' | 'tools' | 'prompts' | 'favorites'
     activeDetailPrompt: null,
     activeDetailTool: null,
-    itemToDelete: null, // { id, title, type: 'prompt' | 'tool' | 'website' }
+    activeDetailWorkflow: null,
+    currentEditingWorkflowSteps: [],
+    activeStepIndexForPicker: null,
+    activeWorkflowChecklistState: {},
+    itemToDelete: null, // { id, title, type: 'prompt' | 'tool' | 'website' | 'workflow' }
     tags: [],
     models: [],
     categories: [],
@@ -386,6 +482,7 @@
     // Add Dropdown
     addBtn: document.getElementById('add-btn'),
     addDropdownMenu: document.getElementById('add-dropdown-menu'),
+    menuAddWorkflowBtn: document.getElementById('menu-add-workflow-btn'),
     menuAddToolBtn: document.getElementById('menu-add-tool-btn'),
     menuAddPromptBtn: document.getElementById('menu-add-prompt-btn'),
 
@@ -396,11 +493,15 @@
 
     // Badges & Navigation
     badgeAllResourcesCount: document.getElementById('badge-all-resources-count'),
+    badgeWorkflowsCount: document.getElementById('badge-workflows-count'),
     badgeToolsCount: document.getElementById('badge-tools-count'),
     badgePromptsCount: document.getElementById('badge-prompts-count'),
     badgeFavCount: document.getElementById('badge-fav-count'),
 
     // Sidebar Filters
+    sidebarWorkflowsFilters: document.getElementById('sidebar-workflows-filters'),
+    workflowStatusFilterSelect: document.getElementById('workflow-status-filter-select'),
+    workflowDiffFilterSelect: document.getElementById('workflow-diff-filter-select'),
     sidebarToolsFilters: document.getElementById('sidebar-tools-filters'),
     toolKindFilterSelect: document.getElementById('tool-kind-filter-select'),
     toolCategoryFilterSelect: document.getElementById('tool-category-filter-select'),
@@ -422,9 +523,62 @@
     emptyState: document.getElementById('empty-state'),
     emptyStateTitle: document.getElementById('empty-state-title'),
     emptyStateDesc: document.getElementById('empty-state-desc'),
+    emptyAddWorkflowBtn: document.getElementById('empty-add-workflow-btn'),
     emptyAddToolBtn: document.getElementById('empty-add-tool-btn'),
     emptyAddPromptBtn: document.getElementById('empty-add-prompt-btn'),
     toastContainer: document.getElementById('toast-container'),
+
+    // Workflow Form Dialog
+    workflowFormDialog: document.getElementById('workflow-form-dialog'),
+    workflowForm: document.getElementById('workflow-form'),
+    workflowFormTitle: document.getElementById('workflow-form-title'),
+    workflowFormCloseBtn: document.getElementById('workflow-form-close-btn'),
+    workflowFormCancelBtn: document.getElementById('workflow-form-cancel-btn'),
+    workflowFormSubmitBtn: document.getElementById('workflow-form-submit-btn'),
+    inputWorkflowId: document.getElementById('workflow-id'),
+    inputWorkflowTitle: document.getElementById('workflow-title'),
+    inputWorkflowPurpose: document.getElementById('workflow-purpose'),
+    inputWorkflowStatus: document.getElementById('workflow-status'),
+    inputWorkflowDifficulty: document.getElementById('workflow-difficulty'),
+    inputWorkflowEstimatedTime: document.getElementById('workflow-estimated-time'),
+    inputWorkflowFavorite: document.getElementById('workflow-favorite'),
+    inputWorkflowDescription: document.getElementById('workflow-description'),
+    inputWorkflowTags: document.getElementById('workflow-tags'),
+    inputWorkflowNotes: document.getElementById('workflow-notes'),
+    workflowAddStepBtn: document.getElementById('workflow-add-step-btn'),
+    workflowFormStepsList: document.getElementById('workflow-form-steps-list'),
+
+    // Workflow Detail Dialog
+    workflowDetailDialog: document.getElementById('workflow-detail-dialog'),
+    workflowDetailCloseBtn: document.getElementById('workflow-detail-close-btn'),
+    workflowDetailFavBtn: document.getElementById('workflow-detail-fav-btn'),
+    workflowDetailTitle: document.getElementById('workflow-detail-title'),
+    workflowDetailStatus: document.getElementById('workflow-detail-status'),
+    workflowDetailDifficulty: document.getElementById('workflow-detail-difficulty'),
+    workflowDetailEstTime: document.getElementById('workflow-detail-est-time'),
+    workflowDetailUpdated: document.getElementById('workflow-detail-updated'),
+    workflowDetailPurposeBox: document.getElementById('workflow-detail-purpose-box'),
+    workflowDetailPurpose: document.getElementById('workflow-detail-purpose'),
+    workflowDetailDescription: document.getElementById('workflow-detail-description'),
+    workflowProgressWrapper: document.getElementById('workflow-progress-wrapper'),
+    workflowProgressText: document.getElementById('workflow-progress-text'),
+    workflowProgressFill: document.getElementById('workflow-progress-fill'),
+    workflowDetailStepsList: document.getElementById('workflow-detail-steps-list'),
+    workflowDetailNotesWrapper: document.getElementById('workflow-detail-notes-wrapper'),
+    workflowDetailNotes: document.getElementById('workflow-detail-notes'),
+    workflowDetailTagsRow: document.getElementById('workflow-detail-tags-row'),
+    workflowDetailDeleteBtn: document.getElementById('workflow-detail-delete-btn'),
+    workflowDetailCopyMdBtn: document.getElementById('workflow-detail-copy-md-btn'),
+    workflowDetailDuplicateBtn: document.getElementById('workflow-detail-duplicate-btn'),
+    workflowDetailEditBtn: document.getElementById('workflow-detail-edit-btn'),
+
+    // Resource Picker Dialog
+    resourcePickerDialog: document.getElementById('resource-picker-dialog'),
+    resourcePickerTitle: document.getElementById('resource-picker-title'),
+    resourcePickerCloseBtn: document.getElementById('resource-picker-close-btn'),
+    resourcePickerSearch: document.getElementById('resource-picker-search'),
+    resourcePickerResults: document.getElementById('resource-picker-results'),
+    resourcePickerCancelBtn: document.getElementById('resource-picker-cancel-btn'),
 
     // Tool Form Dialog
     toolFormDialog: document.getElementById('tool-form-dialog'),
@@ -612,6 +766,16 @@
     };
   }
 
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   // --- API Requests ---
 
   async function apiFetch(endpoint, options = {}) {
@@ -662,7 +826,11 @@
 
       let endpoint = '/api/resources';
 
-      if (state.currentNav === 'tools') {
+      if (state.currentNav === 'workflows') {
+        endpoint = '/api/workflows';
+        if (state.workflowStatus) params.set('status', state.workflowStatus);
+        if (state.workflowDifficulty) params.set('difficulty', state.workflowDifficulty);
+      } else if (state.currentNav === 'tools') {
         endpoint = '/api/tools';
         if (state.toolKind) params.set('kind', state.toolKind);
         if (state.toolCategory) params.set('category', state.toolCategory);
@@ -746,14 +914,16 @@
 
   async function updateCounts() {
     try {
-      const [allRes, toolsRes, promptsRes, favRes] = await Promise.all([
+      const [allRes, workflowsRes, toolsRes, promptsRes, favRes] = await Promise.all([
         apiFetch('/api/resources?limit=1'),
+        apiFetch('/api/workflows?limit=1'),
         apiFetch('/api/tools?limit=1'),
         apiFetch('/api/prompts?limit=1'),
         apiFetch('/api/resources?favorite=true&limit=1'),
       ]);
 
       el.badgeAllResourcesCount.textContent = allRes.meta?.total ?? 0;
+      if (el.badgeWorkflowsCount) el.badgeWorkflowsCount.textContent = workflowsRes.meta?.total ?? 0;
       el.badgeToolsCount.textContent = toolsRes.meta?.total ?? 0;
       el.badgePromptsCount.textContent = promptsRes.meta?.total ?? 0;
       el.badgeFavCount.textContent = favRes.meta?.total ?? 0;
@@ -864,6 +1034,8 @@
         showEmptyState(t('empty_no_favs'), t('empty_no_favs_desc'));
       } else if (state.tag) {
         showEmptyState(t('empty_tag_no_match', state.tag), t('empty_tag_desc'));
+      } else if (state.currentNav === 'workflows') {
+        showEmptyState(t('empty_no_workflows'), t('empty_no_workflows_desc'));
       } else if (state.currentNav === 'tools') {
         showEmptyState(t('empty_no_tools'), t('empty_no_tools_desc'));
       } else if (state.currentNav === 'prompts') {
@@ -879,9 +1051,12 @@
 
     const sliceItems = append ? state.items.slice(state.offset) : state.items;
     for (const item of sliceItems) {
-      const itemType = item.type || (item.content !== undefined ? 'prompt' : 'tool');
+      const itemType = item.type || (item.content !== undefined ? 'prompt' : (item.steps !== undefined || item.extra?.stepCount !== undefined ? 'workflow' : 'tool'));
       if (itemType === 'prompt') {
         const card = createPromptCardElement(item);
+        el.resourcesList.appendChild(card);
+      } else if (itemType === 'workflow') {
+        const card = createWorkflowCardElement(item);
         el.resourcesList.appendChild(card);
       } else {
         const card = createToolCardElement(item);
@@ -1220,6 +1395,203 @@
     return card;
   }
 
+  function createWorkflowCardElement(workflow) {
+    const card = document.createElement('article');
+    card.className = 'prompt-card';
+    card.setAttribute('data-id', workflow.id);
+
+    // Header row: Title + Actions (Favorite + Copy Markdown)
+    const headerRow = document.createElement('div');
+    headerRow.className = 'card-header-row';
+
+    const titleGroup = document.createElement('div');
+    titleGroup.className = 'card-title-group';
+
+    // Favorite button
+    const favBtn = document.createElement('button');
+    favBtn.className = `favorite-star-btn ${workflow.favorite ? 'active' : ''}`;
+    favBtn.title = workflow.favorite ? 'Unfavorite' : 'Favorite';
+    favBtn.setAttribute('aria-label', favBtn.title);
+    favBtn.innerHTML = `
+      <svg class="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="${workflow.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+    `;
+    favBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleWorkflowFavorite(workflow, favBtn);
+    });
+
+    const title = document.createElement('h2');
+    title.className = 'card-title';
+    title.textContent = workflow.title;
+
+    titleGroup.appendChild(favBtn);
+    titleGroup.appendChild(title);
+
+    // Workflow Badge
+    const wfBadge = document.createElement('span');
+    wfBadge.className = 'badge badge-workflow';
+    wfBadge.textContent = t('badge_workflow');
+    titleGroup.appendChild(wfBadge);
+
+    // Difficulty badge
+    const difficulty = workflow.difficulty || workflow.extra?.difficulty || 'Medium';
+    const diffBadge = document.createElement('span');
+    diffBadge.className = `badge badge-difficulty diff-${difficulty.toLowerCase()}`;
+    diffBadge.textContent = difficulty;
+    titleGroup.appendChild(diffBadge);
+
+    // Status badge if Draft or Archived
+    const status = workflow.status || workflow.extra?.status || 'Active';
+    if (status !== 'Active') {
+      const statusBadge = document.createElement('span');
+      statusBadge.className = `badge badge-status status-${status.toLowerCase()}`;
+      statusBadge.textContent = status;
+      titleGroup.appendChild(statusBadge);
+    }
+
+    const quickActions = document.createElement('div');
+    quickActions.className = 'card-actions-quick';
+
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'btn btn-copy';
+    copyBtn.innerHTML = `
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <span>${t('btn_copy_workflow')}</span>
+    `;
+    copyBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const md = await getWorkflowMarkdown(workflow);
+      copyToClipboard(md, copyBtn);
+    });
+
+    quickActions.appendChild(copyBtn);
+    headerRow.appendChild(titleGroup);
+    headerRow.appendChild(quickActions);
+    card.appendChild(headerRow);
+
+    // Purpose or description snippet
+    const summaryText = workflow.purpose || workflow.extra?.purpose || workflow.description;
+    if (summaryText) {
+      const desc = document.createElement('p');
+      desc.className = 'card-description';
+      desc.textContent = summaryText;
+      card.appendChild(desc);
+    }
+
+    // Footer row: Step count, Est time, Tags, Date
+    const footerRow = document.createElement('div');
+    footerRow.className = 'card-footer-row';
+
+    const metaLeft = document.createElement('div');
+    metaLeft.className = 'card-meta-left';
+
+    const stepCount = workflow.stepCount !== undefined
+      ? workflow.stepCount
+      : (workflow.steps ? workflow.steps.length : (workflow.extra?.stepCount ?? 0));
+    const stepCountPill = document.createElement('span');
+    stepCountPill.className = 'workflow-step-count-pill';
+    stepCountPill.textContent = `${stepCount} ${stepCount === 1 ? 'step' : 'steps'}`;
+    metaLeft.appendChild(stepCountPill);
+
+    const estTime = workflow.estimatedTime || workflow.extra?.estimatedTime;
+    if (estTime) {
+      const timeBadge = document.createElement('span');
+      timeBadge.className = 'model-badge';
+      timeBadge.textContent = `⏱ ${estTime}`;
+      metaLeft.appendChild(timeBadge);
+    }
+
+    const tags = Array.isArray(workflow.tags) ? workflow.tags : [];
+    if (tags.length > 0) {
+      for (const tag of tags.slice(0, 4)) {
+        const tagPill = document.createElement('span');
+        tagPill.className = 'card-tag';
+        tagPill.textContent = `#${tag}`;
+        tagPill.addEventListener('click', (e) => {
+          e.stopPropagation();
+          state.tag = tag;
+          loadData();
+          renderTagsList();
+        });
+        metaLeft.appendChild(tagPill);
+      }
+      if (tags.length > 4) {
+        const moreTag = document.createElement('span');
+        moreTag.className = 'card-tag';
+        moreTag.textContent = `+${tags.length - 4}`;
+        metaLeft.appendChild(moreTag);
+      }
+    }
+
+    const timeSpan = document.createElement('span');
+    timeSpan.textContent = formatRelativeDate(workflow.updatedAt);
+    metaLeft.appendChild(timeSpan);
+
+    footerRow.appendChild(metaLeft);
+    card.appendChild(footerRow);
+
+    card.addEventListener('click', () => {
+      openWorkflowDetailDialog(workflow);
+    });
+
+    return card;
+  }
+
+  async function getWorkflowMarkdown(wf) {
+    let full = wf;
+    if (!full.steps) {
+      try {
+        const res = await apiFetch(`/api/workflows/${wf.id}`);
+        full = res.data;
+      } catch {
+        // fallback to summary
+      }
+    }
+    return formatWorkflowToMarkdown(full);
+  }
+
+  function formatWorkflowToMarkdown(wf) {
+    let md = `# ${wf.title}\n`;
+    const purpose = wf.purpose || wf.extra?.purpose;
+    if (purpose) md += `\n> ${purpose}\n`;
+    if (wf.description && wf.description !== purpose) md += `\n${wf.description}\n`;
+
+    md += `\n- **Status:** ${wf.status || 'Active'}`;
+    md += `\n- **Difficulty:** ${wf.difficulty || 'Medium'}`;
+    const estTime = wf.estimatedTime || wf.extra?.estimatedTime;
+    if (estTime) md += `\n- **Estimated Time:** ${estTime}`;
+    const tags = Array.isArray(wf.tags) ? wf.tags : [];
+    if (tags.length > 0) md += `\n- **Tags:** ${tags.map((t) => '#' + t).join(' ')}`;
+    md += '\n';
+
+    if (Array.isArray(wf.steps) && wf.steps.length > 0) {
+      md += `\n## Steps\n`;
+      wf.steps.forEach((step, idx) => {
+        md += `\n### Step ${idx + 1}: ${step.title}\n`;
+        const stepInst = step.instructions || step.instruction;
+        if (stepInst) {
+          md += `\n${stepInst}\n`;
+        }
+        if (Array.isArray(step.linkedResources) && step.linkedResources.length > 0) {
+          md += `\n**Linked Resources:**\n`;
+          step.linkedResources.forEach((lr) => {
+            const type = (lr.targetResourceType || 'Resource').toUpperCase();
+            const title = lr.targetResourceTitle || lr.targetResourceId;
+            md += `- [${type}] ${title}\n`;
+          });
+        }
+      });
+    }
+
+    if (wf.notes) {
+      md += `\n## Personal Notes & Tips\n\n${wf.notes}\n`;
+    }
+
+    return md.trim();
+  }
+
   function showEmptyState(title, desc) {
     el.emptyStateTitle.textContent = title;
     el.emptyStateDesc.textContent = desc;
@@ -1232,6 +1604,8 @@
     // Title text
     if (state.currentNav === 'favorites') {
       el.currentViewTitle.textContent = t('nav_favorites');
+    } else if (state.currentNav === 'workflows') {
+      el.currentViewTitle.textContent = t('nav_workflows');
     } else if (state.currentNav === 'tools') {
       el.currentViewTitle.textContent = t('nav_tools');
     } else if (state.currentNav === 'prompts') {
@@ -1257,6 +1631,26 @@
         state.tag = null;
         loadData();
         renderTagsList();
+      });
+      el.activeFiltersContainer.appendChild(pill);
+    }
+
+    // Pill for Workflow Status
+    if (state.workflowStatus) {
+      const pill = createFilterPill(t('filter_status', state.workflowStatus), () => {
+        state.workflowStatus = null;
+        if (el.workflowStatusFilterSelect) el.workflowStatusFilterSelect.value = '';
+        loadData();
+      });
+      el.activeFiltersContainer.appendChild(pill);
+    }
+
+    // Pill for Workflow Difficulty
+    if (state.workflowDifficulty) {
+      const pill = createFilterPill(t('filter_difficulty', state.workflowDifficulty), () => {
+        state.workflowDifficulty = null;
+        if (el.workflowDiffFilterSelect) el.workflowDiffFilterSelect.value = '';
+        loadData();
       });
       el.activeFiltersContainer.appendChild(pill);
     }
@@ -1375,6 +1769,37 @@
       }
     } catch (err) {
       tool.favorite = !nextState;
+      if (starButtonElement) {
+        starButtonElement.classList.toggle('active', !nextState);
+      }
+      showToast(err.message, 'error');
+    }
+  }
+
+  async function toggleWorkflowFavorite(wf, starButtonElement) {
+    const nextState = !wf.favorite;
+    wf.favorite = nextState;
+
+    if (starButtonElement) {
+      starButtonElement.classList.toggle('active', nextState);
+      const starIcon = starButtonElement.querySelector('.star-icon');
+      if (starIcon) {
+        starIcon.setAttribute('fill', nextState ? 'currentColor' : 'none');
+      }
+    }
+
+    try {
+      await apiFetch(`/api/workflows/${wf.id}/favorite`, {
+        method: 'PATCH',
+        body: JSON.stringify({ favorite: nextState }),
+      });
+      updateCounts();
+      showToast(nextState ? t('toast_fav_added') : t('toast_fav_removed'));
+      if (state.currentNav === 'favorites' && !nextState) {
+        loadData();
+      }
+    } catch (err) {
+      wf.favorite = !nextState;
       if (starButtonElement) {
         starButtonElement.classList.toggle('active', !nextState);
       }
@@ -1582,6 +2007,257 @@
     const currentUrl = new URL(window.location);
     currentUrl.searchParams.delete('prompt');
     window.history.replaceState({}, '', currentUrl);
+  }
+
+  // --- Workflow Detail Dialog ---
+
+  async function openWorkflowDetailDialog(wfOrId) {
+    let wf = typeof wfOrId === 'string' ? null : wfOrId;
+
+    if (!wf || !wf.steps) {
+      const id = typeof wfOrId === 'string' ? wfOrId : wfOrId.id;
+      try {
+        const res = await apiFetch(`/api/workflows/${id}`);
+        wf = res.data;
+      } catch {
+        showToast('Failed to load workflow details', 'error');
+        return;
+      }
+    }
+
+    state.activeDetailWorkflow = wf;
+
+    el.workflowDetailTitle.textContent = wf.title;
+    el.workflowDetailFavBtn.classList.toggle('active', Boolean(wf.favorite));
+    const starIcon = el.workflowDetailFavBtn.querySelector('.star-icon');
+    if (starIcon) {
+      starIcon.setAttribute('fill', wf.favorite ? 'currentColor' : 'none');
+    }
+
+    // Status badge
+    const status = wf.status || 'Active';
+    el.workflowDetailStatus.textContent = status;
+    el.workflowDetailStatus.className = `badge badge-status status-${status.toLowerCase()}`;
+
+    // Difficulty badge
+    const difficulty = wf.difficulty || 'Medium';
+    el.workflowDetailDifficulty.textContent = difficulty;
+    el.workflowDetailDifficulty.className = `badge badge-difficulty diff-${difficulty.toLowerCase()}`;
+
+    // Estimated time
+    const estTime = wf.estimatedTime || wf.extra?.estimatedTime;
+    if (estTime) {
+      el.workflowDetailEstTime.textContent = `⏱ ${estTime}`;
+      el.workflowDetailEstTime.classList.remove('hidden');
+    } else {
+      el.workflowDetailEstTime.classList.add('hidden');
+    }
+
+    el.workflowDetailUpdated.textContent = t('updated_at', formatRelativeDate(wf.updatedAt));
+
+    // Purpose Box
+    const purpose = wf.purpose || wf.extra?.purpose;
+    if (purpose) {
+      el.workflowDetailPurpose.textContent = purpose;
+      el.workflowDetailPurposeBox.classList.remove('hidden');
+    } else {
+      el.workflowDetailPurposeBox.classList.add('hidden');
+    }
+
+    // Description
+    if (wf.description && wf.description !== purpose) {
+      el.workflowDetailDescription.textContent = wf.description;
+      el.workflowDetailDescription.classList.remove('hidden');
+    } else {
+      el.workflowDetailDescription.classList.add('hidden');
+    }
+
+    // Notes
+    if (wf.notes) {
+      el.workflowDetailNotes.textContent = wf.notes;
+      el.workflowDetailNotesWrapper.classList.remove('hidden');
+    } else {
+      el.workflowDetailNotesWrapper.classList.add('hidden');
+    }
+
+    // Tags
+    el.workflowDetailTagsRow.innerHTML = '';
+    const tags = Array.isArray(wf.tags) ? wf.tags : [];
+    if (tags.length > 0) {
+      for (const tag of tags) {
+        const tagSpan = document.createElement('span');
+        tagSpan.className = 'card-tag';
+        tagSpan.textContent = `#${tag}`;
+        tagSpan.addEventListener('click', () => {
+          el.workflowDetailDialog.close();
+          state.tag = tag;
+          loadData();
+          renderTagsList();
+        });
+        el.workflowDetailTagsRow.appendChild(tagSpan);
+      }
+      el.workflowDetailTagsRow.classList.remove('hidden');
+    } else {
+      el.workflowDetailTagsRow.classList.add('hidden');
+    }
+
+    // Render interactive steps
+    renderWorkflowDetailSteps(wf);
+
+    // Update URL query param without reload
+    const currentUrl = new URL(window.location);
+    currentUrl.searchParams.set('workflow', wf.id);
+    currentUrl.searchParams.delete('tool');
+    currentUrl.searchParams.delete('prompt');
+    window.history.replaceState({}, '', currentUrl);
+
+    el.workflowDetailDialog.showModal();
+  }
+
+  function closeWorkflowDetailDialog() {
+    state.activeDetailWorkflow = null;
+    el.workflowDetailDialog.close();
+
+    const currentUrl = new URL(window.location);
+    currentUrl.searchParams.delete('workflow');
+    window.history.replaceState({}, '', currentUrl);
+  }
+
+  function renderWorkflowDetailSteps(wf) {
+    el.workflowDetailStepsList.innerHTML = '';
+    const steps = Array.isArray(wf.steps) ? wf.steps : [];
+    const totalSteps = steps.length;
+
+    function updateProgress() {
+      let doneCount = 0;
+      steps.forEach((s, idx) => {
+        const checkKey = `${wf.id}:${s.id || idx}`;
+        if (state.activeWorkflowChecklistState[checkKey]) {
+          doneCount++;
+        }
+      });
+
+      el.workflowProgressText.textContent = t('workflow_progress', doneCount, totalSteps);
+      const pct = totalSteps > 0 ? Math.round((doneCount / totalSteps) * 100) : 0;
+      el.workflowProgressFill.style.width = `${pct}%`;
+    }
+
+    updateProgress();
+
+    steps.forEach((step, idx) => {
+      const stepKey = `${wf.id}:${step.id || idx}`;
+      const isChecked = Boolean(state.activeWorkflowChecklistState[stepKey]);
+
+      const card = document.createElement('div');
+      card.className = `workflow-step-card ${isChecked ? 'completed' : ''}`;
+
+      // Step header row
+      const header = document.createElement('div');
+      header.className = 'workflow-step-header';
+
+      const left = document.createElement('div');
+      left.className = 'step-header-left';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'step-checkbox';
+      checkbox.id = `step-check-${idx}`;
+      checkbox.checked = isChecked;
+
+      checkbox.addEventListener('change', () => {
+        state.activeWorkflowChecklistState[stepKey] = checkbox.checked;
+        card.classList.toggle('completed', checkbox.checked);
+        updateProgress();
+      });
+
+      const label = document.createElement('label');
+      label.className = 'step-title-label';
+      label.htmlFor = `step-check-${idx}`;
+      label.textContent = `${idx + 1}. ${step.title}`;
+
+      left.appendChild(checkbox);
+      left.appendChild(label);
+
+      const copyStepBtn = document.createElement('button');
+      copyStepBtn.className = 'btn btn-copy btn-sm';
+      copyStepBtn.title = t('btn_copy_step');
+      copyStepBtn.innerHTML = `
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span>${t('btn_copy_step')}</span>
+      `;
+      copyStepBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const instText = step.instructions || step.instruction || '';
+        const copyText = `${step.title}\n\n${instText}`.trim();
+        copyToClipboard(copyText, copyStepBtn);
+      });
+
+      header.appendChild(left);
+      header.appendChild(copyStepBtn);
+      card.appendChild(header);
+
+      // Step instructions
+      const inst = step.instructions || step.instruction || '';
+      if (inst) {
+        const instBox = document.createElement('div');
+        instBox.className = 'step-instructions';
+        instBox.textContent = inst;
+        card.appendChild(instBox);
+      }
+
+      // Step linked resources
+      const linked = Array.isArray(step.linkedResources) ? step.linkedResources : [];
+      if (linked.length > 0) {
+        const linkedSection = document.createElement('div');
+        linkedSection.className = 'step-linked-section';
+
+        const linkedLabel = document.createElement('div');
+        linkedLabel.className = 'step-linked-label';
+        linkedLabel.textContent = t('picker_linked_resources');
+        linkedSection.appendChild(linkedLabel);
+
+        const chipsWrap = document.createElement('div');
+        chipsWrap.className = 'step-linked-chips';
+
+        linked.forEach((lr) => {
+          const chip = document.createElement('div');
+          chip.className = 'linked-resource-chip';
+          chip.title = `Click to view ${lr.targetResourceTitle}`;
+
+          const typeBadge = document.createElement('span');
+          typeBadge.className = `badge badge-kind kind-${lr.targetResourceType || 'tool'}`;
+          typeBadge.textContent = lr.targetResourceType === 'prompt' ? t('badge_prompt') : (lr.targetResourceType === 'website' ? t('badge_website') : t('badge_tool'));
+
+          const nameSpan = document.createElement('span');
+          nameSpan.className = 'chip-title';
+          nameSpan.textContent = lr.targetResourceTitle || lr.targetResourceId;
+
+          const arrowIcon = document.createElement('span');
+          arrowIcon.className = 'chip-arrow';
+          arrowIcon.innerHTML = '&nearr;';
+
+          chip.appendChild(typeBadge);
+          chip.appendChild(nameSpan);
+          chip.appendChild(arrowIcon);
+
+          chip.addEventListener('click', () => {
+            el.workflowDetailDialog.close();
+            if (lr.targetResourceType === 'prompt') {
+              openPromptDetailDialog(lr.targetResourceId);
+            } else {
+              openToolDetailDialog(lr.targetResourceId);
+            }
+          });
+
+          chipsWrap.appendChild(chip);
+        });
+
+        linkedSection.appendChild(chipsWrap);
+        card.appendChild(linkedSection);
+      }
+
+      el.workflowDetailStepsList.appendChild(card);
+    });
   }
 
   // --- Tool Form Dialog (Create / Edit) ---
@@ -1868,7 +2544,409 @@
     }
   }
 
+  // --- Workflow Form Dialog (Create / Edit) ---
+
+  function openWorkflowFormDialog(workflowToEdit = null) {
+    if (workflowToEdit) {
+      el.workflowFormTitle.textContent = t('modal_edit_workflow');
+      el.inputWorkflowId.value = workflowToEdit.id;
+      el.inputWorkflowTitle.value = workflowToEdit.title || '';
+      el.inputWorkflowPurpose.value = workflowToEdit.purpose || '';
+      el.inputWorkflowStatus.value = workflowToEdit.status || 'Active';
+      el.inputWorkflowDifficulty.value = workflowToEdit.difficulty || 'Medium';
+      el.inputWorkflowEstimatedTime.value = workflowToEdit.estimatedTime || '';
+      el.inputWorkflowFavorite.checked = Boolean(workflowToEdit.favorite);
+      el.inputWorkflowDescription.value = workflowToEdit.description || '';
+      el.inputWorkflowNotes.value = workflowToEdit.notes || '';
+      el.inputWorkflowTags.value = Array.isArray(workflowToEdit.tags) ? workflowToEdit.tags.join(', ') : '';
+      state.currentEditingWorkflowSteps = JSON.parse(JSON.stringify(workflowToEdit.steps || [])).map((s) => ({
+        ...s,
+        instructions: s.instructions || s.instruction || '',
+      }));
+      el.workflowFormSubmitBtn.querySelector('span').textContent = t('btn_save_changes');
+    } else {
+      el.workflowFormTitle.textContent = t('modal_new_workflow');
+      el.workflowForm.reset();
+      el.inputWorkflowId.value = '';
+      el.inputWorkflowStatus.value = 'Active';
+      el.inputWorkflowDifficulty.value = 'Medium';
+      el.inputWorkflowFavorite.checked = state.currentNav === 'favorites';
+      if (state.tag) el.inputWorkflowTags.value = state.tag;
+
+      state.currentEditingWorkflowSteps = [
+        {
+          title: '',
+          instructions: '',
+          linkedResources: [],
+        },
+      ];
+      el.workflowFormSubmitBtn.querySelector('span').textContent = t('btn_save_workflow');
+    }
+
+    renderWorkflowFormSteps();
+    el.workflowFormDialog.showModal();
+    setTimeout(() => el.inputWorkflowTitle.focus(), 50);
+  }
+
+  function closeWorkflowFormDialog() {
+    el.workflowFormDialog.close();
+  }
+
+  function renderWorkflowFormSteps() {
+    el.workflowFormStepsList.innerHTML = '';
+
+    if (state.currentEditingWorkflowSteps.length === 0) {
+      state.currentEditingWorkflowSteps.push({
+        title: '',
+        instructions: '',
+        linkedResources: [],
+      });
+    }
+
+    const total = state.currentEditingWorkflowSteps.length;
+
+    state.currentEditingWorkflowSteps.forEach((step, idx) => {
+      const stepRow = document.createElement('div');
+      stepRow.className = 'form-step-builder-card';
+
+      // Step Header
+      const header = document.createElement('div');
+      header.className = 'step-builder-header';
+
+      const numLabel = document.createElement('span');
+      numLabel.className = 'step-builder-num';
+      numLabel.textContent = `${t('label_step_number', idx + 1)}`;
+
+      const stepControls = document.createElement('div');
+      stepControls.className = 'step-builder-controls';
+
+      // Move Up
+      const moveUpBtn = document.createElement('button');
+      moveUpBtn.type = 'button';
+      moveUpBtn.className = 'btn btn-icon btn-sm';
+      moveUpBtn.title = t('btn_step_move_up');
+      moveUpBtn.textContent = '↑';
+      moveUpBtn.disabled = idx === 0;
+      moveUpBtn.addEventListener('click', () => {
+        const item = state.currentEditingWorkflowSteps.splice(idx, 1)[0];
+        state.currentEditingWorkflowSteps.splice(idx - 1, 0, item);
+        renderWorkflowFormSteps();
+      });
+
+      // Move Down
+      const moveDownBtn = document.createElement('button');
+      moveDownBtn.type = 'button';
+      moveDownBtn.className = 'btn btn-icon btn-sm';
+      moveDownBtn.title = t('btn_step_move_down');
+      moveDownBtn.textContent = '↓';
+      moveDownBtn.disabled = idx === total - 1;
+      moveDownBtn.addEventListener('click', () => {
+        const item = state.currentEditingWorkflowSteps.splice(idx, 1)[0];
+        state.currentEditingWorkflowSteps.splice(idx + 1, 0, item);
+        renderWorkflowFormSteps();
+      });
+
+      // Delete Step
+      const delStepBtn = document.createElement('button');
+      delStepBtn.type = 'button';
+      delStepBtn.className = 'btn btn-icon btn-danger btn-sm';
+      delStepBtn.title = t('btn_step_delete');
+      delStepBtn.textContent = '✕';
+      delStepBtn.disabled = total <= 1;
+      delStepBtn.addEventListener('click', () => {
+        state.currentEditingWorkflowSteps.splice(idx, 1);
+        renderWorkflowFormSteps();
+      });
+
+      stepControls.appendChild(moveUpBtn);
+      stepControls.appendChild(moveDownBtn);
+      stepControls.appendChild(delStepBtn);
+
+      header.appendChild(numLabel);
+      header.appendChild(stepControls);
+      stepRow.appendChild(header);
+
+      // Step Title Input
+      const titleGroup = document.createElement('div');
+      titleGroup.className = 'form-group';
+      const titleInput = document.createElement('input');
+      titleInput.type = 'text';
+      titleInput.className = 'form-step-title-input';
+      titleInput.placeholder = t('step_title_placeholder');
+      titleInput.value = step.title || '';
+      titleInput.addEventListener('input', (e) => {
+        step.title = e.target.value;
+      });
+      titleGroup.appendChild(titleInput);
+      stepRow.appendChild(titleGroup);
+
+      // Step Instructions Textarea
+      const instGroup = document.createElement('div');
+      instGroup.className = 'form-group';
+      const instTextarea = document.createElement('textarea');
+      instTextarea.className = 'form-step-instructions-textarea';
+      instTextarea.rows = 3;
+      instTextarea.placeholder = t('step_instructions_placeholder');
+      instTextarea.value = step.instructions || '';
+      instTextarea.addEventListener('input', (e) => {
+        step.instructions = e.target.value;
+      });
+      instGroup.appendChild(instTextarea);
+      stepRow.appendChild(instGroup);
+
+      // Linked Resources Section
+      const linkedBox = document.createElement('div');
+      linkedBox.className = 'step-builder-linked-box';
+
+      const linkedHeader = document.createElement('div');
+      linkedHeader.className = 'step-builder-linked-header';
+
+      const linkedTitle = document.createElement('span');
+      linkedTitle.className = 'label-hint';
+      linkedTitle.textContent = t('picker_linked_resources');
+
+      const addResourceBtn = document.createElement('button');
+      addResourceBtn.type = 'button';
+      addResourceBtn.className = 'btn btn-secondary btn-sm';
+      addResourceBtn.innerHTML = `
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        <span>${t('picker_link_btn')}</span>
+      `;
+      addResourceBtn.addEventListener('click', () => {
+        openResourcePicker(idx);
+      });
+
+      linkedHeader.appendChild(linkedTitle);
+      linkedHeader.appendChild(addResourceBtn);
+      linkedBox.appendChild(linkedHeader);
+
+      const linkedChips = document.createElement('div');
+      linkedChips.className = 'step-linked-chips';
+
+      const linked = Array.isArray(step.linkedResources) ? step.linkedResources : [];
+      if (linked.length > 0) {
+        linked.forEach((lr, lrIdx) => {
+          const chip = document.createElement('div');
+          chip.className = 'linked-resource-chip';
+
+          const kindBadge = document.createElement('span');
+          kindBadge.className = `badge badge-kind kind-${lr.targetResourceType || 'tool'}`;
+          kindBadge.textContent = lr.targetResourceType === 'prompt' ? t('badge_prompt') : (lr.targetResourceType === 'website' ? t('badge_website') : t('badge_tool'));
+
+          const titleSpan = document.createElement('span');
+          titleSpan.className = 'chip-title';
+          titleSpan.textContent = lr.targetResourceTitle || lr.targetResourceId;
+
+          const removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'chip-remove-btn';
+          removeBtn.innerHTML = '&times;';
+          removeBtn.title = 'Unlink';
+          removeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            step.linkedResources.splice(lrIdx, 1);
+            renderWorkflowFormSteps();
+          });
+
+          chip.appendChild(kindBadge);
+          chip.appendChild(titleSpan);
+          chip.appendChild(removeBtn);
+          linkedChips.appendChild(chip);
+        });
+      }
+
+      linkedBox.appendChild(linkedChips);
+      stepRow.appendChild(linkedBox);
+
+      el.workflowFormStepsList.appendChild(stepRow);
+    });
+  }
+
+  async function handleWorkflowFormSubmit(e) {
+    if (e) e.preventDefault();
+
+    const title = el.inputWorkflowTitle.value.trim();
+    const purpose = el.inputWorkflowPurpose.value.trim() || null;
+    const status = el.inputWorkflowStatus.value;
+    const difficulty = el.inputWorkflowDifficulty.value;
+    const estimatedTime = el.inputWorkflowEstimatedTime.value.trim() || null;
+    const favorite = el.inputWorkflowFavorite.checked;
+    const description = el.inputWorkflowDescription.value.trim() || null;
+    const notes = el.inputWorkflowNotes.value.trim() || null;
+    const tags = el.inputWorkflowTags.value
+      .split(',')
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+
+    if (!title) {
+      showToast(t('err_title_required'), 'error');
+      el.inputWorkflowTitle.focus();
+      return;
+    }
+
+    // Clean steps
+    const steps = state.currentEditingWorkflowSteps
+      .map((s, idx) => {
+        const inst = (s.instructions || s.instruction || s.title || '').trim();
+        return {
+          stepOrder: idx + 1,
+          title: s.title.trim(),
+          instruction: inst,
+          instructions: inst,
+          linkedResources: Array.isArray(s.linkedResources) ? s.linkedResources : [],
+        };
+      })
+      .filter((s) => s.title.length > 0);
+
+    if (steps.length === 0) {
+      showToast(t('err_workflow_steps_required'), 'error');
+      return;
+    }
+
+    const workflowId = el.inputWorkflowId.value;
+    const isEdit = Boolean(workflowId);
+
+    el.workflowFormSubmitBtn.disabled = true;
+
+    try {
+      const payload = {
+        title,
+        purpose,
+        status,
+        difficulty,
+        estimatedTime,
+        favorite,
+        description,
+        notes,
+        tags,
+        steps,
+      };
+
+      let saved;
+      if (isEdit) {
+        const res = await apiFetch(`/api/workflows/${workflowId}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload),
+        });
+        saved = res.data;
+        showToast(t('toast_workflow_updated'));
+      } else {
+        const res = await apiFetch('/api/workflows', {
+          method: 'POST',
+          body: JSON.stringify(payload),
+        });
+        saved = res.data;
+        showToast(t('toast_workflow_created'));
+      }
+
+      closeWorkflowFormDialog();
+      await loadData();
+      await loadTags();
+
+      if (isEdit && state.activeDetailWorkflow?.id === workflowId) {
+        openWorkflowDetailDialog(saved);
+      }
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      el.workflowFormSubmitBtn.disabled = false;
+    }
+  }
+
+  // --- Resource Picker Dialog ---
+
+  async function openResourcePicker(stepIndex) {
+    state.activeStepIndexForPicker = stepIndex;
+    el.resourcePickerSearch.value = '';
+    el.resourcePickerDialog.showModal();
+    setTimeout(() => el.resourcePickerSearch.focus(), 50);
+    await searchResourcesForPicker('');
+  }
+
+  function closeResourcePicker() {
+    state.activeStepIndexForPicker = null;
+    el.resourcePickerDialog.close();
+  }
+
+  async function searchResourcesForPicker(query) {
+    el.resourcePickerResults.innerHTML = `<div class="picker-loading">${t('loading_resources')}</div>`;
+    try {
+      const params = new URLSearchParams();
+      if (query) params.set('q', query);
+      params.set('limit', '40');
+
+      const res = await apiFetch(`/api/resources?${params.toString()}`);
+      const items = (res.data || []).filter((item) => item.type !== 'workflow'); // cannot link workflow to itself
+
+      el.resourcePickerResults.innerHTML = '';
+      if (items.length === 0) {
+        el.resourcePickerResults.innerHTML = `<div class="picker-empty">${t('picker_no_results')}</div>`;
+        return;
+      }
+
+      const activeStep = state.currentEditingWorkflowSteps[state.activeStepIndexForPicker];
+      const linkedIds = new Set((activeStep?.linkedResources || []).map((lr) => lr.targetResourceId));
+
+      items.forEach((item) => {
+        const row = document.createElement('div');
+        row.className = 'picker-resource-row';
+
+        const left = document.createElement('div');
+        left.className = 'picker-row-left';
+
+        const kindBadge = document.createElement('span');
+        kindBadge.className = `badge badge-kind kind-${item.type || 'tool'}`;
+        kindBadge.textContent = item.type === 'prompt' ? t('badge_prompt') : (item.type === 'website' ? t('badge_website') : t('badge_tool'));
+
+        const titleSpan = document.createElement('span');
+        titleSpan.className = 'picker-resource-title';
+        titleSpan.textContent = item.title;
+
+        left.appendChild(kindBadge);
+        left.appendChild(titleSpan);
+
+        const isAlreadyLinked = linkedIds.has(item.id);
+        const actionBtn = document.createElement('button');
+        actionBtn.type = 'button';
+        actionBtn.className = `btn btn-sm ${isAlreadyLinked ? 'btn-secondary' : 'btn-primary'}`;
+        actionBtn.textContent = isAlreadyLinked ? t('btn_linked') : t('btn_link');
+        actionBtn.disabled = isAlreadyLinked;
+
+        actionBtn.addEventListener('click', () => {
+          if (!activeStep.linkedResources) activeStep.linkedResources = [];
+          activeStep.linkedResources.push({
+            targetResourceId: item.id,
+            targetResourceType: item.type,
+            targetResourceTitle: item.title,
+          });
+          closeResourcePicker();
+          renderWorkflowFormSteps();
+        });
+
+        row.appendChild(left);
+        row.appendChild(actionBtn);
+        el.resourcePickerResults.appendChild(row);
+      });
+    } catch (err) {
+      el.resourcePickerResults.innerHTML = `<div class="picker-error">${err.message}</div>`;
+    }
+  }
+
   // --- Duplicate Actions ---
+
+  async function duplicateWorkflow(workflow) {
+    try {
+      const res = await apiFetch(`/api/workflows/${workflow.id}/duplicate`, { method: 'POST' });
+      showToast(t('toast_duplicated', workflow.title));
+      await loadData();
+      await loadTags();
+      if (res.data) {
+        openWorkflowDetailDialog(res.data);
+      }
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  }
 
   async function duplicatePrompt(prompt) {
     try {
@@ -1903,8 +2981,10 @@
   function openDeleteDialog(item, type) {
     state.itemToDelete = { id: item.id, title: item.title, type };
     el.deletePromptName.textContent = `"${item.title}"`;
-    el.deleteDialogTitle.textContent = type === 'prompt' ? t('delete_prompt_title') : t('delete_resource_title');
-    el.deleteConfirmPromptMsg.textContent = state.lang === 'vi' ? 'Bạn có chắc chắn muốn xóa vĩnh viễn' : 'Are you sure you want to permanently delete';
+    el.deleteDialogTitle.textContent =
+      type === 'prompt' ? t('delete_prompt_title') : (type === 'workflow' ? t('delete_workflow_title') : t('delete_resource_title'));
+    el.deleteConfirmPromptMsg.textContent =
+      state.lang === 'vi' ? 'Bạn có chắc chắn muốn xóa vĩnh viễn' : 'Are you sure you want to permanently delete';
     el.deleteDialog.showModal();
   }
 
@@ -1915,7 +2995,10 @@
     el.deleteConfirmBtn.disabled = true;
 
     try {
-      const endpoint = item.type === 'prompt' ? `/api/prompts/${item.id}` : `/api/tools/${item.id}`;
+      let endpoint = `/api/tools/${item.id}`;
+      if (item.type === 'prompt') endpoint = `/api/prompts/${item.id}`;
+      else if (item.type === 'workflow') endpoint = `/api/workflows/${item.id}`;
+
       await apiFetch(endpoint, { method: 'DELETE' });
       showToast(t('toast_deleted', item.title));
       el.deleteDialog.close();
@@ -1926,11 +3009,14 @@
       if (state.activeDetailTool?.id === item.id) {
         closeToolDetailDialog();
       }
+      if (state.activeDetailWorkflow?.id === item.id) {
+        closeWorkflowDetailDialog();
+      }
 
       await loadData();
       await loadTags();
       if (item.type === 'prompt') await loadModels();
-      else await loadToolMetadataOptions();
+      else if (item.type !== 'workflow') await loadToolMetadataOptions();
     } catch (err) {
       showToast(err.message, 'error');
     } finally {
@@ -1981,6 +3067,14 @@
       }
     });
 
+    if (el.menuAddWorkflowBtn) {
+      el.menuAddWorkflowBtn.addEventListener('click', () => {
+        el.addDropdownMenu.classList.add('hidden');
+        el.addBtn.closest('.dropdown-wrapper')?.classList.remove('open');
+        openWorkflowFormDialog();
+      });
+    }
+
     el.menuAddToolBtn.addEventListener('click', () => {
       el.addDropdownMenu.classList.add('hidden');
       el.addBtn.closest('.dropdown-wrapper')?.classList.remove('open');
@@ -1994,6 +3088,7 @@
     });
 
     // Empty state buttons
+    if (el.emptyAddWorkflowBtn) el.emptyAddWorkflowBtn.addEventListener('click', () => openWorkflowFormDialog());
     el.emptyAddToolBtn.addEventListener('click', () => openToolFormDialog());
     el.emptyAddPromptBtn.addEventListener('click', () => openPromptFormDialog());
 
@@ -2020,7 +3115,7 @@
     el.viewListBtn.addEventListener('click', () => setViewMode('list'));
     el.viewGridBtn.addEventListener('click', () => setViewMode('grid'));
 
-    // Navigation buttons (All Resources, Tools, Prompts, Favorites)
+    // Navigation buttons (All Resources, Workflows, Tools, Prompts, Favorites)
     document.querySelectorAll('[data-filter-view]').forEach((btn) => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('[data-filter-view]').forEach((b) => b.classList.remove('active'));
@@ -2036,13 +3131,20 @@
         }
 
         // Sidebar filters visibility toggle
-        if (view === 'tools') {
+        if (view === 'workflows') {
+          if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'block';
+          el.sidebarToolsFilters.style.display = 'none';
+          el.sidebarPromptsFilters.style.display = 'none';
+        } else if (view === 'tools') {
+          if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'none';
           el.sidebarToolsFilters.style.display = 'block';
           el.sidebarPromptsFilters.style.display = 'none';
         } else if (view === 'prompts') {
+          if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'none';
           el.sidebarToolsFilters.style.display = 'none';
           el.sidebarPromptsFilters.style.display = 'block';
         } else {
+          if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'block';
           el.sidebarToolsFilters.style.display = 'block';
           el.sidebarPromptsFilters.style.display = 'block';
         }
@@ -2050,6 +3152,21 @@
         loadData();
       });
     });
+
+    // Workflow filters in sidebar
+    if (el.workflowStatusFilterSelect) {
+      el.workflowStatusFilterSelect.addEventListener('change', (e) => {
+        state.workflowStatus = e.target.value || null;
+        loadData();
+      });
+    }
+
+    if (el.workflowDiffFilterSelect) {
+      el.workflowDiffFilterSelect.addEventListener('change', (e) => {
+        state.workflowDifficulty = e.target.value || null;
+        loadData();
+      });
+    }
 
     // Tool filters in sidebar
     el.toolKindFilterSelect.addEventListener('change', (e) => {
@@ -2094,6 +3211,33 @@
       loadData(true);
     });
 
+    // Workflow Form Dialog events
+    if (el.workflowForm) el.workflowForm.addEventListener('submit', handleWorkflowFormSubmit);
+    if (el.workflowFormCloseBtn) el.workflowFormCloseBtn.addEventListener('click', closeWorkflowFormDialog);
+    if (el.workflowFormCancelBtn) el.workflowFormCancelBtn.addEventListener('click', closeWorkflowFormDialog);
+    if (el.workflowAddStepBtn) {
+      el.workflowAddStepBtn.addEventListener('click', () => {
+        state.currentEditingWorkflowSteps.push({
+          title: '',
+          instructions: '',
+          linkedResources: [],
+        });
+        renderWorkflowFormSteps();
+      });
+    }
+
+    // Resource Picker Dialog events
+    if (el.resourcePickerCloseBtn) el.resourcePickerCloseBtn.addEventListener('click', closeResourcePicker);
+    if (el.resourcePickerCancelBtn) el.resourcePickerCancelBtn.addEventListener('click', closeResourcePicker);
+    if (el.resourcePickerSearch) {
+      const handlePickerSearchDebounced = debounce((val) => {
+        searchResourcesForPicker(val.trim());
+      }, 200);
+      el.resourcePickerSearch.addEventListener('input', (e) => {
+        handlePickerSearchDebounced(e.target.value);
+      });
+    }
+
     // Tool Form Dialog events
     el.toolForm.addEventListener('submit', handleToolFormSubmit);
     el.toolFormCloseBtn.addEventListener('click', closeToolFormDialog);
@@ -2104,6 +3248,47 @@
     el.promptForm.addEventListener('submit', handlePromptFormSubmit);
     el.promptFormCloseBtn.addEventListener('click', closePromptFormDialog);
     el.promptFormCancelBtn.addEventListener('click', closePromptFormDialog);
+
+    // Workflow Detail Dialog events
+    if (el.workflowDetailCloseBtn) el.workflowDetailCloseBtn.addEventListener('click', closeWorkflowDetailDialog);
+    if (el.workflowDetailFavBtn) {
+      el.workflowDetailFavBtn.addEventListener('click', () => {
+        if (state.activeDetailWorkflow) {
+          toggleWorkflowFavorite(state.activeDetailWorkflow, el.workflowDetailFavBtn);
+        }
+      });
+    }
+    if (el.workflowDetailCopyMdBtn) {
+      el.workflowDetailCopyMdBtn.addEventListener('click', async () => {
+        if (state.activeDetailWorkflow) {
+          const md = await getWorkflowMarkdown(state.activeDetailWorkflow);
+          copyToClipboard(md, el.workflowDetailCopyMdBtn);
+        }
+      });
+    }
+    if (el.workflowDetailEditBtn) {
+      el.workflowDetailEditBtn.addEventListener('click', () => {
+        if (state.activeDetailWorkflow) {
+          const wf = state.activeDetailWorkflow;
+          closeWorkflowDetailDialog();
+          openWorkflowFormDialog(wf);
+        }
+      });
+    }
+    if (el.workflowDetailDuplicateBtn) {
+      el.workflowDetailDuplicateBtn.addEventListener('click', () => {
+        if (state.activeDetailWorkflow) {
+          duplicateWorkflow(state.activeDetailWorkflow);
+        }
+      });
+    }
+    if (el.workflowDetailDeleteBtn) {
+      el.workflowDetailDeleteBtn.addEventListener('click', () => {
+        if (state.activeDetailWorkflow) {
+          openDeleteDialog(state.activeDetailWorkflow, 'workflow');
+        }
+      });
+    }
 
     // Tool Detail Dialog events
     el.toolDetailCloseBtn.addEventListener('click', closeToolDetailDialog);
@@ -2184,7 +3369,16 @@
     });
 
     // Close dialogs on outside click
-    [el.toolFormDialog, el.toolDetailDialog, el.promptFormDialog, el.promptDetailDialog, el.deleteDialog].forEach((dialog) => {
+    [
+      el.workflowFormDialog,
+      el.workflowDetailDialog,
+      el.resourcePickerDialog,
+      el.toolFormDialog,
+      el.toolDetailDialog,
+      el.promptFormDialog,
+      el.promptDetailDialog,
+      el.deleteDialog,
+    ].filter(Boolean).forEach((dialog) => {
       dialog.addEventListener('click', (e) => {
         const rect = dialog.getBoundingClientRect();
         const isInDialog =
@@ -2194,6 +3388,7 @@
           e.clientX <= rect.left + rect.width;
         if (!isInDialog) {
           dialog.close();
+          if (dialog === el.workflowDetailDialog) closeWorkflowDetailDialog();
           if (dialog === el.promptDetailDialog) closePromptDetailDialog();
           if (dialog === el.toolDetailDialog) closeToolDetailDialog();
         }
@@ -2212,23 +3407,35 @@
 
       // Escape -> Close dialogs
       if (e.key === 'Escape') {
-        if (el.deleteDialog.open) {
+        if (el.deleteDialog?.open) {
           el.deleteDialog.close();
           return;
         }
-        if (el.toolFormDialog.open) {
+        if (el.resourcePickerDialog?.open) {
+          closeResourcePicker();
+          return;
+        }
+        if (el.workflowFormDialog?.open) {
+          closeWorkflowFormDialog();
+          return;
+        }
+        if (el.workflowDetailDialog?.open) {
+          closeWorkflowDetailDialog();
+          return;
+        }
+        if (el.toolFormDialog?.open) {
           closeToolFormDialog();
           return;
         }
-        if (el.promptFormDialog.open) {
+        if (el.promptFormDialog?.open) {
           closePromptFormDialog();
           return;
         }
-        if (el.toolDetailDialog.open) {
+        if (el.toolDetailDialog?.open) {
           closeToolDetailDialog();
           return;
         }
-        if (el.promptDetailDialog.open) {
+        if (el.promptDetailDialog?.open) {
           closePromptDetailDialog();
           return;
         }
@@ -2243,12 +3450,17 @@
 
       // Cmd/Ctrl + Enter in Form Dialog -> Save
       if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-        if (el.toolFormDialog.open) {
+        if (el.workflowFormDialog?.open) {
+          e.preventDefault();
+          handleWorkflowFormSubmit();
+          return;
+        }
+        if (el.toolFormDialog?.open) {
           e.preventDefault();
           handleToolFormSubmit();
           return;
         }
-        if (el.promptFormDialog.open) {
+        if (el.promptFormDialog?.open) {
           e.preventDefault();
           handlePromptFormSubmit();
           return;
@@ -2264,6 +3476,15 @@
 
   async function checkUrlNavigation() {
     const urlParams = new URLSearchParams(window.location.search);
+
+    const workflowId = urlParams.get('workflow');
+    const workflowMatch = window.location.pathname.match(/^\/workflow\/([^/]+)$/);
+    const targetWorkflowId = workflowId || (workflowMatch ? workflowMatch[1] : null);
+
+    if (targetWorkflowId) {
+      await openWorkflowDetailDialog(targetWorkflowId);
+      return;
+    }
 
     const toolId = urlParams.get('tool');
     const toolMatch = window.location.pathname.match(/^\/tool\/([^/]+)$/);
