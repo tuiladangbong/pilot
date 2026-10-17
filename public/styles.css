@@ -142,15 +142,24 @@ body.newspaper-body {
 
 .masthead-title {
   font-family: var(--font-masthead);
-  font-size: clamp(40px, 5.2vw, 68px);
+  font-size: clamp(28px, 4.2vw, 54px);
   font-weight: 900;
   color: var(--ink);
-  letter-spacing: -1px;
+  letter-spacing: -0.8px;
   line-height: 0.95;
   text-align: center;
   margin: 0;
   text-transform: uppercase;
   user-select: none;
+  white-space: nowrap;
+}
+
+.tilted-exclamation {
+  display: inline-block;
+  transform: rotate(14deg) scale(1.15);
+  transform-origin: 50% 85%;
+  margin-left: 3px;
+  color: var(--accent-red);
 }
 
 /* Masthead Mid-Right: Small Editorial Copy */
@@ -245,6 +254,173 @@ body.newspaper-body {
 .curator-exit-btn {
   font-weight: bold;
   margin-left: 2px;
+}
+
+/* ==========================================================================
+   90s RETRO BLINK & FLASH SYSTEM (SYSTEMATIC & CLEAN CODE)
+   ========================================================================== */
+
+/* 1. Authentic Stepped HTML <blink> keyframe */
+@keyframes retro-blink-1s {
+  0%, 49.9% { opacity: 1; visibility: visible; }
+  50%, 100% { opacity: 0; visibility: hidden; }
+}
+
+@keyframes retro-blink-fast {
+  0%, 49.9% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* 2. Alternating Color Flash (Urgent 90s classified alert) */
+@keyframes retro-flash-yellow-red {
+  0%, 49.9% {
+    background-color: var(--yellow-primary);
+    color: var(--ink);
+    border-color: var(--border-dark);
+  }
+  50%, 100% {
+    background-color: var(--accent-red);
+    color: #FFFFFF;
+    border-color: var(--accent-red);
+  }
+}
+
+@keyframes retro-flash-black-yellow {
+  0%, 49.9% {
+    background-color: var(--ink);
+    color: var(--yellow-primary);
+  }
+  50%, 100% {
+    background-color: var(--yellow-highlight);
+    color: var(--ink);
+  }
+}
+
+/* 3. Starburst Twinkle */
+@keyframes retro-twinkle {
+  0%, 24% { opacity: 1; transform: scale(1); }
+  25%, 49% { opacity: 0.2; transform: scale(0.85); }
+  50%, 74% { opacity: 1; transform: scale(1.15); }
+  75%, 100% { opacity: 0.3; transform: scale(0.9); }
+}
+
+/* 4. Marquee continuous ticker scroll */
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Utility classes for systematic 90s blink usage */
+.blink-90s {
+  animation: retro-blink-1s 1.2s steps(1, start) infinite;
+}
+
+.blink-fast {
+  animation: retro-blink-fast 0.6s steps(1, start) infinite;
+}
+
+.flash-burst {
+  animation: retro-flash-black-yellow 1.4s steps(1, start) infinite;
+}
+
+.flash-alert {
+  animation: retro-flash-yellow-red 1.2s steps(1, start) infinite;
+}
+
+.retro-twinkle {
+  display: inline-block;
+  animation: retro-twinkle 1.6s steps(2, start) infinite;
+}
+
+.retro-dot {
+  color: var(--accent-red);
+  display: inline-block;
+  margin-right: 3px;
+  font-size: 10px;
+}
+
+/* ==========================================================================
+   90s RETRO TICKER BAR
+   ========================================================================== */
+.retro-ticker-bar {
+  display: flex;
+  align-items: center;
+  height: 26px;
+  border-bottom: 1.5px solid var(--border-dark);
+  background-color: var(--paper-dark);
+  overflow: hidden;
+  font-family: var(--font-directory);
+  font-size: 11px;
+}
+
+.ticker-tag {
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-family: var(--font-directory);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  border-right: 1.5px solid var(--border-dark);
+  user-select: none;
+}
+
+.ticker-scroll-wrap {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.ticker-content {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: marquee-scroll 28s linear infinite;
+  gap: 16px;
+  padding-left: 12px;
+}
+
+.ticker-content:hover {
+  animation-play-state: paused;
+}
+
+.ticker-sep {
+  color: var(--accent-red);
+  font-size: 10px;
+}
+
+.ticker-end-stamp {
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  background-color: var(--yellow-primary);
+  border-left: 1.5px solid var(--border-dark);
+  font-family: var(--font-directory);
+  font-size: 9.5px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  color: var(--accent-red);
+  user-select: none;
+}
+
+/* Motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .blink-90s,
+  .blink-fast,
+  .flash-burst,
+  .flash-alert,
+  .retro-twinkle,
+  .ticker-content {
+    animation: none !important;
+    opacity: 1 !important;
+  }
 }
 
 /* ==========================================================================
