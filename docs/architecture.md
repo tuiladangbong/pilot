@@ -91,7 +91,7 @@ src/
 │
 ├── adapters/
 │   ├── http/
-│   │   └── router.ts              # RESTful HTTP API & static fallback
+│   │   └── router.ts              # RESTful HTTP API & static fallback (Platform-independent)
 │   └── persistence/
 │       └── d1/
 │           ├── D1PromptRepository.ts    # D1 SQL & FTS5 search
@@ -102,10 +102,41 @@ src/
 │
 ├── platform/
 │   └── cloudflare/
-│       └── env.ts                 # Worker bindings (DB, ASSETS)
+│       ├── env.ts                 # Worker bindings (DB, ASSETS)
+│       └── bootstrap.ts           # Cloudflare composition root (RouterDependencies)
 │
 └── index.ts                       # Cloudflare Worker entry point
 ```
+
+## Platform Portability
+
+Pilot is architected so that Cloudflare is treated as a deployment target, not as the application architecture. Domain models, application use cases, and HTTP routing are strictly decoupled from Cloudflare bindings:
+
+```text
+                   Pilot Domain
+                        │
+                        ▼
+                 Application Layer
+                        │
+                 Repository Ports
+                        │
+        ┌───────────────┴───────────────┐
+        │                               │
+ Cloudflare Adapters              Future VPS Adapters
+        │                               │
+ Workers HTTP / ASSETS             Node.js / Fastify / Native
+ D1 SQLite Persistence             better-sqlite3 / node:sqlite
+        │                               │
+        └───────────────┬───────────────┘
+                        │
+                Decoupled Router
+           (src/adapters/http/router.ts)
+```
+
+- **Router Independence**: `handleRequest(request, deps)` depends exclusively on the `RouterDependencies` interface, which wraps repository ports.
+- **Persistence Decoupling**: SQL operations are isolated inside persistence adapters (`src/adapters/persistence/d1/`). SQLite FTS5 migrations run on standard SQLite 3.
+- **Portability Verification**: Architectural guards in `tests/portability.test.mjs` verify zero Cloudflare dependencies in `src/core/`, `src/modules/`, and `src/adapters/http/router.ts`.
+- See [portability.md](file:///c:/Users/dangbong/Documents/Projects/Nodbits%20PILOT/docs/portability.md) for full deployment migration guidelines.
 
 ## Database Schema & Migrations
 
@@ -142,3 +173,4 @@ When introducing a new resource type (e.g., `agents` or `collections`):
 3. **Implement Adapter**: Create `D1<Module>Repository.ts` in `src/adapters/persistence/d1/` implementing `<Module>Repository`.
 4. **Expose HTTP Endpoints**: Wire REST routes under `/api/<module-name>` in `src/adapters/http/router.ts`.
 5. **No Cross-Module Coupling**: Existing module internals are never modified or coupled to other resource modules. Cross-resource connections happen via `resource_relationships`.
+

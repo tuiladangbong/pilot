@@ -21,8 +21,13 @@ Instructions and rules for AI agents and developers working on the **Pilot** cod
 - **Prefer Cloudflare-native capabilities where appropriate**: Leverage Workers Static Assets, D1, and Cloudflare bindings naturally.
 - **Keep dependencies minimal**: Avoid heavy npm dependencies, generic enterprise libraries, and DI containers.
 - **Avoid premature abstractions**: Wait until at least two concrete use cases exist before creating abstract layers or helper abstractions.
+- **Cloudflare is a deployment platform, not the application architecture**: Keep business logic and application orchestration portable to standard Node.js / Linux environments without rewrite.
+- **Keep domain, application, ports, and router free of Cloudflare dependencies**: Cloudflare-specific types and bindings (`Env`, `D1Database`, `ASSETS`, `ExecutionContext`) are restricted exclusively to `src/platform/cloudflare/` and `src/adapters/persistence/d1/`.
+- **Router must depend only on RouterDependencies**: `src/adapters/http/router.ts` receives standard Web `Request`/`Response` and repository interfaces via `RouterDependencies`, never instantiating platform-specific repositories directly.
+- **Maintain SQLite 3 compatibility across all migrations**: Write migrations in standard SQLite DDL and SQLite FTS5 so schemas migrate seamlessly to standalone SQLite engines (e.g. `better-sqlite3`).
 - **Never commit secrets**: Do not commit `.dev.vars`, API tokens, private credentials, or environment files.
 - **Run typecheck before committing**: Always run `npm run typecheck` (`tsc --noEmit`) to verify zero TypeScript errors.
 - **Verify production after deploy**: Ensure both local and production endpoints respond with 200 OK after deployment.
 - **Make focused commits**: Keep commit messages concise, descriptive, and aligned with Conventional Commits.
 - **Do not implement unrelated modules during a focused task**: Maintain tight scoping to avoid feature creep.
+

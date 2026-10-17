@@ -1,8 +1,7 @@
-import { Env } from '../../platform/cloudflare/env';
-import { checkDatabaseHealth } from '../persistence/d1/D1HealthCheck';
-import { D1PromptRepository } from '../persistence/d1/D1PromptRepository';
-import { D1ResourceRepository } from '../persistence/d1/D1ResourceRepository';
-import { D1ToolRepository } from '../persistence/d1/D1ToolRepository';
+import { PromptRepository } from '../../modules/prompts/ports/PromptRepository';
+import { ToolRepository } from '../../modules/tools/ports/ToolRepository';
+import { WorkflowRepository } from '../../modules/workflows/ports/WorkflowRepository';
+import { ResourceRepository } from '../../core/ports/ResourceRepository';
 import { CreatePromptUseCase } from '../../modules/prompts/application/CreatePromptUseCase';
 import { GetPromptUseCase } from '../../modules/prompts/application/GetPromptUseCase';
 import { ListPromptsUseCase } from '../../modules/prompts/application/ListPromptsUseCase';
@@ -19,7 +18,6 @@ import { DuplicateToolUseCase } from '../../modules/tools/application/DuplicateT
 import { ToggleToolFavoriteUseCase } from '../../modules/tools/application/ToggleToolFavoriteUseCase';
 import { FetchToolMetadataUseCase } from '../../modules/tools/application/FetchToolMetadataUseCase';
 import { ToolKind, ToolPricing } from '../../modules/tools/domain/Tool';
-import { D1WorkflowRepository } from '../persistence/d1/D1WorkflowRepository';
 import { CreateWorkflowUseCase } from '../../modules/workflows/application/CreateWorkflowUseCase';
 import { GetWorkflowUseCase } from '../../modules/workflows/application/GetWorkflowUseCase';
 import { ListWorkflowsUseCase } from '../../modules/workflows/application/ListWorkflowsUseCase';
@@ -29,6 +27,15 @@ import { DuplicateWorkflowUseCase } from '../../modules/workflows/application/Du
 import { ToggleWorkflowFavoriteUseCase } from '../../modules/workflows/application/ToggleWorkflowFavoriteUseCase';
 import { WorkflowDifficulty, WorkflowStatus } from '../../modules/workflows/domain/Workflow';
 import { toResourceSummaryDto } from '../../core/application/ResourceDto';
+
+export interface RouterDependencies {
+  readonly promptRepo: PromptRepository;
+  readonly toolRepo: ToolRepository;
+  readonly workflowRepo: WorkflowRepository;
+  readonly resourceRepo: ResourceRepository;
+  readonly checkHealth?: () => Promise<{ ok: boolean; database: string; error?: string }>;
+  readonly assetHandler?: (request: Request) => Promise<Response>;
+}
 
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data, null, 2), {
@@ -53,7 +60,7 @@ function jsonError(code: string, message: string, status = 400): Response {
   );
 }
 
-export async function handleRequest(request: Request, env: Env): Promise<Response> {
+export async function handleRequest(request: Request, deps: RouterDependencies): Promise<Response> {
   const url = new URL(request.url);
   const pathname = url.pathname.replace(/\/+$/, '') || '/';
   const method = request.method.toUpperCase();
@@ -64,7 +71,9 @@ export async function handleRequest(request: Request, env: Env): Promise<Respons
   }
 
   if (pathname === '/api/db-health' && method === 'GET') {
-    const health = await checkDatabaseHealth(env.DB);
+    const health = deps.checkHealth
+      ? await deps.checkHealth()
+      : { ok: true, database: 'connected' };
     return json(health, health.ok ? 200 : 503);
   }
 
@@ -77,10 +86,7 @@ export async function handleRequest(request: Request, env: Env): Promise<Respons
     });
   }
 
-  const promptRepo = new D1PromptRepository(env.DB);
-  const toolRepo = new D1ToolRepository(env.DB);
-  const workflowRepo = new D1WorkflowRepository(env.DB);
-  const resourceRepo = new D1ResourceRepository(env.DB);
+  const { promptRepo, toolRepo, workflowRepo, resourceRepo } = deps;
 
   // GET /api/resources (Generic resource listing across modules)
   if (pathname === '/api/resources' && method === 'GET') {
@@ -865,9 +871,9 @@ export async function handleRequest(request: Request, env: Env): Promise<Respons
     pathname.startsWith('/tool/') ||
     pathname.startsWith('/workflow/')
   ) {
-    if (env.ASSETS) {
+    if (deps.assetHandler) {
       const assetReq = new Request(new URL('/', request.url).toString(), request);
-      return env.ASSETS.fetch(assetReq);
+      return deps.assetHandler(assetReq);
     }
     return new Response('Pilot - AI Resource Hub', {
       status: 200,
