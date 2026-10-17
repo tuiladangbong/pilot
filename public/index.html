@@ -307,8 +307,10 @@
     <!-- ==================== MAIN DIRECTORY GRID ==================== -->
     <main class="main-directory-grid" id="main-directory-grid">
       
-      <!-- COLUMN 1: LEFT EDITORIAL SIDEBAR (~15% width) -->
-      <aside class="grid-col col-editorial">
+      <!-- ========== ROW 1 (6 COLUMNS) ========== -->
+
+      <!-- R1C1: LEFT EDITORIAL SIDEBAR (~15% width) -->
+      <aside class="grid-col col-editorial col-row-1">
         <div class="col-header-yellow">
           <h3>EDITOR'S NOTES</h3>
         </div>
@@ -334,37 +336,10 @@
             <p class="ed-dek">Hidden tools that punch above their weight. <span class="ed-arrow">→</span></p>
           </article>
         </div>
-
-        <!-- Print-style engraving illustration -->
-        <div class="editorial-engraving-block">
-          <div class="engraving-svg-wrap">
-            <svg viewBox="0 0 160 110" width="100%" height="100%">
-              <rect x="0" y="0" width="160" height="110" fill="#F3EAD7"/>
-              <g stroke="#111111" stroke-width="1.2" fill="none">
-                <!-- Mountain ridge hatching -->
-                <polygon points="10,85 50,40 85,75 125,25 150,85" fill="#E2D4BD"/>
-                <line x1="50" y1="40" x2="50" y2="85" stroke-dasharray="1,1"/>
-                <line x1="125" y1="25" x2="125" y2="85" stroke-dasharray="1,1"/>
-                <!-- Sunburst -->
-                <circle cx="85" cy="30" r="14" fill="#F4C62B" stroke="#111111" stroke-width="1.5"/>
-                <line x1="85" y1="10" x2="85" y2="2"/>
-                <line x1="100" y1="20" x2="108" y2="14"/>
-                <line x1="70" y1="20" x2="62" y2="14"/>
-                <line x1="10" y1="85" x2="150" y2="85" stroke-width="2"/>
-              </g>
-            </svg>
-          </div>
-          <div class="engraving-motto">
-            <span>GOOD TOOLS</span>
-            <span>BUILD A</span>
-            <span>BRIGHTER</span>
-            <span>INTERNET.</span>
-          </div>
-        </div>
       </aside>
 
-      <!-- COLUMN 2: AI (~17% width) -->
-      <section class="grid-col col-category" id="sec-ai" data-category="ai">
+      <!-- R1C2: AI (~17% width) -->
+      <section class="grid-col col-category col-row-1" id="sec-ai" data-category="ai">
         <div class="cat-header-strip">
           <div class="cat-pill">AI</div>
           <span class="cat-subtext">Intelligent tools for everyday work.</span>
@@ -375,8 +350,8 @@
         </div>
       </section>
 
-      <!-- COLUMN 3: CODE (~17% width) -->
-      <section class="grid-col col-category" id="sec-code" data-category="code">
+      <!-- R1C3: CODE (~17% width) -->
+      <section class="grid-col col-category col-row-1" id="sec-code" data-category="code">
         <div class="cat-header-strip">
           <div class="cat-pill">CODE</div>
           <span class="cat-subtext">Tools for developers who ship software.</span>
@@ -387,8 +362,8 @@
         </div>
       </section>
 
-      <!-- COLUMN 4: DESIGN (~17% width) -->
-      <section class="grid-col col-category" id="sec-design" data-category="design">
+      <!-- R1C4: DESIGN (~17% width) -->
+      <section class="grid-col col-category col-row-1" id="sec-design" data-category="design">
         <div class="cat-header-strip">
           <div class="cat-pill">DESIGN</div>
           <span class="cat-subtext">Craft interfaces, graphics &amp; motion.</span>
@@ -399,8 +374,8 @@
         </div>
       </section>
 
-      <!-- COLUMN 5: AUTOMATION (~17% width) -->
-      <section class="grid-col col-category" id="sec-automation" data-category="automation">
+      <!-- R1C5: AUTOMATION (~17% width) -->
+      <section class="grid-col col-category col-row-1" id="sec-automation" data-category="automation">
         <div class="cat-header-strip">
           <div class="cat-pill">AUTOMATION</div>
           <span class="cat-subtext">Connect services, eliminate toil.</span>
@@ -411,9 +386,8 @@
         </div>
       </section>
 
-      <!-- COLUMN 6: RIGHT SIDEBAR (~15% width) -->
-      <aside class="grid-col col-right-sidebar">
-        <!-- Block 1: Latest Listings -->
+      <!-- R1C6: LATEST LISTINGS (~15% width) -->
+      <aside class="grid-col col-right-sidebar col-row-1">
         <div class="sidebar-block">
           <div class="col-header-yellow with-badge">
             <h3>LATEST LISTINGS</h3>
@@ -423,49 +397,45 @@
             <!-- Latest listings injected here -->
           </div>
         </div>
+      </aside>
 
-        <!-- Block 2: Free This Week -->
-        <div class="sidebar-block">
-          <div class="col-header-yellow with-icon">
-            <span class="gift-icon">🎁</span>
-            <h3>FREE THIS WEEK</h3>
-          </div>
-          <div class="sidebar-tool-list" id="free-this-week-container">
-            <!-- Free this week injected here -->
-          </div>
+      <!-- ========== ROW 2 (6 COLUMNS) ========== -->
+
+      <!-- R2C1: EDITORIAL DISPATCH & MOUNTAIN ENGRAVING (~15% width) -->
+      <aside class="grid-col col-editorial col-row-2">
+        <div class="col-header-yellow">
+          <h3>PRINT DISPATCH</h3>
         </div>
-
-        <!-- Block 3: Newspaper Engraving Illustration -->
-        <div class="sidebar-engraving-block">
-          <div class="vintage-print-seal">
-            <svg viewBox="0 0 160 100" width="100%" height="100%">
-              <rect x="0" y="0" width="160" height="100" fill="#F3EAD7"/>
+        <div class="editorial-engraving-block">
+          <div class="engraving-svg-wrap">
+            <svg viewBox="0 0 160 90" width="100%" height="100%">
+              <rect x="0" y="0" width="160" height="90" fill="#F3EAD7"/>
               <g stroke="#111111" stroke-width="1.2" fill="none">
-                <circle cx="80" cy="50" r="38" stroke-dasharray="2,2"/>
-                <circle cx="80" cy="50" r="32" stroke-width="1.8"/>
-                <circle cx="80" cy="50" r="6" fill="#F4C62B"/>
-                <line x1="80" y1="20" x2="80" y2="44"/>
-                <line x1="80" y1="56" x2="80" y2="80"/>
-                <line x1="50" y1="50" x2="74" y2="50"/>
-                <line x1="86" y1="50" x2="110" y2="50"/>
+                <!-- Mountain ridge hatching -->
+                <polygon points="10,75 50,30 85,65 125,20 150,75" fill="#E2D4BD"/>
+                <line x1="50" y1="30" x2="50" y2="75" stroke-dasharray="1,1"/>
+                <line x1="125" y1="20" x2="125" y2="75" stroke-dasharray="1,1"/>
+                <!-- Sunburst -->
+                <circle cx="85" cy="24" r="12" fill="#F4C62B" stroke="#111111" stroke-width="1.5"/>
+                <line x1="85" y1="8" x2="85" y2="2"/>
+                <line x1="98" y1="16" x2="105" y2="10"/>
+                <line x1="72" y1="16" x2="65" y2="10"/>
+                <line x1="10" y1="75" x2="150" y2="75" stroke-width="2"/>
               </g>
-              <text x="80" y="94" font-family="'Roboto Condensed', sans-serif" font-size="9" font-weight="bold" fill="#111111" text-anchor="middle">VERIFIED CATALOG • 2026</text>
             </svg>
           </div>
+          <div class="engraving-motto">
+            <span>GOOD TOOLS</span>
+            <span>BUILD A</span>
+            <span>BRIGHTER</span>
+            <span>INTERNET.</span>
+          </div>
+          <p class="dispatch-note">Hand-curated software directory published weekly for craftspeople.</p>
         </div>
       </aside>
 
-      <!-- ROW 2: ADDITIONAL CATEGORIES -->
-      <!-- Spacer for Left column -->
-      <div class="grid-col col-row2-blank">
-        <div class="classified-seal-box">
-          <span class="seal-title">DIRECTORY</span>
-          <span class="seal-sub">EST. 2026</span>
-        </div>
-      </div>
-
-      <!-- VIDEO (~17% width) -->
-      <section class="grid-col col-category" id="sec-video" data-category="video">
+      <!-- R2C2: VIDEO (~17% width) -->
+      <section class="grid-col col-category col-row-2" id="sec-video" data-category="video">
         <div class="cat-header-strip">
           <div class="cat-pill">VIDEO</div>
           <span class="cat-subtext">Generative video, editing &amp; capture.</span>
@@ -476,8 +446,8 @@
         </div>
       </section>
 
-      <!-- AUDIO (~17% width) -->
-      <section class="grid-col col-category" id="sec-audio" data-category="audio">
+      <!-- R2C3: AUDIO (~17% width) -->
+      <section class="grid-col col-category col-row-2" id="sec-audio" data-category="audio">
         <div class="cat-header-strip">
           <div class="cat-pill">AUDIO</div>
           <span class="cat-subtext">Voice synthesis, music &amp; podcasting.</span>
@@ -488,8 +458,8 @@
         </div>
       </section>
 
-      <!-- HOSTING (~17% width) -->
-      <section class="grid-col col-category" id="sec-hosting" data-category="hosting">
+      <!-- R2C4: HOSTING (~17% width) -->
+      <section class="grid-col col-category col-row-2" id="sec-hosting" data-category="hosting">
         <div class="cat-header-strip">
           <div class="cat-pill">HOSTING</div>
           <span class="cat-subtext">Deploy backends, cloud &amp; databases.</span>
@@ -500,8 +470,8 @@
         </div>
       </section>
 
-      <!-- PRODUCTIVITY (~17% width) -->
-      <section class="grid-col col-category" id="sec-productivity" data-category="productivity">
+      <!-- R2C5: PRODUCTIVITY (~17% width) -->
+      <section class="grid-col col-category col-row-2" id="sec-productivity" data-category="productivity">
         <div class="cat-header-strip">
           <div class="cat-pill">PRODUCTIVITY</div>
           <span class="cat-subtext">Task managers, personal wikis &amp; notes.</span>
@@ -512,14 +482,23 @@
         </div>
       </section>
 
-      <!-- Spacer for Right column -->
-      <div class="grid-col col-row2-right-blank">
+      <!-- R2C6: FREE THIS WEEK (~15% width) -->
+      <aside class="grid-col col-right-sidebar col-row-2">
+        <div class="sidebar-block">
+          <div class="col-header-yellow with-icon">
+            <span class="gift-icon">🎁</span>
+            <h3>FREE THIS WEEK</h3>
+          </div>
+          <div class="sidebar-tool-list" id="free-this-week-container">
+            <!-- Free this week injected here -->
+          </div>
+        </div>
         <div class="classified-ad-box">
-          <span class="ad-tag">CLASSIFIED AD</span>
-          <p class="ad-text">Have a tool worth listing? Submit directly to the catalog editor.</p>
+          <span class="ad-tag">CLASSIFIED</span>
+          <p class="ad-text">Have a tool worth listing? Submit to curator.</p>
           <a href="#admin" id="open-curator-link" class="ad-link">CURATOR DESK →</a>
         </div>
-      </div>
+      </aside>
 
     </main>
 

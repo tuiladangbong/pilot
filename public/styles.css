@@ -798,8 +798,12 @@ body.newspaper-body {
   flex-direction: column;
 }
 
-.grid-col:last-child {
+.grid-col:nth-child(6n) {
   border-right: none;
+}
+
+.col-row-1 {
+  border-bottom: 1.5px solid var(--border-dark);
 }
 
 /* Column 1: Left Editorial Sidebar */
@@ -894,6 +898,16 @@ body.newspaper-body {
   letter-spacing: 0.5px;
   line-height: 1.15;
   color: var(--ink);
+}
+
+.dispatch-note {
+  font-family: var(--font-editorial);
+  font-style: italic;
+  font-size: 9.5px;
+  line-height: 1.25;
+  color: var(--ink-secondary);
+  margin-top: 6px;
+  text-align: center;
 }
 
 /* Category Columns (AI, Code, Design, Automation, Video, Audio, Hosting, Productivity) */
@@ -1571,8 +1585,11 @@ body.newspaper-body {
     grid-template-columns: 1fr 1fr;
   }
   .grid-col {
-    border-right: 1px solid var(--border-dark);
+    border-right: 1.5px solid var(--border-dark);
     border-bottom: 1.5px solid var(--border-dark);
+  }
+  .grid-col:nth-child(2n) {
+    border-right: none;
   }
   .directory-footer {
     grid-template-columns: 1fr;
@@ -1589,5 +1606,9 @@ body.newspaper-body {
   }
   .main-directory-grid {
     grid-template-columns: 1fr;
+  }
+  .grid-col {
+    border-right: none;
+    border-bottom: 1.5px solid var(--border-dark);
   }
 }
