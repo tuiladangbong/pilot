@@ -9,6 +9,8 @@ export interface ListToolsFilter {
   readonly pricing?: ToolPricing;
   readonly tag?: string;
   readonly favorite?: boolean;
+  readonly featured?: boolean;
+  readonly origin?: string;
   readonly sort?: 'updated_at' | 'created_at' | 'title';
   readonly order?: 'asc' | 'desc';
   readonly limit?: number;
@@ -18,11 +20,14 @@ export interface ListToolsFilter {
 export interface ToolRepository {
   findById(id: string): Promise<Tool | null>;
   findByUrl(url: string): Promise<Tool | null>;
+  findBySlug(slug: string): Promise<Tool | null>;
+  findByIdOrSlug(idOrSlug: string): Promise<Tool | null>;
   list(filter?: ListToolsFilter): Promise<{ tools: Tool[]; total: number }>;
   save(tool: Tool): Promise<void>;
   update(tool: Tool): Promise<void>;
   delete(id: string): Promise<boolean>;
   setFavorite(id: string, favorite: boolean): Promise<boolean>;
+  setFeatured(id: string, featured: boolean): Promise<boolean>;
   getDistinctCategories(): Promise<string[]>;
   getDistinctProviders(): Promise<string[]>;
   getAllTags(): Promise<TagWithCount[]>;

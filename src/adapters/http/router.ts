@@ -45,6 +45,8 @@ export interface RouterDependencies {
   readonly resourceRepo: ResourceRepository;
   readonly checkHealth?: () => Promise<{ ok: boolean; database: string; error?: string }>;
   readonly assetHandler?: (request: Request) => Promise<Response>;
+  readonly curatorToken?: string;
+  readonly isCurator?: (request: Request) => boolean;
 }
 
 function json(data: unknown, status = 200): Response {
@@ -69,6 +71,8 @@ function jsonError(code: string, message: string, status = 400): Response {
     status
   );
 }
+
+import { checkIsCurator, enforceCuratorAuth } from './curatorAuth';
 
 export async function handleRequest(request: Request, deps: RouterDependencies): Promise<Response> {
   const url = new URL(request.url);
@@ -98,6 +102,33 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
 
   const { promptRepo, toolRepo, workflowRepo, agentRepo, resourceRepo } = deps;
 
+  // GET /api/curator/status (Returns whether current request has curator permissions)
+  if (pathname === '/api/curator/status' && method === 'GET') {
+    const auth = checkIsCurator(request, deps);
+    return json({
+      ok: true,
+      isCurator: auth.isCurator,
+      email: auth.email ?? null,
+    });
+  }
+
+  // Security Guard: Mutating requests require curator authorization
+  const authError = enforceCuratorAuth(request, deps);
+  if (authError) {
+    return authError;
+  }
+
+  // GET /api/resources/:idOrSlug
+  const resourceIdMatch = pathname.match(/^\/api\/resources\/([^/]+)$/);
+  if (resourceIdMatch && method === 'GET') {
+    const id = decodeURIComponent(resourceIdMatch[1]);
+    const resource = await resourceRepo.findByIdOrSlug(id);
+    if (!resource) {
+      return jsonError('NOT_FOUND', `Resource with id or slug "${id}" not found`, 404);
+    }
+    return json({ ok: true, data: toResourceSummaryDto(resource) });
+  }
+
   // GET /api/resources (Generic resource listing across modules)
   if (pathname === '/api/resources' && method === 'GET') {
     const limit = parseInt(url.searchParams.get('limit') ?? '50', 10);
@@ -107,6 +138,9 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
     const q = url.searchParams.get('q') ?? undefined;
     const favoriteParam = url.searchParams.get('favorite');
     const favorite = favoriteParam !== null ? favoriteParam === 'true' || favoriteParam === '1' : undefined;
+    const featuredParam = url.searchParams.get('featured');
+    const featured = featuredParam !== null ? featuredParam === 'true' || featuredParam === '1' : undefined;
+    const origin = url.searchParams.get('origin') ?? undefined;
 
     const sortParam = url.searchParams.get('sort');
     let sort: 'updated_at' | 'created_at' | 'title' = 'updated_at';
@@ -121,6 +155,8 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
       type,
       tag,
       favorite,
+      featured,
+      origin,
       q,
       sort,
       order,
@@ -332,6 +368,7 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
           title: body.title,
           description: body.description,
           url: body.url,
+          slug: body.slug,
           kind: body.kind,
           provider: body.provider,
           category: body.category,
@@ -339,6 +376,9 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
           notes: body.notes,
           faviconUrl: body.faviconUrl,
           favorite: body.favorite,
+          featured: body.featured,
+          origin: body.origin,
+          verifiedAt: body.verifiedAt,
           tags: body.tags,
         });
         return json({ ok: true, data: updated });
@@ -363,6 +403,23 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
     return jsonError('METHOD_NOT_ALLOWED', `Method ${method} not allowed on /api/tools/:id`, 405);
   }
 
+  // POST /api/tools/:id/feature
+  const toolFeatureMatch = pathname.match(/^\/api\/tools\/([^/]+)\/feature$/);
+  if (toolFeatureMatch && method === 'POST') {
+    const id = decodeURIComponent(toolFeatureMatch[1]);
+    let body: any = {};
+    try {
+      body = await request.json();
+    } catch {}
+    const tool = await toolRepo.findByIdOrSlug(id);
+    if (!tool) {
+      return jsonError('NOT_FOUND', `Tool with id or slug "${id}" not found`, 404);
+    }
+    const nextFeatured = typeof body?.featured === 'boolean' ? body.featured : !tool.featured;
+    await toolRepo.setFeatured(tool.id, nextFeatured);
+    return json({ ok: true, data: { id: tool.id, featured: nextFeatured } });
+  }
+
   // /api/tools (Collection level)
   if (pathname === '/api/tools') {
     if (method === 'GET') {
@@ -375,6 +432,9 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
       const tag = url.searchParams.get('tag') ?? undefined;
       const favoriteParam = url.searchParams.get('favorite');
       const favorite = favoriteParam !== null ? favoriteParam === 'true' || favoriteParam === '1' : undefined;
+      const featuredParam = url.searchParams.get('featured');
+      const featured = featuredParam !== null ? featuredParam === 'true' || featuredParam === '1' : undefined;
+      const origin = url.searchParams.get('origin') ?? undefined;
 
       const sortParam = url.searchParams.get('sort');
       let sort: 'updated_at' | 'created_at' | 'title' = 'updated_at';
@@ -397,6 +457,8 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
         pricing,
         tag,
         favorite,
+        featured,
+        origin,
         sort,
         order,
         limit,
@@ -438,6 +500,7 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
         const useCase = new CreateToolUseCase(toolRepo);
         const result = await useCase.execute({
           id: body.id,
+          slug: body.slug,
           title: body.title,
           description: body.description,
           url: body.url,
@@ -448,6 +511,9 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
           notes: body.notes,
           faviconUrl: body.faviconUrl,
           favorite: Boolean(body.favorite),
+          featured: Boolean(body.featured),
+          origin: body.origin,
+          verifiedAt: body.verifiedAt,
           tags: Array.isArray(body.tags) ? body.tags : [],
         });
         return json({ ok: true, data: result.tool, warning: result.warning }, 201);
@@ -1123,10 +1189,13 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
     return jsonError('METHOD_NOT_ALLOWED', `Method ${method} not allowed on /api/agents`, 405);
   }
 
-  // Fallback for root / prompt / tool / workflow / agent routes if not intercepted by static assets
+  // Fallback for root / admin / prompt / tool(s) / workflow / agent routes if not intercepted by static assets
   if (
     pathname === '/' ||
+    pathname === '/admin' ||
+    pathname.startsWith('/admin/') ||
     pathname.startsWith('/prompt/') ||
+    pathname.startsWith('/tools/') ||
     pathname.startsWith('/tool/') ||
     pathname.startsWith('/workflow/') ||
     pathname.startsWith('/agent/')

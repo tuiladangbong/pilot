@@ -1,4 +1,4 @@
-import { Resource } from '../../../core/domain/Resource';
+import { Resource, ResourceOrigin } from '../../../core/domain/Resource';
 import {
   ListResourcesFilter,
   ResourceRepository,
@@ -10,6 +10,9 @@ interface ResourceExtendedRow {
   type: string;
   title: string;
   description: string | null;
+  slug: string | null;
+  featured: number;
+  origin: string;
   favorite: number;
   created_at: string;
   updated_at: string;
@@ -21,6 +24,7 @@ interface ResourceExtendedRow {
   tool_kind: string | null;
   tool_category: string | null;
   tool_pricing: string | null;
+  tool_verified_at: string | null;
   workflow_purpose: string | null;
   workflow_status: string | null;
   workflow_difficulty: string | null;
@@ -50,11 +54,11 @@ export class D1ResourceRepository implements ResourceRepository {
 
   async findById(id: string): Promise<ResourceWithDetails | null> {
     const query = `
-      SELECT r.id, r.type, r.title, r.description, r.favorite, r.created_at, r.updated_at,
+      SELECT r.id, r.type, r.title, r.description, r.slug, r.featured, r.origin, r.favorite, r.created_at, r.updated_at,
              GROUP_CONCAT(DISTINCT t.name) as tag_names,
              p.content as prompt_content, p.model as prompt_model,
              tl.url as tool_url, tl.hostname as tool_hostname, tl.kind as tool_kind,
-             tl.category as tool_category, tl.pricing as tool_pricing,
+             tl.category as tool_category, tl.pricing as tool_pricing, tl.verified_at as tool_verified_at,
              w.purpose as workflow_purpose, w.status as workflow_status,
              w.difficulty as workflow_difficulty, w.estimated_time as workflow_estimated_time,
              COUNT(DISTINCT ws.id) as workflow_step_count,
@@ -80,6 +84,38 @@ export class D1ResourceRepository implements ResourceRepository {
     return this.mapRow(row);
   }
 
+  async findByIdOrSlug(idOrSlug: string): Promise<ResourceWithDetails | null> {
+    const query = `
+      SELECT r.id, r.type, r.title, r.description, r.slug, r.featured, r.origin, r.favorite, r.created_at, r.updated_at,
+             GROUP_CONCAT(DISTINCT t.name) as tag_names,
+             p.content as prompt_content, p.model as prompt_model,
+             tl.url as tool_url, tl.hostname as tool_hostname, tl.kind as tool_kind,
+             tl.category as tool_category, tl.pricing as tool_pricing, tl.verified_at as tool_verified_at,
+             w.purpose as workflow_purpose, w.status as workflow_status,
+             w.difficulty as workflow_difficulty, w.estimated_time as workflow_estimated_time,
+             COUNT(DISTINCT ws.id) as workflow_step_count,
+             ag.role as agent_role, ag.goal as agent_goal, ag.runtime as agent_runtime,
+             ag.model as agent_model, ag.status as agent_status, ag.autonomy_level as agent_autonomy_level
+      FROM resources r
+      LEFT JOIN prompts p ON p.resource_id = r.id
+      LEFT JOIN tools tl ON tl.resource_id = r.id
+      LEFT JOIN workflows w ON w.resource_id = r.id
+      LEFT JOIN workflow_steps ws ON ws.workflow_id = r.id
+      LEFT JOIN agents ag ON ag.resource_id = r.id
+      LEFT JOIN resource_tags rt ON rt.resource_id = r.id
+      LEFT JOIN tags t ON t.id = rt.tag_id
+      WHERE r.id = ? OR r.slug = ?
+      GROUP BY r.id
+    `;
+
+    const row = await this.db.prepare(query).bind(idOrSlug, idOrSlug).first<ResourceExtendedRow>();
+    if (!row) {
+      return null;
+    }
+
+    return this.mapRow(row);
+  }
+
   async list(filter?: ListResourcesFilter): Promise<{ resources: ResourceWithDetails[]; total: number }> {
     const limit = Math.min(Math.max(filter?.limit ?? 50, 1), 100);
     const offset = Math.max(filter?.offset ?? 0, 0);
@@ -97,6 +133,18 @@ export class D1ResourceRepository implements ResourceRepository {
     if (filter?.favorite !== undefined) {
       conditions.push('r.favorite = ?');
       bindings.push(filter.favorite ? 1 : 0);
+    }
+
+    // Filter by featured
+    if (filter?.featured !== undefined) {
+      conditions.push('r.featured = ?');
+      bindings.push(filter.featured ? 1 : 0);
+    }
+
+    // Filter by origin
+    if (filter?.origin && filter.origin.trim() !== '') {
+      conditions.push('r.origin = ?');
+      bindings.push(filter.origin.trim());
     }
 
     // Filter by tag
@@ -156,11 +204,11 @@ export class D1ResourceRepository implements ResourceRepository {
     }
 
     const dataSql = `
-      SELECT r.id, r.type, r.title, r.description, r.favorite, r.created_at, r.updated_at,
+      SELECT r.id, r.type, r.title, r.description, r.slug, r.featured, r.origin, r.favorite, r.created_at, r.updated_at,
              GROUP_CONCAT(DISTINCT t.name) as tag_names,
              p.content as prompt_content, p.model as prompt_model,
              tl.url as tool_url, tl.hostname as tool_hostname, tl.kind as tool_kind,
-             tl.category as tool_category, tl.pricing as tool_pricing,
+             tl.category as tool_category, tl.pricing as tool_pricing, tl.verified_at as tool_verified_at,
              w.purpose as workflow_purpose, w.status as workflow_status,
              w.difficulty as workflow_difficulty, w.estimated_time as workflow_estimated_time,
              COUNT(DISTINCT ws.id) as workflow_step_count,
@@ -190,12 +238,15 @@ export class D1ResourceRepository implements ResourceRepository {
   async save(resource: Resource): Promise<void> {
     await this.db
       .prepare(
-        `INSERT INTO resources (id, type, title, description, favorite, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?)
+        `INSERT INTO resources (id, type, title, description, slug, featured, origin, favorite, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON CONFLICT(id) DO UPDATE SET
            type = excluded.type,
            title = excluded.title,
            description = excluded.description,
+           slug = excluded.slug,
+           featured = excluded.featured,
+           origin = excluded.origin,
            favorite = excluded.favorite,
            updated_at = excluded.updated_at`
       )
@@ -204,6 +255,9 @@ export class D1ResourceRepository implements ResourceRepository {
         resource.type,
         resource.title,
         resource.description,
+        resource.slug ?? null,
+        resource.featured ? 1 : 0,
+        resource.origin ?? 'curated',
         resource.favorite ? 1 : 0,
         resource.createdAt,
         resource.updatedAt
@@ -232,6 +286,15 @@ export class D1ResourceRepository implements ResourceRepository {
     return true;
   }
 
+  async setFeatured(id: string, featured: boolean): Promise<boolean> {
+    const now = new Date().toISOString();
+    await this.db
+      .prepare('UPDATE resources SET featured = ?, updated_at = ? WHERE id = ?')
+      .bind(featured ? 1 : 0, now, id)
+      .run();
+    return true;
+  }
+
   private mapRow(row: ResourceExtendedRow): ResourceWithDetails {
     const extra: Record<string, unknown> = {};
 
@@ -244,6 +307,7 @@ export class D1ResourceRepository implements ResourceRepository {
       if (row.tool_kind) extra.kind = row.tool_kind;
       if (row.tool_category) extra.category = row.tool_category;
       if (row.tool_pricing) extra.pricing = row.tool_pricing;
+      if (row.tool_verified_at) extra.verifiedAt = row.tool_verified_at;
     } else if (row.type === 'workflow') {
       if (row.workflow_purpose) extra.purpose = row.workflow_purpose;
       if (row.workflow_status) extra.status = row.workflow_status;
@@ -266,6 +330,9 @@ export class D1ResourceRepository implements ResourceRepository {
       type: row.type,
       title: row.title,
       description: row.description,
+      slug: row.slug,
+      featured: Boolean(row.featured),
+      origin: (row.origin ?? 'curated') as ResourceOrigin,
       favorite: Boolean(row.favorite),
       createdAt: row.created_at,
       updatedAt: row.updated_at,

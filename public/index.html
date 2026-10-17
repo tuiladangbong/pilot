@@ -3,996 +3,638 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pilot - AI Resource Hub</title>
+  <title>Yellow Pages — A Directory of Useful Tools for a Brighter Internet</title>
+  <meta name="description" content="A dense, hand-curated printed-style directory of useful tools, software, and resources for a brighter internet.">
+  
+  <!-- Print & Newspaper Typography: DM Serif Display, Archivo Black, Roboto Condensed, Libre Baskerville -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="/styles.css">
 </head>
-<body>
-  <div class="app-shell">
-    <!-- Top Header Navigation -->
-    <header class="app-header">
-      <div class="header-left">
-        <button id="mobile-menu-toggle" class="icon-btn mobile-only" aria-label="Toggle navigation menu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-        </button>
-        <a href="/" class="brand-link" id="brand-home">
-          <span class="brand-name">Pilot</span>
-          <span class="brand-subtitle" data-i18n="brand_subtitle">AI Resource Hub</span>
-        </a>
-      </div>
+<body class="newspaper-body">
 
-      <div class="header-search">
-        <div class="search-box">
-          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="search" id="global-search" placeholder="Search prompts, tools, websites, tags... (Ctrl+K)" data-i18n-placeholder="search_placeholder" autocomplete="off">
-          <button id="search-clear-btn" class="icon-btn search-clear hidden" aria-label="Clear search" data-i18n-title="search_clear">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-          </button>
-          <kbd class="search-kbd" id="search-kbd-hint">Ctrl K</kbd>
+  <div class="page-container">
+
+    <!-- ==================== TOP MASTHEAD ==================== -->
+    <header class="masthead">
+      <!-- Left: Identity Stack -->
+      <div class="masthead-left">
+        <div class="masthead-icon">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            <line x1="8" y1="6" x2="16" y2="6"/>
+            <line x1="8" y1="10" x2="14" y2="10"/>
+          </svg>
+        </div>
+        <div class="masthead-stacked-text">
+          <span>TOOLS</span>
+          <span>PEOPLE</span>
+          <span>IDEAS</span>
+          <span>PROGRESS</span>
+          <span class="masthead-since">SINCE 2026</span>
         </div>
       </div>
 
-      <div class="header-right">
-        <!-- Language Switcher Button -->
-        <button id="lang-toggle-btn" class="lang-toggle-btn" title="English / Tiếng Việt" aria-label="Toggle language">
-          <span class="lang-globe">🌐</span>
-          <span id="lang-code" class="lang-code">EN</span>
-        </button>
-
-        <div class="view-toggles" role="group" aria-label="View layout">
-          <button id="view-list-btn" class="icon-btn active" title="List View" aria-label="List View" data-i18n-title="view_list">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-          </button>
-          <button id="view-grid-btn" class="icon-btn" title="Grid View" aria-label="Grid View" data-i18n-title="view_grid">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          </button>
+      <!-- Center: Huge YELLOW PAGES Title on Yellow Block -->
+      <div class="masthead-center">
+        <div class="masthead-title-wrap">
+          <h1 class="masthead-title">YELLOW PAGES</h1>
         </div>
+      </div>
 
-        <!-- Add Resource Dropdown -->
-        <div class="dropdown-wrapper">
-          <button id="add-btn" class="btn btn-primary dropdown-trigger" aria-haspopup="true" aria-expanded="false">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-            <span data-i18n="add_btn">+ Add</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron-icon"><path d="m6 9 6 6 6-6"/></svg>
+      <!-- Right of Title: Small Editorial Copy -->
+      <div class="masthead-mid-right">
+        <p class="masthead-copy">
+          A DIRECTORY<br>
+          OF USEFUL TOOLS<br>
+          FOR A BRIGHTER<br>
+          INTERNET.
+        </p>
+      </div>
+
+      <!-- Far Right: Framed Motto -->
+      <div class="masthead-far-right">
+        <div class="motto-box">
+          <span class="motto-line-1">GOOD TOOLS</span>
+          <span class="motto-line-2">FIND GOOD PEOPLE.</span>
+          <div class="motto-underline"></div>
+        </div>
+        <div class="curator-status-container">
+          <button id="curator-pill" class="curator-pill hidden" title="Curator session active">
+            <span class="curator-dot"></span>
+            <span class="curator-label">CURATOR</span>
+            <span id="curator-exit-btn" class="curator-exit-btn" title="Exit curator mode">✕</span>
           </button>
-          <div class="dropdown-menu hidden" id="add-dropdown-menu" role="menu">
-            <button class="dropdown-item" id="menu-add-agent-btn" role="menuitem">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <div>
-                <strong data-i18n="menu_new_agent">New Agent</strong>
-                <small data-i18n="menu_new_agent_desc">Reusable AI role definition & instructions</small>
-              </div>
-            </button>
-            <button class="dropdown-item" id="menu-add-workflow-btn" role="menuitem">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-              <div>
-                <strong data-i18n="menu_new_workflow">New Workflow</strong>
-                <small data-i18n="menu_new_workflow_desc">Structured steps & reusable AI process</small>
-              </div>
-            </button>
-            <button class="dropdown-item" id="menu-add-tool-btn" role="menuitem">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-              <div>
-                <strong data-i18n="menu_new_tool">New Tool / Website</strong>
-                <small data-i18n="menu_new_tool_desc">Save AI web app, service, or documentation</small>
-              </div>
-            </button>
-            <button class="dropdown-item" id="menu-add-prompt-btn" role="menuitem">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-              <div>
-                <strong data-i18n="menu_new_prompt">New Prompt</strong>
-                <small data-i18n="menu_new_prompt_desc">Save reusable system or task prompt</small>
-              </div>
-            </button>
-          </div>
         </div>
       </div>
     </header>
 
-    <div class="app-body">
-      <!-- Sidebar Navigation -->
-      <aside class="app-sidebar" id="app-sidebar">
-        <nav class="sidebar-nav">
-          <div class="nav-group">
-            <div class="nav-group-title" data-i18n="nav_resources">Resources</div>
-            <button class="nav-item active" data-filter-view="all-resources">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-              <span data-i18n="nav_all_resources">All Resources</span>
-              <span class="badge" id="badge-all-resources-count">0</span>
-            </button>
-            <button class="nav-item" data-filter-view="agents">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <span data-i18n="nav_agents">Agents</span>
-              <span class="badge" id="badge-agents-count">0</span>
-            </button>
-            <button class="nav-item" data-filter-view="workflows">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-              <span data-i18n="nav_workflows">Workflows</span>
-              <span class="badge" id="badge-workflows-count">0</span>
-            </button>
-            <button class="nav-item" data-filter-view="tools">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-              <span data-i18n="nav_tools">Tools & Websites</span>
-              <span class="badge" id="badge-tools-count">0</span>
-            </button>
-            <button class="nav-item" data-filter-view="prompts">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-              <span data-i18n="nav_prompts">Prompts</span>
-              <span class="badge" id="badge-prompts-count">0</span>
-            </button>
-            <button class="nav-item" data-filter-view="favorites">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              <span data-i18n="nav_favorites">Favorites</span>
-              <span class="badge" id="badge-fav-count">0</span>
-            </button>
-          </div>
+    <!-- ==================== SEARCH + CATEGORY NAV + A-Z ==================== -->
+    <nav class="nav-row">
+      <!-- Search Input -->
+      <div class="nav-search-zone">
+        <label for="search-input" class="sr-only">Search Tools</label>
+        <div class="search-input-wrapper">
+          <input 
+            type="text" 
+            id="search-input" 
+            class="newspaper-input search-field" 
+            placeholder="Search for tools, categories, or use cases..." 
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <span class="search-icon-btn">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+        </div>
+      </div>
 
-          <!-- Agents Filter Section (Runtime / Model / Status / Autonomy) -->
-          <div class="nav-group" id="sidebar-agents-filters">
-            <div class="nav-group-title" data-i18n="nav_filter_agents">Filter Agents</div>
-            <div class="filter-select-stack">
-              <select id="agent-status-filter-select" aria-label="Filter by Status">
-                <option value="" data-i18n="nav_all_statuses">All Statuses</option>
-                <option value="Active" data-i18n="nav_status_active">Active</option>
-                <option value="Draft" data-i18n="nav_status_draft">Draft</option>
-                <option value="Archived" data-i18n="nav_status_archived">Archived</option>
-              </select>
-              <select id="agent-autonomy-filter-select" aria-label="Filter by Autonomy">
-                <option value="" data-i18n="nav_all_autonomy">All Autonomy Levels</option>
-                <option value="Manual" data-i18n="autonomy_manual">Manual</option>
-                <option value="Assisted" data-i18n="autonomy_assisted">Assisted</option>
-                <option value="Autonomous" data-i18n="autonomy_autonomous">Autonomous</option>
-              </select>
-              <select id="agent-runtime-filter-select" aria-label="Filter by Runtime">
-                <option value="" data-i18n="nav_all_runtimes">All Runtimes</option>
-              </select>
-              <select id="agent-model-filter-select" aria-label="Filter by Model">
-                <option value="" data-i18n="nav_all_models">All Models</option>
-              </select>
-            </div>
-          </div>
+      <!-- Browse By Category Buttons -->
+      <div class="nav-category-zone">
+        <span class="nav-label">BROWSE BY CATEGORY:</span>
+        <div class="category-tabs" id="category-tabs">
+          <button type="button" class="cat-tab active" data-category="all">ALL →</button>
+          <button type="button" class="cat-tab" data-category="ai">AI</button>
+          <button type="button" class="cat-tab" data-category="code">CODE</button>
+          <button type="button" class="cat-tab" data-category="design">DESIGN</button>
+          <button type="button" class="cat-tab" data-category="automation">AUTOMATION</button>
+          <button type="button" class="cat-tab" data-category="video">VIDEO</button>
+          <button type="button" class="cat-tab" data-category="audio">AUDIO</button>
+          <button type="button" class="cat-tab" data-category="hosting">HOSTING</button>
+          <button type="button" class="cat-tab" data-category="productivity">PRODUCTIVITY</button>
+        </div>
+      </div>
 
-          <!-- Workflows Filter Section (Status / Difficulty) -->
-          <div class="nav-group" id="sidebar-workflows-filters">
-            <div class="nav-group-title" data-i18n="nav_filter_workflows">Filter Workflows</div>
-            <div class="filter-select-stack">
-              <select id="workflow-status-filter-select" aria-label="Filter by Status">
-                <option value="" data-i18n="nav_all_statuses">All Statuses</option>
-                <option value="Active" data-i18n="nav_status_active">Active</option>
-                <option value="Draft" data-i18n="nav_status_draft">Draft</option>
-                <option value="Archived" data-i18n="nav_status_archived">Archived</option>
-              </select>
-              <select id="workflow-diff-filter-select" aria-label="Filter by Difficulty">
-                <option value="" data-i18n="nav_all_difficulties">All Difficulties</option>
-                <option value="Easy" data-i18n="diff_easy">Easy</option>
-                <option value="Medium" data-i18n="diff_medium">Medium</option>
-                <option value="Advanced" data-i18n="diff_advanced">Advanced</option>
-              </select>
-            </div>
-          </div>
+      <!-- A–Z Alphabetical Index -->
+      <div class="nav-az-zone">
+        <div class="az-header">
+          <span class="nav-label">A–Z INDEX</span>
+          <button type="button" class="az-clear-btn" id="az-clear-btn" title="Clear letter filter">ALL</button>
+        </div>
+        <div class="az-letters" id="az-letters">
+          <!-- A through Z generated in markup -->
+          <button type="button" class="az-btn" data-letter="A">A</button>
+          <button type="button" class="az-btn" data-letter="B">B</button>
+          <button type="button" class="az-btn" data-letter="C">C</button>
+          <button type="button" class="az-btn" data-letter="D">D</button>
+          <button type="button" class="az-btn" data-letter="E">E</button>
+          <button type="button" class="az-btn" data-letter="F">F</button>
+          <button type="button" class="az-btn" data-letter="G">G</button>
+          <button type="button" class="az-btn" data-letter="H">H</button>
+          <button type="button" class="az-btn" data-letter="I">I</button>
+          <button type="button" class="az-btn" data-letter="J">J</button>
+          <button type="button" class="az-btn" data-letter="K">K</button>
+          <button type="button" class="az-btn" data-letter="L">L</button>
+          <button type="button" class="az-btn" data-letter="M">M</button>
+          <button type="button" class="az-btn" data-letter="N">N</button>
+          <button type="button" class="az-btn" data-letter="O">O</button>
+          <button type="button" class="az-btn" data-letter="P">P</button>
+          <button type="button" class="az-btn" data-letter="Q">Q</button>
+          <button type="button" class="az-btn" data-letter="R">R</button>
+          <button type="button" class="az-btn" data-letter="S">S</button>
+          <button type="button" class="az-btn" data-letter="T">T</button>
+          <button type="button" class="az-btn" data-letter="U">U</button>
+          <button type="button" class="az-btn" data-letter="V">V</button>
+          <button type="button" class="az-btn" data-letter="W">W</button>
+          <button type="button" class="az-btn" data-letter="X">X</button>
+          <button type="button" class="az-btn" data-letter="Y">Y</button>
+          <button type="button" class="az-btn" data-letter="Z">Z</button>
+        </div>
+      </div>
+    </nav>
 
-          <!-- Tools Filter Section (Category / Kind / Pricing) -->
-          <div class="nav-group" id="sidebar-tools-filters">
-            <div class="nav-group-title" data-i18n="nav_filter_tools">Filter Tools</div>
-            <div class="filter-select-stack">
-              <select id="tool-kind-filter-select" aria-label="Filter by Kind">
-                <option value="" data-i18n="nav_all_types">All Types (Tools & Sites)</option>
-                <option value="tool" data-i18n="nav_tools_only">Tools only</option>
-                <option value="website" data-i18n="nav_websites_only">Websites only</option>
-              </select>
-              <select id="tool-category-filter-select" aria-label="Filter by Category">
-                <option value="" data-i18n="nav_all_categories">All Categories</option>
-              </select>
-              <select id="tool-pricing-filter-select" aria-label="Filter by Pricing">
-                <option value="" data-i18n="nav_all_pricing">All Pricing</option>
-                <option value="Free" data-i18n="pricing_free">Free</option>
-                <option value="Freemium" data-i18n="pricing_freemium">Freemium</option>
-                <option value="Paid" data-i18n="pricing_paid">Paid</option>
-                <option value="Open Source" data-i18n="pricing_opensource">Open Source</option>
-              </select>
-            </div>
-          </div>
+    <!-- ==================== SORT + FILTER STRIP ==================== -->
+    <div class="sort-filter-bar">
+      <div class="sort-group">
+        <span class="control-label">SORT BY:</span>
+        <div class="button-toggle-group" id="sort-group">
+          <button type="button" class="sort-btn active" data-sort="popular">Popular</button>
+          <button type="button" class="sort-btn" data-sort="newest">Newest</button>
+          <button type="button" class="sort-btn" data-sort="az">A–Z</button>
+          <button type="button" class="sort-btn" data-sort="price-asc">Price: Low → High</button>
+          <button type="button" class="sort-btn" data-sort="price-desc">Price: High → Low</button>
+          <button type="button" class="sort-btn" data-sort="free-first">Free First</button>
+        </div>
+      </div>
 
-          <!-- Model Filter Section (Prompts) -->
-          <div class="nav-group" id="sidebar-prompts-filters">
-            <div class="nav-group-title" data-i18n="nav_models">Models / AI</div>
-            <div class="model-select-wrapper">
-              <select id="model-filter-select" aria-label="Filter by AI Model">
-                <option value="" data-i18n="nav_all_models">All Models</option>
-              </select>
-            </div>
-          </div>
+      <div class="filter-group">
+        <span class="control-label">FILTER:</span>
+        
+        <select id="filter-category" class="newspaper-select">
+          <option value="all">All Categories</option>
+          <option value="ai">AI</option>
+          <option value="code">Code & Dev</option>
+          <option value="design">Design & Visual</option>
+          <option value="automation">Automation</option>
+          <option value="video">Video & Animation</option>
+          <option value="audio">Audio & Speech</option>
+          <option value="hosting">Hosting & Cloud</option>
+          <option value="productivity">Productivity</option>
+        </select>
 
-          <!-- Tags Section -->
-          <div class="nav-group">
-            <div class="nav-group-header">
-              <span class="nav-group-title" data-i18n="nav_tags">Tags</span>
-              <button id="clear-tag-btn" class="text-btn hidden" data-i18n="nav_clear">Clear</button>
-            </div>
-            <div class="tags-list" id="sidebar-tags-list">
-              <span class="empty-hint" data-i18n="nav_no_tags">No tags yet</span>
-            </div>
-          </div>
+        <select id="filter-pricing" class="newspaper-select">
+          <option value="all">All Pricing</option>
+          <option value="free">Free</option>
+          <option value="freemium">Freemium</option>
+          <option value="paid">Paid</option>
+        </select>
 
-          <!-- Future Modules Extensibility Indicator -->
-          <div class="nav-group future-modules">
-            <div class="nav-group-title" data-i18n="nav_future_modules">Future Modules</div>
-            <div class="future-item" title="Planned module">
-              <span class="future-dot"></span>
-              <span data-i18n="future_collections">Collections</span>
-            </div>
-            <div class="future-item" title="Planned module">
-              <span class="future-dot"></span>
-              <span data-i18n="future_recipes">Recipes</span>
-            </div>
+        <select id="filter-platform" class="newspaper-select">
+          <option value="all">All Platforms</option>
+          <option value="Web">Web</option>
+          <option value="macOS">macOS</option>
+          <option value="Windows">Windows</option>
+          <option value="Linux">Linux</option>
+          <option value="iOS">iOS</option>
+        </select>
+
+        <label class="newspaper-checkbox-label">
+          <input type="checkbox" id="filter-opensource" class="newspaper-checkbox">
+          <span>Open Source Only</span>
+        </label>
+
+        <button type="button" id="filter-reset-btn" class="reset-btn">Reset</button>
+      </div>
+
+      <!-- Curator Add Action (Curator Only) -->
+      <div class="curator-add-wrap curator-only hidden">
+        <button type="button" id="curator-add-tool-btn" class="curator-btn-add">+ Add Tool</button>
+      </div>
+    </div>
+
+    <!-- Active Filter Feedback Strip -->
+    <div id="filter-active-indicator" class="filter-active-indicator hidden">
+      <span id="filter-active-text">Showing filtered tools</span>
+      <button type="button" id="clear-search-btn" class="clear-indicator-btn">✕ Clear</button>
+    </div>
+
+    <!-- ==================== EDITOR'S TOP PICKS (BREAKING NEWS / FRONT PAGE) ==================== -->
+    <section class="top-picks-section" id="top-picks-section">
+      <!-- Left: Headline & Editorial Story -->
+      <div class="top-picks-lead">
+        <div class="lead-badge-row">
+          <span class="yellow-badge">★ EDITOR'S TOP PICKS</span>
+          <span class="breaking-news-tag">BREAKING: TOOLS WORTH YOUR ATTENTION</span>
+        </div>
+        <div class="lead-subheading">HAND-PICKED TOOLS WORTH YOUR ATTENTION</div>
+        <h2 class="lead-headline">The Top Tools<br>This Week</h2>
+        <p class="lead-paragraph">
+          Our editors sifted through hundreds of tools to bring you the most useful, innovative and exciting picks right now.
+        </p>
+        <p class="lead-paragraph-secondary">
+          Every listed tool is rigorously tested for utility, longevity, and craftsman feel. We cut through the hype to find software that genuinely improves your daily craft.
+        </p>
+        <div class="lead-cta-row">
+          <button type="button" id="btn-see-top-picks" class="newspaper-btn-yellow">SEE ALL TOP PICKS →</button>
+          <span class="lead-curated-date">CURATED WEEK 42 • TESTED &amp; VERIFIED</span>
+        </div>
+      </div>
+
+      <!-- Center: Halftone / Vintage Woodcut Newspaper Artwork -->
+      <div class="top-picks-artwork">
+        <div class="artwork-frame">
+          <svg viewBox="0 0 220 250" width="100%" height="100%" class="halftone-svg">
+            <rect x="0" y="0" width="220" height="250" fill="#F4C62B"/>
+            <defs>
+              <pattern id="hatch" width="4" height="4" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                <line x1="0" y1="0" x2="0" y2="4" stroke="#111111" stroke-width="0.75" opacity="0.3"/>
+              </pattern>
+            </defs>
+            <rect x="8" y="8" width="204" height="234" fill="url(#hatch)"/>
+            <rect x="14" y="14" width="192" height="222" fill="#F7F0E2" stroke="#111111" stroke-width="1.8"/>
+            
+            <!-- Hand holding Yellow Pages booklet illustration -->
+            <g stroke="#111111" stroke-width="1.8" fill="none">
+              <!-- Arm / Sleeve silhouette -->
+              <path d="M70 236 L85 180 L115 178 L125 236" fill="#111111"/>
+              <!-- Cuff -->
+              <rect x="80" y="174" width="40" height="8" fill="#F7F0E2" stroke="#111111" stroke-width="1.5"/>
+              
+              <!-- Booklet / Card held by fingers -->
+              <rect x="42" y="28" width="136" height="150" fill="#F4C62B" stroke="#111111" stroke-width="2.2"/>
+              <line x1="56" y1="28" x2="56" y2="178" stroke="#111111" stroke-width="1.2" stroke-dasharray="2,2"/>
+              
+              <!-- Fingers holding bottom/sides of booklet -->
+              <path d="M82 174 C82 162 88 156 94 156 C98 156 102 160 102 174" fill="#F7F0E2" stroke="#111111" stroke-width="1.5"/>
+              <path d="M96 174 C96 160 102 154 108 154 C112 154 116 158 116 174" fill="#F7F0E2" stroke="#111111" stroke-width="1.5"/>
+              <path d="M110 174 C110 162 115 158 120 158 C124 158 126 162 126 174" fill="#F7F0E2" stroke="#111111" stroke-width="1.5"/>
+              <path d="M38 110 C38 98 44 94 48 94 L50 114" fill="#F7F0E2" stroke="#111111" stroke-width="1.5"/>
+
+              <!-- Text inside booklet -->
+              <text x="115" y="62" font-family="'Archivo Black', sans-serif" font-size="16" font-weight="900" fill="#111111" text-anchor="middle" letter-spacing="1">TOP</text>
+              <text x="115" y="85" font-family="'Archivo Black', sans-serif" font-size="16" font-weight="900" fill="#111111" text-anchor="middle" letter-spacing="1">TOOLS</text>
+              <text x="115" y="106" font-family="'Archivo Black', sans-serif" font-size="13" font-weight="900" fill="#111111" text-anchor="middle" letter-spacing="0.5">THIS WEEK</text>
+              <text x="115" y="128" font-size="16" fill="#111111" text-anchor="middle">★</text>
+
+              <!-- Starburst seal -->
+              <circle cx="115" cy="148" r="14" fill="#111111"/>
+              <text x="115" y="152" font-family="'Roboto Condensed', sans-serif" font-size="9" font-weight="bold" fill="#F4C62B" text-anchor="middle">No. 1</text>
+              
+              <!-- Registration crosshairs / corner brackets -->
+              <path d="M22 22 L32 22 M22 22 L22 32"/>
+              <path d="M198 22 L188 22 M198 22 L198 32"/>
+              <path d="M22 228 L32 228 M22 228 L22 218"/>
+              <path d="M198 228 L188 228 M198 228 L198 218"/>
+            </g>
+            <text x="110" y="224" font-family="'Libre Baskerville', serif" font-style="italic" font-size="8.5" fill="#111111" text-anchor="middle">EDITION 2026 • DIRECTORY ISSUE</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Right: Ranked Top Picks List (1 to 5) -->
+      <div class="top-picks-list" id="top-picks-container">
+        <!-- Ranked rows injected here -->
+      </div>
+    </section>
+
+    <!-- ==================== SEARCH RESULTS CONTAINER (WHEN SEARCH/FILTER ACTIVE) ==================== -->
+    <section id="search-results-section" class="search-results-section hidden">
+      <div class="category-header-row">
+        <span class="cat-pill">SEARCH RESULTS</span>
+        <span class="cat-desc" id="search-results-desc">Matching entries across catalog</span>
+      </div>
+      <div id="search-results-grid" class="search-results-grid">
+        <!-- Rendered results -->
+      </div>
+    </section>
+
+    <!-- ==================== MAIN DIRECTORY GRID ==================== -->
+    <main class="main-directory-grid" id="main-directory-grid">
+      
+      <!-- COLUMN 1: LEFT EDITORIAL SIDEBAR (~15% width) -->
+      <aside class="grid-col col-editorial">
+        <div class="col-header-yellow">
+          <h3>EDITOR'S NOTES</h3>
+        </div>
+        <div class="editorial-articles-list">
+          <article class="editorial-item">
+            <h4 class="ed-title"><a href="#ai">The 10 AI tools actually worth your time in 2026</a></h4>
+            <p class="ed-dek">A practical, no-hype list. <span class="ed-arrow">→</span></p>
+          </article>
+          <article class="editorial-item">
+            <h4 class="ed-title"><a href="#code">From idea to app: the modern developer stack</a></h4>
+            <p class="ed-dek">Our latest recommendations. <span class="ed-arrow">→</span></p>
+          </article>
+          <article class="editorial-item">
+            <h4 class="ed-title"><a href="#design">Best free tools for creators</a></h4>
+            <p class="ed-dek">High quality, zero cost. <span class="ed-arrow">→</span></p>
+          </article>
+          <article class="editorial-item">
+            <h4 class="ed-title"><a href="#automation">Automation tools that give you hours back</a></h4>
+            <p class="ed-dek">Work less, do more. <span class="ed-arrow">→</span></p>
+          </article>
+          <article class="editorial-item">
+            <h4 class="ed-title"><a href="#code">Open source gems</a></h4>
+            <p class="ed-dek">Hidden tools that punch above their weight. <span class="ed-arrow">→</span></p>
+          </article>
+        </div>
+
+        <!-- Print-style engraving illustration -->
+        <div class="editorial-engraving-block">
+          <div class="engraving-svg-wrap">
+            <svg viewBox="0 0 160 110" width="100%" height="100%">
+              <rect x="0" y="0" width="160" height="110" fill="#F3EAD7"/>
+              <g stroke="#111111" stroke-width="1.2" fill="none">
+                <!-- Mountain ridge hatching -->
+                <polygon points="10,85 50,40 85,75 125,25 150,85" fill="#E2D4BD"/>
+                <line x1="50" y1="40" x2="50" y2="85" stroke-dasharray="1,1"/>
+                <line x1="125" y1="25" x2="125" y2="85" stroke-dasharray="1,1"/>
+                <!-- Sunburst -->
+                <circle cx="85" cy="30" r="14" fill="#F4C62B" stroke="#111111" stroke-width="1.5"/>
+                <line x1="85" y1="10" x2="85" y2="2"/>
+                <line x1="100" y1="20" x2="108" y2="14"/>
+                <line x1="70" y1="20" x2="62" y2="14"/>
+                <line x1="10" y1="85" x2="150" y2="85" stroke-width="2"/>
+              </g>
+            </svg>
           </div>
-        </nav>
+          <div class="engraving-motto">
+            <span>GOOD TOOLS</span>
+            <span>BUILD A</span>
+            <span>BRIGHTER</span>
+            <span>INTERNET.</span>
+          </div>
+        </div>
       </aside>
 
-      <!-- Main Content Area -->
-      <main class="app-main">
-        <div class="main-toolbar">
-          <div class="toolbar-left">
-            <h1 class="view-title" id="current-view-title">All Resources</h1>
-            <div class="active-filters" id="active-filters-container"></div>
+      <!-- COLUMN 2: AI (~17% width) -->
+      <section class="grid-col col-category" id="sec-ai" data-category="ai">
+        <div class="cat-header-strip">
+          <div class="cat-pill">AI</div>
+          <span class="cat-subtext">Intelligent tools for everyday work.</span>
+          <a href="#" class="cat-view-all" data-category="ai">View all →</a>
+        </div>
+        <div class="tool-list" id="cat-list-ai">
+          <!-- Tools injected dynamically -->
+        </div>
+      </section>
+
+      <!-- COLUMN 3: CODE (~17% width) -->
+      <section class="grid-col col-category" id="sec-code" data-category="code">
+        <div class="cat-header-strip">
+          <div class="cat-pill">CODE</div>
+          <span class="cat-subtext">Tools for developers who ship software.</span>
+          <a href="#" class="cat-view-all" data-category="code">View all →</a>
+        </div>
+        <div class="tool-list" id="cat-list-code">
+          <!-- Tools injected dynamically -->
+        </div>
+      </section>
+
+      <!-- COLUMN 4: DESIGN (~17% width) -->
+      <section class="grid-col col-category" id="sec-design" data-category="design">
+        <div class="cat-header-strip">
+          <div class="cat-pill">DESIGN</div>
+          <span class="cat-subtext">Craft interfaces, graphics &amp; motion.</span>
+          <a href="#" class="cat-view-all" data-category="design">View all →</a>
+        </div>
+        <div class="tool-list" id="cat-list-design">
+          <!-- Tools injected dynamically -->
+        </div>
+      </section>
+
+      <!-- COLUMN 5: AUTOMATION (~17% width) -->
+      <section class="grid-col col-category" id="sec-automation" data-category="automation">
+        <div class="cat-header-strip">
+          <div class="cat-pill">AUTOMATION</div>
+          <span class="cat-subtext">Connect services, eliminate toil.</span>
+          <a href="#" class="cat-view-all" data-category="automation">View all →</a>
+        </div>
+        <div class="tool-list" id="cat-list-automation">
+          <!-- Tools injected dynamically -->
+        </div>
+      </section>
+
+      <!-- COLUMN 6: RIGHT SIDEBAR (~15% width) -->
+      <aside class="grid-col col-right-sidebar">
+        <!-- Block 1: Latest Listings -->
+        <div class="sidebar-block">
+          <div class="col-header-yellow with-badge">
+            <h3>LATEST LISTINGS</h3>
+            <span class="badge-burst-new">NEW</span>
           </div>
-          <div class="toolbar-right">
-            <label for="sort-select" class="sort-label" data-i18n="sort_label">Sort:</label>
-            <select id="sort-select" class="sort-select">
-              <option value="updated_at:desc" data-i18n="sort_updated_desc">Recently Updated</option>
-              <option value="created_at:desc" data-i18n="sort_created_desc">Newest First</option>
-              <option value="created_at:asc" data-i18n="sort_created_asc">Oldest First</option>
-              <option value="title:asc" data-i18n="sort_title_asc">Title (A–Z)</option>
-              <option value="title:desc" data-i18n="sort_title_desc">Title (Z–A)</option>
-            </select>
+          <div class="sidebar-tool-list" id="latest-listings-container">
+            <!-- Latest listings injected here -->
           </div>
         </div>
 
-        <!-- Resource Stream / Grid -->
-        <div class="prompts-container view-list" id="resources-list">
-          <!-- Loaded dynamically -->
-        </div>
-
-        <!-- Pagination / Load More -->
-        <div class="load-more-wrapper hidden" id="load-more-wrapper">
-          <button id="load-more-btn" class="btn btn-secondary" data-i18n="btn_load_more">Load More</button>
-        </div>
-
-        <!-- Empty & Loading States -->
-        <div class="state-container hidden" id="loading-state">
-          <div class="spinner"></div>
-          <p id="loading-text" data-i18n="loading_resources">Loading resources...</p>
-        </div>
-
-        <div class="state-container hidden" id="empty-state">
-          <div class="empty-icon" id="empty-state-icon">✨</div>
-          <h2 class="empty-title" id="empty-state-title">No resources found</h2>
-          <p class="empty-desc" id="empty-state-desc">Save your first AI tool, website, or prompt to build your operating library.</p>
-          <div class="empty-actions">
-            <button id="empty-add-agent-btn" class="btn btn-primary" data-i18n="btn_add_agent">+ Add Agent</button>
-            <button id="empty-add-workflow-btn" class="btn btn-secondary" data-i18n="btn_add_workflow">+ Add Workflow</button>
-            <button id="empty-add-tool-btn" class="btn btn-secondary" data-i18n="btn_add_tool">+ Add Tool / Website</button>
-            <button id="empty-add-prompt-btn" class="btn btn-secondary" data-i18n="btn_add_prompt">+ Add Prompt</button>
+        <!-- Block 2: Free This Week -->
+        <div class="sidebar-block">
+          <div class="col-header-yellow with-icon">
+            <span class="gift-icon">🎁</span>
+            <h3>FREE THIS WEEK</h3>
+          </div>
+          <div class="sidebar-tool-list" id="free-this-week-container">
+            <!-- Free this week injected here -->
           </div>
         </div>
-      </main>
-    </div>
+
+        <!-- Block 3: Newspaper Engraving Illustration -->
+        <div class="sidebar-engraving-block">
+          <div class="vintage-print-seal">
+            <svg viewBox="0 0 160 100" width="100%" height="100%">
+              <rect x="0" y="0" width="160" height="100" fill="#F3EAD7"/>
+              <g stroke="#111111" stroke-width="1.2" fill="none">
+                <circle cx="80" cy="50" r="38" stroke-dasharray="2,2"/>
+                <circle cx="80" cy="50" r="32" stroke-width="1.8"/>
+                <circle cx="80" cy="50" r="6" fill="#F4C62B"/>
+                <line x1="80" y1="20" x2="80" y2="44"/>
+                <line x1="80" y1="56" x2="80" y2="80"/>
+                <line x1="50" y1="50" x2="74" y2="50"/>
+                <line x1="86" y1="50" x2="110" y2="50"/>
+              </g>
+              <text x="80" y="94" font-family="'Roboto Condensed', sans-serif" font-size="9" font-weight="bold" fill="#111111" text-anchor="middle">VERIFIED CATALOG • 2026</text>
+            </svg>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ROW 2: ADDITIONAL CATEGORIES -->
+      <!-- Spacer for Left column -->
+      <div class="grid-col col-row2-blank">
+        <div class="classified-seal-box">
+          <span class="seal-title">DIRECTORY</span>
+          <span class="seal-sub">EST. 2026</span>
+        </div>
+      </div>
+
+      <!-- VIDEO (~17% width) -->
+      <section class="grid-col col-category" id="sec-video" data-category="video">
+        <div class="cat-header-strip">
+          <div class="cat-pill">VIDEO</div>
+          <span class="cat-subtext">Generative video, editing &amp; capture.</span>
+          <a href="#" class="cat-view-all" data-category="video">View all →</a>
+        </div>
+        <div class="tool-list" id="cat-list-video">
+          <!-- Tools injected dynamically -->
+        </div>
+      </section>
+
+      <!-- AUDIO (~17% width) -->
+      <section class="grid-col col-category" id="sec-audio" data-category="audio">
+        <div class="cat-header-strip">
+          <div class="cat-pill">AUDIO</div>
+          <span class="cat-subtext">Voice synthesis, music &amp; podcasting.</span>
+          <a href="#" class="cat-view-all" data-category="audio">View all →</a>
+        </div>
+        <div class="tool-list" id="cat-list-audio">
+          <!-- Tools injected dynamically -->
+        </div>
+      </section>
+
+      <!-- HOSTING (~17% width) -->
+      <section class="grid-col col-category" id="sec-hosting" data-category="hosting">
+        <div class="cat-header-strip">
+          <div class="cat-pill">HOSTING</div>
+          <span class="cat-subtext">Deploy backends, cloud &amp; databases.</span>
+          <a href="#" class="cat-view-all" data-category="hosting">View all →</a>
+        </div>
+        <div class="tool-list" id="cat-list-hosting">
+          <!-- Tools injected dynamically -->
+        </div>
+      </section>
+
+      <!-- PRODUCTIVITY (~17% width) -->
+      <section class="grid-col col-category" id="sec-productivity" data-category="productivity">
+        <div class="cat-header-strip">
+          <div class="cat-pill">PRODUCTIVITY</div>
+          <span class="cat-subtext">Task managers, personal wikis &amp; notes.</span>
+          <a href="#" class="cat-view-all" data-category="productivity">View all →</a>
+        </div>
+        <div class="tool-list" id="cat-list-productivity">
+          <!-- Tools injected dynamically -->
+        </div>
+      </section>
+
+      <!-- Spacer for Right column -->
+      <div class="grid-col col-row2-right-blank">
+        <div class="classified-ad-box">
+          <span class="ad-tag">CLASSIFIED AD</span>
+          <p class="ad-text">Have a tool worth listing? Submit directly to the catalog editor.</p>
+          <a href="#admin" id="open-curator-link" class="ad-link">CURATOR DESK →</a>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="directory-footer">
+      <div class="footer-colophon">
+        <span class="footer-title">YELLOW PAGES DIRECTORY</span>
+        <span class="footer-desc">A directory of useful tools for a brighter internet. Hand-curated, verified &amp; updated weekly.</span>
+      </div>
+      <div class="footer-links">
+        <a href="#top-picks-section">★ Top Picks</a>
+        <a href="#sec-ai">AI Tools</a>
+        <a href="#sec-code">Code &amp; Dev</a>
+        <a href="#sec-design">Design</a>
+        <a href="#sec-automation">Automation</a>
+        <a href="#sec-video">Video</a>
+        <a href="#sec-audio">Audio</a>
+        <a href="#sec-hosting">Hosting</a>
+        <a href="#sec-productivity">Productivity</a>
+        <button type="button" id="footer-curator-btn" class="footer-curator-btn">Curator Login</button>
+      </div>
+      <div class="footer-meta">
+        <span>© 2026 NODBITS PILOT • PUBLIC EDITION • NO TRACKERS • NO SIGNUP</span>
+      </div>
+    </footer>
+
   </div>
 
-  <!-- Create / Edit Tool & Website Modal Dialog -->
-  <dialog id="tool-form-dialog" class="modal-dialog">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h2 id="tool-form-dialog-title" data-i18n="modal_new_tool">New Tool / Website</h2>
-        <button type="button" class="icon-btn modal-close" id="tool-form-close-btn" aria-label="Close dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
+  <!-- ==================== TOOL DETAIL DIALOG ==================== -->
+  <dialog id="tool-detail-dialog" class="newspaper-dialog">
+    <div class="dialog-inner">
+      <div class="dialog-header-strip">
+        <div class="dialog-category-badge" id="modal-tool-category">CATEGORY</div>
+        <div class="dialog-badges-right">
+          <span id="modal-tool-featured" class="modal-badge-featured hidden">★ FEATURED</span>
+          <span id="modal-tool-opensource" class="modal-badge-os hidden">OPEN SOURCE</span>
+        </div>
+        <button type="button" id="modal-close-btn" class="dialog-close-btn" aria-label="Close">✕</button>
       </div>
 
-      <form id="tool-form" class="modal-body">
-        <div class="form-error hidden" id="tool-form-error-banner" role="alert"></div>
-        <div class="form-warning hidden" id="tool-form-warning-banner" role="alert"></div>
-
-        <input type="hidden" id="form-tool-id" value="">
-
-        <!-- URL with Auto-fetch Button -->
-        <div class="form-group">
-          <label for="tool-url"><span data-i18n="label_url">URL</span> <span class="required">*</span></label>
-          <div class="input-with-action">
-            <input type="url" id="tool-url" placeholder="https://claude.ai or https://github.com/..." required autocomplete="off">
-            <button type="button" class="btn btn-secondary" id="tool-fetch-meta-btn" title="Fetch site title, description, and favicon">
-              <span class="btn-text" data-i18n="btn_fetch_info">⚡ Fetch Info</span>
-              <span class="spinner-sm hidden"></span>
-            </button>
-          </div>
-          <span class="label-hint" data-i18n="label_url_hint">Paste full URL with http:// or https://</span>
-        </div>
-
-        <div class="form-group">
-          <label for="tool-title"><span data-i18n="label_title">Title</span> <span class="required">*</span></label>
-          <input type="text" id="tool-title" placeholder="e.g. Claude 3.5 Sonnet, Hugging Face, Perplexity" required autocomplete="off">
-        </div>
-
-        <div class="form-row">
-          <div class="form-group flex-1">
-            <label for="tool-kind" data-i18n="label_kind">Kind</label>
-            <select id="tool-kind">
-              <option value="tool" data-i18n="opt_kind_tool">AI Tool / Web App</option>
-              <option value="website" data-i18n="opt_kind_website">Website / Reference / Directory</option>
-            </select>
-          </div>
-          <div class="form-group flex-1">
-            <label for="tool-pricing" data-i18n="label_pricing">Pricing</label>
-            <select id="tool-pricing">
-              <option value="Freemium" data-i18n="pricing_freemium">Freemium</option>
-              <option value="Free" data-i18n="pricing_free">Free</option>
-              <option value="Paid" data-i18n="pricing_paid">Paid</option>
-              <option value="Open Source" data-i18n="pricing_opensource">Open Source</option>
-              <option value="Unknown" data-i18n="pricing_unknown">Unknown</option>
-            </select>
-          </div>
-          <div class="form-group form-checkbox-group">
-            <label class="checkbox-label" for="tool-favorite">
-              <input type="checkbox" id="tool-favorite">
-              <span data-i18n="label_favorite">Favorite</span>
-            </label>
+      <div class="dialog-body">
+        <div class="dialog-tool-head">
+          <div class="dialog-logo" id="modal-tool-logo"></div>
+          <div class="dialog-tool-titles">
+            <h3 class="dialog-title" id="modal-tool-name">Tool Name</h3>
+            <div class="dialog-hostname" id="modal-tool-hostname">tool.com</div>
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group flex-1">
-            <label for="tool-provider" data-i18n="label_provider">Provider / Creator</label>
-            <input type="text" id="tool-provider" list="providers-datalist" placeholder="e.g. Anthropic, OpenAI, Meta, Google" autocomplete="off">
-            <datalist id="providers-datalist"></datalist>
+        <p class="dialog-description" id="modal-tool-desc">
+          Tool description and details will appear here.
+        </p>
+
+        <div class="dialog-metadata-table">
+          <div class="meta-row">
+            <span class="meta-label">PRICING:</span>
+            <span class="meta-val" id="modal-tool-pricing">Free / Paid</span>
           </div>
-          <div class="form-group flex-1">
-            <label for="tool-category" data-i18n="label_category">Category</label>
-            <input type="text" id="tool-category" list="categories-datalist" placeholder="e.g. Coding, Image, LLM, Audio, Research" autocomplete="off">
-            <datalist id="categories-datalist"></datalist>
+          <div class="meta-row">
+            <span class="meta-label">PLATFORMS:</span>
+            <span class="meta-val" id="modal-tool-platforms">Web, macOS</span>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label for="tool-description"><span data-i18n="label_description">Description</span> <span class="label-hint" data-i18n="label_desc_hint">(short tagline or summary)</span></label>
-          <input type="text" id="tool-description" placeholder="Brief summary of what this tool or site is good for..." autocomplete="off">
-        </div>
-
-        <div class="form-group">
-          <label for="tool-notes"><span data-i18n="label_notes">Personal Notes</span> <span class="label-hint" data-i18n="label_notes_hint">(usage notes, keyboard shortcuts, tips)</span></label>
-          <textarea id="tool-notes" rows="4" placeholder="Personal notes, best models to select, workflows, prompt tips..."></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="tool-tags"><span data-i18n="label_tags">Tags</span> <span class="label-hint" data-i18n="label_tags_hint_tool">(comma separated, e.g. coding, llm, fast, api)</span></label>
-          <input type="text" id="tool-tags" placeholder="coding, llm, reasoning, daily" autocomplete="off">
-        </div>
-
-        <input type="hidden" id="tool-favicon-url" value="">
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" id="tool-form-cancel-btn" data-i18n="btn_cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="tool-form-submit-btn">
-            <span data-i18n="btn_save_tool">Save Tool</span>
-            <kbd class="btn-kbd">Ctrl ↵</kbd>
-          </button>
-        </div>
-      </form>
-    </div>
-  </dialog>
-
-  <!-- Create / Edit Prompt Modal Dialog -->
-  <dialog id="prompt-form-dialog" class="modal-dialog">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h2 id="form-dialog-title" data-i18n="modal_new_prompt">New Prompt</h2>
-        <button type="button" class="icon-btn modal-close" id="form-close-btn" aria-label="Close dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <form id="prompt-form" class="modal-body">
-        <div class="form-error hidden" id="form-error-banner" role="alert"></div>
-
-        <input type="hidden" id="form-prompt-id" value="">
-
-        <div class="form-group">
-          <label for="prompt-title"><span data-i18n="label_title">Title</span> <span class="required">*</span></label>
-          <input type="text" id="prompt-title" placeholder="e.g. Python Async Refactoring Expert" required autocomplete="off">
-        </div>
-
-        <div class="form-row">
-          <div class="form-group flex-1">
-            <label for="prompt-model" data-i18n="label_model">Intended Model / AI</label>
-            <input type="text" id="prompt-model" list="models-datalist" placeholder="e.g. Claude Code, ChatGPT, Gemini" autocomplete="off">
-            <datalist id="models-datalist"></datalist>
-          </div>
-          <div class="form-group form-checkbox-group">
-            <label class="checkbox-label" for="prompt-favorite">
-              <input type="checkbox" id="prompt-favorite">
-              <span data-i18n="label_mark_favorite">Mark as Favorite</span>
-            </label>
+          <div class="meta-row">
+            <span class="meta-label">STATUS:</span>
+            <span class="meta-val" id="modal-tool-verified">Verified Active</span>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="prompt-description"><span data-i18n="label_description">Description</span> <span class="label-hint" data-i18n="label_prompt_desc_hint">(optional summary or usage notes)</span></label>
-          <input type="text" id="prompt-description" placeholder="Brief context about when and how to use this prompt..." autocomplete="off">
-        </div>
-
-        <div class="form-group">
-          <div class="label-row">
-            <label for="prompt-content"><span data-i18n="label_prompt_content">Prompt Content</span> <span class="required">*</span></label>
-            <span class="label-hint" data-i18n="label_prompt_content_hint">Plain text &bull; Preserves exact whitespace</span>
+        <div class="dialog-actions">
+          <a href="#" target="_blank" rel="noopener noreferrer" id="modal-visit-link" class="dialog-btn-primary">VISIT WEBSITE ↗</a>
+          <button type="button" id="modal-copy-link-btn" class="dialog-btn-secondary">COPY LINK</button>
+          <button type="button" id="modal-favorite-btn" class="dialog-btn-secondary">★ BOOKMARK</button>
+          
+          <!-- Curator action controls -->
+          <div class="curator-dialog-actions curator-only hidden">
+            <button type="button" id="modal-curator-feature-btn" class="dialog-btn-curator">★ TOGGLE FEATURE</button>
+            <button type="button" id="modal-curator-edit-btn" class="dialog-btn-curator">EDIT</button>
+            <button type="button" id="modal-curator-delete-btn" class="dialog-btn-curator danger">DELETE</button>
           </div>
-          <textarea id="prompt-content" rows="10" placeholder="Paste or write your full prompt here..." required spellcheck="false"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="prompt-tags"><span data-i18n="label_tags">Tags</span> <span class="label-hint" data-i18n="label_tags_hint_prompt">(comma separated, e.g. coding, refactor, python)</span></label>
-          <input type="text" id="prompt-tags" placeholder="coding, refactor, architecture" autocomplete="off">
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" id="form-cancel-btn" data-i18n="btn_cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="form-submit-btn">
-            <span data-i18n="btn_save_prompt">Save Prompt</span>
-            <kbd class="btn-kbd">Ctrl ↵</kbd>
-          </button>
-        </div>
-      </form>
-    </div>
-  </dialog>
-
-  <!-- Tool Detail Dialog -->
-  <dialog id="tool-detail-dialog" class="modal-dialog detail-dialog">
-    <div class="modal-card detail-card">
-      <div class="modal-header">
-        <div class="detail-header-left">
-          <button class="favorite-star-btn" id="tool-detail-fav-btn" aria-label="Toggle favorite">
-            <svg class="star-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </button>
-          <div class="detail-title-icon-wrapper">
-            <img id="tool-detail-favicon" class="tool-favicon-lg hidden" alt="Site icon" width="24" height="24">
-            <h2 class="detail-title" id="tool-detail-title">Tool Title</h2>
-          </div>
-        </div>
-        <button type="button" class="icon-btn modal-close" id="tool-detail-close-btn" aria-label="Close dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <div class="detail-meta">
-        <span class="badge badge-kind" id="tool-detail-kind">Tool</span>
-        <span class="badge badge-pricing" id="tool-detail-pricing">Free</span>
-        <span class="badge badge-category hidden" id="tool-detail-category">Category</span>
-        <span class="badge badge-provider hidden" id="tool-detail-provider">Provider</span>
-        <span class="meta-date" id="tool-detail-updated">Updated recently</span>
-      </div>
-
-      <!-- Quick Action: Open Link + Copy Link -->
-      <div class="detail-url-box">
-        <div class="url-display">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-          <span class="url-text" id="tool-detail-url">https://example.com</span>
-        </div>
-        <div class="url-actions">
-          <button class="btn btn-secondary btn-sm" id="tool-detail-copy-url-btn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            <span data-i18n="btn_copy_url">Copy URL</span>
-          </button>
-          <a class="btn btn-primary btn-sm" id="tool-detail-open-link" href="#" target="_blank" rel="noopener noreferrer">
-            <span data-i18n="btn_open_site">Open Site</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <p class="detail-description hidden" id="tool-detail-description"></p>
-
-      <div class="detail-notes-wrapper hidden" id="tool-detail-notes-wrapper">
-        <span class="content-label" data-i18n="notes_tips_title">Personal Notes & Tips</span>
-        <div class="detail-notes-content" id="tool-detail-notes"></div>
-      </div>
-
-      <div class="detail-tags-row hidden" id="tool-detail-tags-row"></div>
-
-      <div class="modal-footer detail-footer">
-        <div class="footer-danger">
-          <button class="btn btn-danger" id="tool-detail-delete-btn" data-i18n="btn_delete">Delete</button>
-        </div>
-        <div class="footer-actions">
-          <button class="btn btn-secondary" id="tool-detail-duplicate-btn" data-i18n="btn_duplicate">Duplicate</button>
-          <button class="btn btn-secondary" id="tool-detail-edit-btn" data-i18n="btn_edit">Edit</button>
         </div>
       </div>
     </div>
   </dialog>
 
-  <!-- Prompt Detail Drawer / Dialog -->
-  <dialog id="prompt-detail-dialog" class="modal-dialog detail-dialog">
-    <div class="modal-card detail-card">
-      <div class="modal-header">
-        <div class="detail-header-left">
-          <button class="favorite-star-btn" id="detail-fav-btn" aria-label="Toggle favorite">
-            <svg class="star-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </button>
-          <h2 class="detail-title" id="detail-title">Prompt Title</h2>
-        </div>
-        <button type="button" class="icon-btn modal-close" id="detail-close-btn" aria-label="Close dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
+  <!-- ==================== CURATOR AUTH DIALOG ==================== -->
+  <dialog id="curator-auth-dialog" class="newspaper-dialog">
+    <div class="dialog-inner curator-box">
+      <div class="dialog-header-strip">
+        <div class="dialog-category-badge">CURATOR DESK</div>
+        <button type="button" id="curator-modal-close" class="dialog-close-btn" aria-label="Close">✕</button>
       </div>
-
-      <div class="detail-meta">
-        <span class="badge badge-kind" data-i18n="badge_prompt">Prompt</span>
-        <span class="model-badge hidden" id="detail-model">Model</span>
-        <span class="meta-date" id="detail-updated">Updated recently</span>
-      </div>
-
-      <p class="detail-description hidden" id="detail-description"></p>
-
-      <div class="detail-tags-row hidden" id="detail-tags-row"></div>
-
-      <div class="detail-content-wrapper">
-        <div class="content-header">
-          <span class="content-label" data-i18n="label_prompt_content">Prompt Content</span>
-          <button class="btn btn-copy" id="detail-copy-btn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            <span data-i18n="btn_copy">Copy Prompt</span>
-          </button>
-        </div>
-        <pre class="detail-content-pre" id="detail-content"></pre>
-      </div>
-
-      <div class="modal-footer detail-footer">
-        <div class="footer-danger">
-          <button class="btn btn-danger" id="detail-delete-btn" data-i18n="btn_delete">Delete</button>
-        </div>
-        <div class="footer-actions">
-          <button class="btn btn-secondary" id="detail-duplicate-btn" data-i18n="btn_duplicate">Duplicate</button>
-          <button class="btn btn-secondary" id="detail-edit-btn" data-i18n="btn_edit">Edit</button>
-        </div>
+      <div class="dialog-body">
+        <h3 class="dialog-title">Curator Authentication</h3>
+        <p class="dialog-description">
+          Enter your curator secret key to unlock editorial management mode.
+        </p>
+        <form id="curator-auth-form" class="curator-form">
+          <input 
+            type="password" 
+            id="curator-key-input" 
+            class="newspaper-input" 
+            placeholder="Enter curator key..." 
+            required
+            autocomplete="current-password"
+          >
+          <div class="curator-form-actions">
+            <button type="submit" class="newspaper-btn-yellow">UNLOCK</button>
+            <button type="button" id="curator-cancel-btn" class="dialog-btn-secondary">CANCEL</button>
+          </div>
+        </form>
       </div>
     </div>
   </dialog>
 
-  <!-- Create / Edit Workflow Modal Dialog -->
-  <dialog id="workflow-form-dialog" class="modal-dialog">
-    <div class="modal-card modal-card-lg">
-      <div class="modal-header">
-        <h2 id="workflow-form-title" data-i18n="modal_new_workflow">New Workflow</h2>
-        <button type="button" class="icon-btn modal-close" id="workflow-form-close-btn" aria-label="Close dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <form id="workflow-form" class="modal-form" novalidate>
-        <input type="hidden" id="workflow-id">
-
-        <div class="form-group">
-          <label for="workflow-title"><span data-i18n="label_title">Title</span> <span class="required">*</span></label>
-          <input type="text" id="workflow-title" placeholder="e.g. Build Website from Client Brief" required autocomplete="off">
-        </div>
-
-        <div class="form-group">
-          <label for="workflow-purpose"><span data-i18n="label_purpose">Purpose / Goal</span> <span class="label-hint" data-i18n="label_purpose_hint">(what this workflow achieves)</span></label>
-          <input type="text" id="workflow-purpose" placeholder="e.g. Streamline full-stack web app delivery from initial spec to live deployment" autocomplete="off">
-        </div>
-
-        <div class="form-row">
-          <div class="form-group flex-1">
-            <label for="workflow-status" data-i18n="label_status">Status</label>
-            <select id="workflow-status">
-              <option value="Active" data-i18n="nav_status_active">Active</option>
-              <option value="Draft" data-i18n="nav_status_draft">Draft</option>
-              <option value="Archived" data-i18n="nav_status_archived">Archived</option>
-            </select>
-          </div>
-
-          <div class="form-group flex-1">
-            <label for="workflow-difficulty" data-i18n="label_difficulty">Difficulty</label>
-            <select id="workflow-difficulty">
-              <option value="Easy" data-i18n="diff_easy">Easy</option>
-              <option value="Medium" data-i18n="diff_medium" selected>Medium</option>
-              <option value="Advanced" data-i18n="diff_advanced">Advanced</option>
-            </select>
-          </div>
-
-          <div class="form-group flex-1">
-            <label for="workflow-estimated-time"><span data-i18n="label_estimated_time">Estimated Time</span> <span class="label-hint" data-i18n="label_estimated_time_hint">(e.g. 15 min, 1h)</span></label>
-            <input type="text" id="workflow-estimated-time" placeholder="e.g. 45 min" autocomplete="off">
-          </div>
-
-          <div class="form-group form-group-checkbox">
-            <label class="checkbox-label" for="workflow-favorite">
-              <input type="checkbox" id="workflow-favorite">
-              <span data-i18n="label_favorite">Favorite</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="workflow-description"><span data-i18n="label_description">Description</span> <span class="label-hint" data-i18n="label_desc_hint">(short tagline or summary)</span></label>
-          <input type="text" id="workflow-description" placeholder="Brief overview of the process..." autocomplete="off">
-        </div>
-
-        <div class="form-group">
-          <label for="workflow-tags"><span data-i18n="label_tags">Tags</span> <span class="label-hint" data-i18n="label_tags_hint_prompt">(comma separated, e.g. coding, webdev, claude)</span></label>
-          <input type="text" id="workflow-tags" placeholder="coding, webdev, deployment" autocomplete="off">
-        </div>
-
-        <div class="form-group">
-          <label for="workflow-notes"><span data-i18n="label_notes">Personal Notes</span> <span class="label-hint" data-i18n="label_notes_hint">(overall guidance, tips, links)</span></label>
-          <textarea id="workflow-notes" rows="2" placeholder="Prerequisites, environment setup, or rules to keep in mind..."></textarea>
-        </div>
-
-        <!-- Steps Builder Section -->
-        <div class="form-group form-steps-section">
-          <div class="form-steps-header">
-            <div>
-              <label><strong data-i18n="label_steps">Workflow Steps</strong></label>
-              <span class="label-hint" data-i18n="label_steps_hint">Ordered sequence of steps</span>
-            </div>
-            <button type="button" class="btn btn-secondary btn-sm" id="workflow-add-step-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-              <span data-i18n="btn_add_step">+ Add Step</span>
-            </button>
-          </div>
-
-          <div class="form-steps-container" id="workflow-form-steps-list">
-            <!-- Dynamic steps added here -->
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" id="workflow-form-cancel-btn" data-i18n="btn_cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="workflow-form-submit-btn">
-            <span data-i18n="btn_save_workflow">Save Workflow</span>
-            <kbd class="btn-kbd">Ctrl ↵</kbd>
-          </button>
-        </div>
-      </form>
-    </div>
-  </dialog>
-
-  <!-- Workflow Detail Dialog -->
-  <dialog id="workflow-detail-dialog" class="modal-dialog detail-dialog">
-    <div class="modal-card detail-card modal-card-lg">
-      <div class="modal-header">
-        <div class="detail-header-left">
-          <button class="favorite-star-btn" id="workflow-detail-fav-btn" aria-label="Toggle favorite">
-            <svg class="star-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </button>
-          <h2 class="detail-title" id="workflow-detail-title">Workflow Title</h2>
-        </div>
-        <button type="button" class="icon-btn modal-close" id="workflow-detail-close-btn" aria-label="Close dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <div class="detail-meta">
-        <span class="badge badge-workflow" data-i18n="badge_workflow">Workflow</span>
-        <span class="badge badge-status" id="workflow-detail-status">Active</span>
-        <span class="badge badge-difficulty" id="workflow-detail-difficulty">Medium</span>
-        <span class="badge badge-estimated-time hidden" id="workflow-detail-est-time">30 min</span>
-        <span class="meta-date" id="workflow-detail-updated">Updated recently</span>
-      </div>
-
-      <!-- Purpose Goal Banner -->
-      <div class="detail-purpose-box hidden" id="workflow-detail-purpose-box">
-        <strong data-i18n="label_purpose">Purpose / Goal:</strong>
-        <span id="workflow-detail-purpose"></span>
-      </div>
-
-      <p class="detail-description hidden" id="workflow-detail-description"></p>
-
-      <!-- Checklist Interactive Progress Bar -->
-      <div class="workflow-progress-wrapper" id="workflow-progress-wrapper">
-        <span id="workflow-progress-text">0/0 steps completed</span>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" id="workflow-progress-fill"></div>
-        </div>
-      </div>
-
-      <!-- Interactive Steps Checklist Container -->
-      <div class="workflow-steps-list" id="workflow-detail-steps-list">
-        <!-- Rendered dynamically -->
-      </div>
-
-      <!-- General Notes -->
-      <div class="detail-notes-wrapper hidden" id="workflow-detail-notes-wrapper">
-        <span class="content-label" data-i18n="notes_tips_title">Personal Notes & Tips</span>
-        <div class="detail-notes-content" id="workflow-detail-notes"></div>
-      </div>
-
-      <div class="detail-tags-row hidden" id="workflow-detail-tags-row"></div>
-
-      <div class="modal-footer detail-footer">
-        <div class="footer-danger">
-          <button class="btn btn-danger" id="workflow-detail-delete-btn" data-i18n="btn_delete">Delete</button>
-        </div>
-        <div class="footer-actions">
-          <button class="btn btn-secondary" id="workflow-detail-copy-md-btn" data-i18n="btn_copy_workflow">Copy Markdown</button>
-          <button class="btn btn-secondary" id="workflow-detail-duplicate-btn" data-i18n="btn_duplicate">Duplicate</button>
-          <button class="btn btn-secondary" id="workflow-detail-edit-btn" data-i18n="btn_edit">Edit</button>
-        </div>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- Create / Edit Agent Modal Dialog -->
-  <dialog id="agent-form-dialog" class="modal-dialog">
-    <div class="modal-card modal-card-lg">
-      <div class="modal-header">
-        <h2 id="agent-form-title" data-i18n="modal_new_agent">New Agent</h2>
-        <button type="button" class="icon-btn modal-close" id="agent-form-close-btn" aria-label="Close dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <form id="agent-form" class="modal-form" novalidate>
-        <input type="hidden" id="agent-id">
-
-        <div class="form-row">
-          <div class="form-group flex-2">
-            <label for="agent-title"><span data-i18n="label_title">Title</span> <span class="required">*</span></label>
-            <input type="text" id="agent-title" placeholder="e.g. Cloudflare App Builder" required autocomplete="off">
-          </div>
-          <div class="form-group flex-2">
-            <label for="agent-role"><span data-i18n="label_role">Role</span> <span class="required">*</span></label>
-            <input type="text" id="agent-role" placeholder="e.g. Senior Full-Stack Developer" required autocomplete="off">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="agent-goal"><span data-i18n="label_goal">Goal</span> <span class="label-hint" data-i18n="label_goal_hint">(primary outcome to achieve)</span></label>
-          <input type="text" id="agent-goal" placeholder="e.g. Build and deploy small production-ready Cloudflare applications autonomously" autocomplete="off">
-        </div>
-
-        <div class="form-group">
-          <label for="agent-description"><span data-i18n="label_description">Description</span> <span class="label-hint" data-i18n="label_desc_hint">(short tagline or summary)</span></label>
-          <input type="text" id="agent-description" placeholder="Brief overview of what this agent does..." autocomplete="off">
-        </div>
-
-        <!-- Instructions Editor with preserved whitespace and char counter -->
-        <div class="form-group">
-          <div class="form-header-inline">
-            <label for="agent-instructions"><span data-i18n="label_instructions">Instructions / System Definition</span> <span class="required">*</span></label>
-            <span class="char-counter" id="agent-instructions-counter">0 chars</span>
-          </div>
-          <textarea id="agent-instructions" rows="9" class="code-textarea" placeholder="You are responsible for...&#10;Rules:&#10;1. Preserve modular monolith architecture&#10;2. Keep domain logic pure" required></textarea>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group flex-1">
-            <label for="agent-runtime" data-i18n="label_runtime">Runtime / Context</label>
-            <input type="text" id="agent-runtime" list="agent-runtime-suggestions" placeholder="e.g. Claude Code, Antigravity" autocomplete="off">
-            <datalist id="agent-runtime-suggestions">
-              <option value="Claude Code">
-              <option value="Antigravity">
-              <option value="Codex">
-              <option value="Gemini">
-              <option value="ChatGPT">
-              <option value="Custom">
-            </datalist>
-          </div>
-
-          <div class="form-group flex-1">
-            <label for="agent-model" data-i18n="label_model">Intended Model</label>
-            <input type="text" id="agent-model" list="agent-model-suggestions" placeholder="e.g. Claude 3.5 Sonnet, Auto" autocomplete="off">
-            <datalist id="agent-model-suggestions">
-              <option value="Claude 3.5 Sonnet">
-              <option value="Claude 3 Opus">
-              <option value="GPT-4o">
-              <option value="Gemini 1.5 Pro">
-              <option value="Auto">
-            </datalist>
-          </div>
-
-          <div class="form-group flex-1">
-            <label for="agent-status" data-i18n="label_status">Status</label>
-            <select id="agent-status">
-              <option value="Active" data-i18n="nav_status_active">Active</option>
-              <option value="Draft" data-i18n="nav_status_draft">Draft</option>
-              <option value="Archived" data-i18n="nav_status_archived">Archived</option>
-            </select>
-          </div>
-
-          <div class="form-group flex-1">
-            <label for="agent-autonomy" data-i18n="label_autonomy">Autonomy Level</label>
-            <select id="agent-autonomy">
-              <option value="Manual" data-i18n="autonomy_manual">Manual</option>
-              <option value="Assisted" data-i18n="autonomy_assisted">Assisted</option>
-              <option value="Autonomous" data-i18n="autonomy_autonomous">Autonomous</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group flex-1">
-            <label for="agent-input-desc"><span data-i18n="label_input_desc">Expected Input</span> <span class="label-hint" data-i18n="label_input_desc_hint">(what this agent takes in)</span></label>
-            <textarea id="agent-input-desc" rows="2" placeholder="e.g. A project brief, repository path, and deployment target..."></textarea>
-          </div>
-
-          <div class="form-group flex-1">
-            <label for="agent-output-desc"><span data-i18n="label_output_desc">Expected Output</span> <span class="label-hint" data-i18n="label_output_desc_hint">(what this agent delivers)</span></label>
-            <textarea id="agent-output-desc" rows="2" placeholder="e.g. Production-ready implementation, committed to Git and deployed..."></textarea>
-          </div>
-        </div>
-
-        <!-- Linked Resources Section -->
-        <div class="form-group form-steps-section">
-          <div class="form-steps-header">
-            <div>
-              <label><strong data-i18n="label_linked_resources">Linked Resources</strong></label>
-              <span class="label-hint" data-i18n="label_agent_links_hint">Prompts, Tools, Websites, or Workflows this agent uses or follows</span>
-            </div>
-            <button type="button" class="btn btn-secondary btn-sm" id="agent-add-resource-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-              <span data-i18n="btn_link_resource">+ Link Resource</span>
-            </button>
-          </div>
-
-          <div class="agent-linked-resources-container" id="agent-form-resources-list">
-            <!-- Dynamic linked resource items added here -->
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group flex-3">
-            <label for="agent-tags"><span data-i18n="label_tags">Tags</span> <span class="label-hint" data-i18n="label_tags_hint_prompt">(comma separated, e.g. coding, devops, worker)</span></label>
-            <input type="text" id="agent-tags" placeholder="coding, devops, cloudflare" autocomplete="off">
-          </div>
-          <div class="form-group form-group-checkbox flex-1">
-            <label class="checkbox-label" for="agent-favorite">
-              <input type="checkbox" id="agent-favorite">
-              <span data-i18n="label_favorite">Favorite</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="agent-notes"><span data-i18n="label_notes">Personal Notes</span> <span class="label-hint" data-i18n="label_agent_notes_hint">(when to use, constraints, tips)</span></label>
-          <textarea id="agent-notes" rows="2" placeholder="e.g. Use for infrastructure-heavy tasks. Works better with detailed constraints..."></textarea>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" id="agent-form-cancel-btn" data-i18n="btn_cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="agent-form-submit-btn">
-            <span data-i18n="btn_save_agent">Save Agent</span>
-            <kbd class="btn-kbd">Ctrl ↵</kbd>
-          </button>
-        </div>
-      </form>
-    </div>
-  </dialog>
-
-  <!-- Agent Detail Dialog -->
-  <dialog id="agent-detail-dialog" class="modal-dialog detail-dialog">
-    <div class="modal-card detail-card modal-card-lg">
-      <div class="modal-header">
-        <div class="detail-header-left">
-          <button class="favorite-star-btn" id="agent-detail-fav-btn" aria-label="Toggle favorite">
-            <svg class="star-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </button>
-          <div>
-            <h2 class="detail-title" id="agent-detail-title">Agent Title</h2>
-            <div class="detail-role-subtitle" id="agent-detail-role">Senior Full-Stack Developer</div>
-          </div>
-        </div>
-        <button type="button" class="icon-btn modal-close" id="agent-detail-close-btn" aria-label="Close dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <div class="detail-meta">
-        <span class="badge badge-agent" data-i18n="badge_agent">Agent</span>
-        <span class="badge badge-status" id="agent-detail-status">Active</span>
-        <span class="badge badge-autonomy" id="agent-detail-autonomy">Manual</span>
-        <span class="badge badge-runtime hidden" id="agent-detail-runtime">Claude Code</span>
-        <span class="badge badge-model hidden" id="agent-detail-model">Auto</span>
-        <span class="meta-date" id="agent-detail-updated">Updated recently</span>
-      </div>
-
-      <!-- Goal Banner -->
-      <div class="detail-purpose-box hidden" id="agent-detail-goal-box">
-        <strong data-i18n="label_goal">Goal:</strong>
-        <span id="agent-detail-goal"></span>
-      </div>
-
-      <p class="detail-description hidden" id="agent-detail-description"></p>
-
-      <!-- Instructions Section -->
-      <div class="detail-content-wrapper">
-        <div class="content-header">
-          <span class="content-label" data-i18n="label_instructions">Instructions</span>
-          <button class="btn btn-copy" id="agent-detail-copy-instructions-btn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            <span data-i18n="btn_copy_instructions">Copy Instructions</span>
-          </button>
-        </div>
-        <pre class="detail-content-pre" id="agent-detail-instructions"></pre>
-      </div>
-
-      <!-- Contract Box (Input / Output) -->
-      <div class="agent-contract-grid hidden" id="agent-detail-contract-grid">
-        <div class="contract-card hidden" id="agent-detail-input-card">
-          <div class="contract-card-title" data-i18n="label_input_desc">Expected Input</div>
-          <div class="contract-card-body" id="agent-detail-input"></div>
-        </div>
-        <div class="contract-card hidden" id="agent-detail-output-card">
-          <div class="contract-card-title" data-i18n="label_output_desc">Expected Output</div>
-          <div class="contract-card-body" id="agent-detail-output"></div>
-        </div>
-      </div>
-
-      <!-- Linked Resources Section (grouped by USES, FOLLOWS, REFERENCES, ASSIGNS_TO) -->
-      <div class="agent-linked-section hidden" id="agent-detail-linked-section">
-        <div class="content-label" data-i18n="label_linked_resources">Linked Resources</div>
-        <div id="agent-detail-linked-groups"></div>
-      </div>
-
-      <!-- Personal Notes -->
-      <div class="detail-notes-wrapper hidden" id="agent-detail-notes-wrapper">
-        <span class="content-label" data-i18n="notes_tips_title">Personal Notes & Tips</span>
-        <div class="detail-notes-content" id="agent-detail-notes"></div>
-      </div>
-
-      <div class="detail-tags-row hidden" id="agent-detail-tags-row"></div>
-
-      <div class="modal-footer detail-footer">
-        <div class="footer-danger">
-          <button class="btn btn-danger" id="agent-detail-delete-btn" data-i18n="btn_delete">Delete</button>
-        </div>
-        <div class="footer-actions">
-          <button class="btn btn-secondary" id="agent-detail-copy-full-btn" data-i18n="btn_copy_full_agent">Copy Full Agent</button>
-          <button class="btn btn-secondary" id="agent-detail-duplicate-btn" data-i18n="btn_duplicate">Duplicate</button>
-          <button class="btn btn-secondary" id="agent-detail-edit-btn" data-i18n="btn_edit">Edit</button>
-        </div>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- Resource Picker Dialog (for linking Prompts, Tools, Websites, Workflows, Agents) -->
-  <dialog id="resource-picker-dialog" class="modal-dialog">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h2 id="resource-picker-title" data-i18n="picker_title">Link a Resource</h2>
-        <button type="button" class="icon-btn modal-close" id="resource-picker-close-btn" aria-label="Close dialog">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="modal-body">
-        <input type="search" id="resource-picker-search" class="picker-search-input" placeholder="Search prompts, tools, websites..." data-i18n-placeholder="picker_search_placeholder" autocomplete="off">
-        <div class="picker-results-list" id="resource-picker-results">
-          <!-- Populated dynamically -->
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="resource-picker-cancel-btn" data-i18n="btn_cancel">Cancel</button>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- Delete Confirmation Dialog -->
-  <dialog id="delete-confirm-dialog" class="modal-dialog alert-dialog">
-    <div class="modal-card alert-card">
-      <div class="modal-header">
-        <h2 id="delete-dialog-title" data-i18n="delete_resource_title">Delete Resource</h2>
-      </div>
-      <div class="modal-body">
-        <p><span id="delete-confirm-prompt-msg">Are you sure you want to permanently delete</span> <strong id="delete-prompt-name"></strong>?</p>
-        <p class="alert-warning-text" data-i18n="delete_warning">This action cannot be undone.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="delete-cancel-btn" data-i18n="btn_cancel">Cancel</button>
-        <button type="button" class="btn btn-danger" id="delete-confirm-btn" data-i18n="btn_delete_permanently">Delete Permanently</button>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- Floating Toast Notifications -->
-  <div class="toast-container" id="toast-container" aria-live="polite"></div>
-
-  <script src="/app.js"></script>
+  <!-- Main JavaScript App -->
+  <script type="module" src="/app.js"></script>
 </body>
 </html>

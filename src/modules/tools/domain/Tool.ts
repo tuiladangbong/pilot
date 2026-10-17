@@ -9,6 +9,7 @@ export type ToolPricing = 'Free' | 'Freemium' | 'Paid' | 'Open Source' | 'Unknow
 
 export interface Tool {
   readonly id: string;
+  readonly slug?: string | null;
   readonly title: string;
   readonly description: string | null;
   readonly url: string;
@@ -20,6 +21,9 @@ export interface Tool {
   readonly notes: string | null;
   readonly faviconUrl: string | null;
   readonly favorite: boolean;
+  readonly featured: boolean;
+  readonly origin: string;
+  readonly verifiedAt: string | null;
   readonly tags: readonly string[];
   readonly createdAt: string;
   readonly updatedAt: string;
@@ -27,6 +31,7 @@ export interface Tool {
 
 export interface CreateToolInput {
   readonly id?: string;
+  readonly slug?: string | null;
   readonly title: string;
   readonly description?: string | null;
   readonly url: string;
@@ -37,12 +42,16 @@ export interface CreateToolInput {
   readonly notes?: string | null;
   readonly faviconUrl?: string | null;
   readonly favorite?: boolean;
+  readonly featured?: boolean;
+  readonly origin?: string;
+  readonly verifiedAt?: string | null;
   readonly tags?: readonly string[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
 }
 
 export interface UpdateToolInput {
+  readonly slug?: string | null;
   readonly title?: string;
   readonly description?: string | null;
   readonly url?: string;
@@ -53,7 +62,48 @@ export interface UpdateToolInput {
   readonly notes?: string | null;
   readonly faviconUrl?: string | null;
   readonly favorite?: boolean;
+  readonly featured?: boolean;
+  readonly origin?: string;
+  readonly verifiedAt?: string | null;
   readonly tags?: readonly string[];
+}
+
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+export function canonicalizeUrl(rawUrl: string): string {
+  try {
+    const url = new URL(rawUrl.trim());
+    let host = url.hostname.toLowerCase();
+    if (host.startsWith('www.')) {
+      host = host.slice(4);
+    }
+    const protocol = url.protocol.toLowerCase();
+    let pathname = url.pathname;
+    if (pathname === '/') {
+      pathname = '';
+    } else if (pathname.endsWith('/')) {
+      pathname = pathname.slice(0, -1);
+    }
+
+    // Strip common tracking query params
+    const trackingParams = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'ref', 'ref_src', 'fbclid', 'gclid'];
+    for (const p of trackingParams) {
+      url.searchParams.delete(p);
+    }
+
+    const searchStr = url.searchParams.toString();
+    const search = searchStr ? `?${searchStr}` : '';
+    return `${protocol}//${host}${pathname}${search}${url.hash}`;
+  } catch {
+    return rawUrl.trim();
+  }
 }
 
 export function normalizeTag(tag: string): string {
@@ -218,9 +268,11 @@ export function createTool(input: CreateToolInput): Tool {
   const pricing = validatePricing(input.pricing);
   const now = new Date().toISOString();
   const id = input.id && input.id.trim() !== '' ? input.id.trim() : crypto.randomUUID();
+  const slug = input.slug && input.slug.trim() !== '' ? input.slug.trim().toLowerCase() : slugify(input.title);
 
   return {
     id,
+    slug: slug || null,
     title: input.title.trim(),
     description: input.description && input.description.trim() !== '' ? input.description.trim() : null,
     url,
@@ -232,6 +284,9 @@ export function createTool(input: CreateToolInput): Tool {
     notes: input.notes && input.notes.trim() !== '' ? input.notes : null,
     faviconUrl: input.faviconUrl && input.faviconUrl.trim() !== '' ? input.faviconUrl.trim() : null,
     favorite: Boolean(input.favorite),
+    featured: Boolean(input.featured),
+    origin: input.origin ?? 'curated',
+    verifiedAt: input.verifiedAt ?? null,
     tags: normalizeTags(input.tags),
     createdAt: input.createdAt ?? now,
     updatedAt: input.updatedAt ?? now,
@@ -269,10 +324,15 @@ export function updateTool(current: Tool, input: UpdateToolInput): Tool {
     ? (input.faviconUrl && input.faviconUrl.trim() !== '' ? input.faviconUrl.trim() : null)
     : current.faviconUrl;
   const favorite = input.favorite !== undefined ? Boolean(input.favorite) : current.favorite;
+  const featured = input.featured !== undefined ? Boolean(input.featured) : current.featured;
+  const origin = input.origin !== undefined ? input.origin : current.origin;
+  const verifiedAt = input.verifiedAt !== undefined ? input.verifiedAt : current.verifiedAt;
+  const slug = input.slug !== undefined ? (input.slug ? input.slug.trim().toLowerCase() : null) : current.slug;
   const tags = input.tags !== undefined ? normalizeTags(input.tags) : current.tags;
 
   return {
     ...current,
+    slug,
     title,
     description,
     url,
@@ -284,6 +344,9 @@ export function updateTool(current: Tool, input: UpdateToolInput): Tool {
     notes,
     faviconUrl,
     favorite,
+    featured,
+    origin,
+    verifiedAt,
     tags,
     updatedAt: new Date().toISOString(),
   };

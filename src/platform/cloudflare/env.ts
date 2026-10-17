@@ -5,4 +5,6 @@
 export interface Env {
   DB: D1Database;
   ASSETS?: Fetcher;
+  CURATOR_TOKEN?: string;
+  ADMIN_TOKEN?: string;
 }

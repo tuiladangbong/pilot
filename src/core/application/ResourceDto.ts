@@ -6,6 +6,9 @@ export interface ResourceSummaryDto {
   type: string;
   title: string;
   description: string | null;
+  slug?: string | null;
+  featured: boolean;
+  origin: string;
   favorite: boolean;
   createdAt: string;
   updatedAt: string;
@@ -21,6 +24,9 @@ export function toResourceSummaryDto(resource: ResourceWithDetails | Resource): 
     type: resource.type,
     title: resource.title,
     description: resource.description,
+    slug: resource.slug,
+    featured: Boolean(resource.featured),
+    origin: resource.origin ?? 'curated',
     favorite: resource.favorite,
     createdAt: resource.createdAt,
     updatedAt: resource.updatedAt,

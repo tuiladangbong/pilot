@@ -10,6 +10,9 @@ interface ToolRow {
   kind: string;
   title: string;
   description: string | null;
+  slug: string | null;
+  featured: number;
+  origin: string;
   url: string;
   hostname: string;
   provider: string | null;
@@ -17,6 +20,7 @@ interface ToolRow {
   pricing: string | null;
   notes: string | null;
   favicon_url: string | null;
+  verified_at: string | null;
   favorite: number;
   tag_names: string | null;
   created_at: string;
@@ -40,6 +44,7 @@ export class D1ToolRepository implements ToolRepository {
   private mapRow(row: ToolRow): Tool {
     return {
       id: row.id,
+      slug: row.slug,
       title: row.title,
       description: row.description,
       url: row.url,
@@ -51,6 +56,9 @@ export class D1ToolRepository implements ToolRepository {
       notes: row.notes,
       faviconUrl: row.favicon_url,
       favorite: Boolean(row.favorite),
+      featured: Boolean(row.featured),
+      origin: row.origin ?? 'curated',
+      verifiedAt: row.verified_at,
       tags: row.tag_names ? row.tag_names.split(',').filter(Boolean) : [],
       createdAt: row.created_at,
       updatedAt: row.updated_at,
@@ -59,8 +67,8 @@ export class D1ToolRepository implements ToolRepository {
 
   async findById(id: string): Promise<Tool | null> {
     const query = `
-      SELECT r.id, r.title, r.description, r.favorite, r.created_at, r.updated_at,
-             t.kind, t.url, t.hostname, t.provider, t.category, t.pricing, t.notes, t.favicon_url,
+      SELECT r.id, r.title, r.description, r.slug, r.featured, r.origin, r.favorite, r.created_at, r.updated_at,
+             t.kind, t.url, t.hostname, t.provider, t.category, t.pricing, t.notes, t.favicon_url, t.verified_at,
              GROUP_CONCAT(tg.name) as tag_names
       FROM resources r
       JOIN tools t ON t.resource_id = r.id
@@ -78,10 +86,54 @@ export class D1ToolRepository implements ToolRepository {
     return this.mapRow(row);
   }
 
+  async findBySlug(slug: string): Promise<Tool | null> {
+    const query = `
+      SELECT r.id, r.title, r.description, r.slug, r.featured, r.origin, r.favorite, r.created_at, r.updated_at,
+             t.kind, t.url, t.hostname, t.provider, t.category, t.pricing, t.notes, t.favicon_url, t.verified_at,
+             GROUP_CONCAT(tg.name) as tag_names
+      FROM resources r
+      JOIN tools t ON t.resource_id = r.id
+      LEFT JOIN resource_tags rt ON rt.resource_id = r.id
+      LEFT JOIN tags tg ON tg.id = rt.tag_id
+      WHERE r.slug = ?
+      GROUP BY r.id
+      LIMIT 1
+    `;
+
+    const row = await this.db.prepare(query).bind(slug.toLowerCase().trim()).first<ToolRow>();
+    if (!row) {
+      return null;
+    }
+
+    return this.mapRow(row);
+  }
+
+  async findByIdOrSlug(idOrSlug: string): Promise<Tool | null> {
+    const query = `
+      SELECT r.id, r.title, r.description, r.slug, r.featured, r.origin, r.favorite, r.created_at, r.updated_at,
+             t.kind, t.url, t.hostname, t.provider, t.category, t.pricing, t.notes, t.favicon_url, t.verified_at,
+             GROUP_CONCAT(tg.name) as tag_names
+      FROM resources r
+      JOIN tools t ON t.resource_id = r.id
+      LEFT JOIN resource_tags rt ON rt.resource_id = r.id
+      LEFT JOIN tags tg ON tg.id = rt.tag_id
+      WHERE r.id = ? OR r.slug = ?
+      GROUP BY r.id
+      LIMIT 1
+    `;
+
+    const row = await this.db.prepare(query).bind(idOrSlug, idOrSlug.toLowerCase().trim()).first<ToolRow>();
+    if (!row) {
+      return null;
+    }
+
+    return this.mapRow(row);
+  }
+
   async findByUrl(url: string): Promise<Tool | null> {
     const query = `
-      SELECT r.id, r.title, r.description, r.favorite, r.created_at, r.updated_at,
-             t.kind, t.url, t.hostname, t.provider, t.category, t.pricing, t.notes, t.favicon_url,
+      SELECT r.id, r.title, r.description, r.slug, r.featured, r.origin, r.favorite, r.created_at, r.updated_at,
+             t.kind, t.url, t.hostname, t.provider, t.category, t.pricing, t.notes, t.favicon_url, t.verified_at,
              GROUP_CONCAT(tg.name) as tag_names
       FROM resources r
       JOIN tools t ON t.resource_id = r.id
@@ -137,6 +189,18 @@ export class D1ToolRepository implements ToolRepository {
       bindings.push(filter.favorite ? 1 : 0);
     }
 
+    // Filter by featured
+    if (filter?.featured !== undefined) {
+      conditions.push('r.featured = ?');
+      bindings.push(filter.featured ? 1 : 0);
+    }
+
+    // Filter by origin
+    if (filter?.origin && filter.origin.trim() !== '') {
+      conditions.push('r.origin = ?');
+      bindings.push(filter.origin.trim());
+    }
+
     // Filter by tag
     if (filter?.tag && filter.tag.trim() !== '') {
       conditions.push(`EXISTS (
@@ -178,7 +242,6 @@ export class D1ToolRepository implements ToolRepository {
     // Sorting
     let orderBy = 'r.updated_at DESC';
     const orderDirection = filter?.order === 'asc' ? 'ASC' : 'DESC';
-
     if (filter?.sort === 'created_at') {
       orderBy = `r.created_at ${orderDirection}`;
     } else if (filter?.sort === 'title') {
@@ -187,10 +250,9 @@ export class D1ToolRepository implements ToolRepository {
       orderBy = `r.updated_at ${orderDirection}`;
     }
 
-    // Select query
     const dataSql = `
-      SELECT r.id, r.title, r.description, r.favorite, r.created_at, r.updated_at,
-             t.kind, t.url, t.hostname, t.provider, t.category, t.pricing, t.notes, t.favicon_url,
+      SELECT r.id, r.title, r.description, r.slug, r.featured, r.origin, r.favorite, r.created_at, r.updated_at,
+             t.kind, t.url, t.hostname, t.provider, t.category, t.pricing, t.notes, t.favicon_url, t.verified_at,
              GROUP_CONCAT(tg.name) as tag_names
       FROM resources r
       JOIN tools t ON t.resource_id = r.id
@@ -212,30 +274,33 @@ export class D1ToolRepository implements ToolRepository {
   async save(tool: Tool): Promise<void> {
     const statements: D1PreparedStatement[] = [];
 
-    // 1. Insert into resources
+    // 1. Insert into core resources
     statements.push(
       this.db
         .prepare(
-          `INSERT INTO resources (id, type, title, description, favorite, created_at, updated_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?)`
+          `INSERT INTO resources (id, type, title, description, slug, featured, origin, favorite, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .bind(
           tool.id,
           tool.kind,
           tool.title,
           tool.description,
+          tool.slug ?? null,
+          tool.featured ? 1 : 0,
+          tool.origin ?? 'curated',
           tool.favorite ? 1 : 0,
           tool.createdAt,
           tool.updatedAt
         )
     );
 
-    // 2. Insert into tools
+    // 2. Insert into tools table
     statements.push(
       this.db
         .prepare(
-          `INSERT INTO tools (resource_id, kind, url, hostname, provider, category, pricing, notes, favicon_url)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+          `INSERT INTO tools (resource_id, kind, url, hostname, provider, category, pricing, notes, favicon_url, verified_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
         .bind(
           tool.id,
@@ -246,7 +311,8 @@ export class D1ToolRepository implements ToolRepository {
           tool.category,
           tool.pricing,
           tool.notes,
-          tool.faviconUrl
+          tool.faviconUrl,
+          tool.verifiedAt ?? null
         )
     );
 
@@ -280,13 +346,16 @@ export class D1ToolRepository implements ToolRepository {
       this.db
         .prepare(
           `UPDATE resources
-           SET type = ?, title = ?, description = ?, favorite = ?, updated_at = ?
+           SET type = ?, title = ?, description = ?, slug = ?, featured = ?, origin = ?, favorite = ?, updated_at = ?
            WHERE id = ?`
         )
         .bind(
           tool.kind,
           tool.title,
           tool.description,
+          tool.slug ?? null,
+          tool.featured ? 1 : 0,
+          tool.origin ?? 'curated',
           tool.favorite ? 1 : 0,
           tool.updatedAt,
           tool.id
@@ -298,7 +367,7 @@ export class D1ToolRepository implements ToolRepository {
       this.db
         .prepare(
           `UPDATE tools
-           SET kind = ?, url = ?, hostname = ?, provider = ?, category = ?, pricing = ?, notes = ?, favicon_url = ?
+           SET kind = ?, url = ?, hostname = ?, provider = ?, category = ?, pricing = ?, notes = ?, favicon_url = ?, verified_at = ?
            WHERE resource_id = ?`
         )
         .bind(
@@ -310,6 +379,7 @@ export class D1ToolRepository implements ToolRepository {
           tool.pricing,
           tool.notes,
           tool.faviconUrl,
+          tool.verifiedAt ?? null,
           tool.id
         )
     );
@@ -362,12 +432,21 @@ export class D1ToolRepository implements ToolRepository {
     return true;
   }
 
+  async setFeatured(id: string, featured: boolean): Promise<boolean> {
+    const now = new Date().toISOString();
+    await this.db
+      .prepare('UPDATE resources SET featured = ?, updated_at = ? WHERE id = ?')
+      .bind(featured ? 1 : 0, now, id)
+      .run();
+    return true;
+  }
+
   async getDistinctCategories(): Promise<string[]> {
     const query = `
       SELECT DISTINCT category
       FROM tools
       WHERE category IS NOT NULL AND TRIM(category) != ''
-      ORDER BY category COLLATE NOCASE ASC
+      ORDER BY category ASC
     `;
     const { results } = await this.db.prepare(query).all<{ category: string }>();
     return (results ?? []).map((r) => r.category);
@@ -378,7 +457,7 @@ export class D1ToolRepository implements ToolRepository {
       SELECT DISTINCT provider
       FROM tools
       WHERE provider IS NOT NULL AND TRIM(provider) != ''
-      ORDER BY provider COLLATE NOCASE ASC
+      ORDER BY provider ASC
     `;
     const { results } = await this.db.prepare(query).all<{ provider: string }>();
     return (results ?? []).map((r) => r.provider);
@@ -386,15 +465,18 @@ export class D1ToolRepository implements ToolRepository {
 
   async getAllTags(): Promise<TagWithCount[]> {
     const query = `
-      SELECT tg.id, tg.name, COUNT(rt.resource_id) as count
-      FROM tags tg
-      JOIN resource_tags rt ON rt.tag_id = tg.id
-      JOIN tools t ON t.resource_id = rt.resource_id
-      GROUP BY tg.id, tg.name
-      HAVING count > 0
-      ORDER BY count DESC, tg.name COLLATE NOCASE ASC
+      SELECT t.id, t.name, COUNT(rt.resource_id) as count
+      FROM tags t
+      JOIN resource_tags rt ON rt.tag_id = t.id
+      JOIN tools tl ON tl.resource_id = rt.resource_id
+      GROUP BY t.id, t.name
+      ORDER BY count DESC, t.name ASC
     `;
-    const { results } = await this.db.prepare(query).all<TagWithCount>();
-    return results ?? [];
+    const { results } = await this.db.prepare(query).all<{ id: string; name: string; count: number }>();
+    return (results ?? []).map((r) => ({
+      id: r.id,
+      name: r.name,
+      count: Number(r.count),
+    }));
   }
 }

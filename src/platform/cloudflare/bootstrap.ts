@@ -10,7 +10,7 @@ import { checkDatabaseHealth } from '../../adapters/persistence/d1/D1HealthCheck
 /**
  * Cloudflare Composition Root.
  *
- * Transforms Cloudflare environment bindings (D1Database, ASSETS) into
+ * Transforms Cloudflare environment bindings (D1Database, ASSETS, secrets) into
  * platform-neutral persistence adapters and dependencies for the HTTP router.
  */
 export function createCloudflareDependencies(env: Env): RouterDependencies {
@@ -22,5 +22,6 @@ export function createCloudflareDependencies(env: Env): RouterDependencies {
     resourceRepo: new D1ResourceRepository(env.DB),
     checkHealth: () => checkDatabaseHealth(env.DB),
     assetHandler: env.ASSETS ? (req: Request) => env.ASSETS!.fetch(req) : undefined,
+    curatorToken: env.CURATOR_TOKEN || env.ADMIN_TOKEN,
   };
 }

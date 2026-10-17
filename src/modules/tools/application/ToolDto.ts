@@ -2,6 +2,7 @@ import { Tool, ToolKind, ToolPricing } from '../domain/Tool';
 
 export interface ToolDto {
   id: string;
+  slug?: string | null;
   type: ToolKind;
   title: string;
   description: string | null;
@@ -14,6 +15,9 @@ export interface ToolDto {
   notes: string | null;
   faviconUrl: string | null;
   favorite: boolean;
+  featured: boolean;
+  origin: string;
+  verifiedAt: string | null;
   tags: string[];
   createdAt: string;
   updatedAt: string;
@@ -22,6 +26,7 @@ export interface ToolDto {
 export function toToolDto(tool: Tool): ToolDto {
   return {
     id: tool.id,
+    slug: tool.slug,
     type: tool.kind,
     title: tool.title,
     description: tool.description,
@@ -34,6 +39,9 @@ export function toToolDto(tool: Tool): ToolDto {
     notes: tool.notes,
     faviconUrl: tool.faviconUrl,
     favorite: tool.favorite,
+    featured: tool.featured,
+    origin: tool.origin,
+    verifiedAt: tool.verifiedAt,
     tags: [...tool.tags],
     createdAt: tool.createdAt,
     updatedAt: tool.updatedAt,

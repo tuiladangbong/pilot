@@ -1,0 +1,3845 @@
+[
+  {
+    "title": "ChatGPT",
+    "url": "https://chatgpt.com",
+    "kind": "tool",
+    "description": "Leading conversational AI model by OpenAI with browsing, code execution, vision, and voice capabilities.",
+    "provider": "OpenAI",
+    "category": "General AI / Chat",
+    "pricing": "Freemium",
+    "tags": [
+      "chat",
+      "gpt-4o",
+      "reasoning",
+      "openai",
+      "multimodal"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Claude",
+    "url": "https://claude.ai",
+    "kind": "tool",
+    "description": "Next-generation AI assistant by Anthropic known for superior reasoning, long-context analysis, and coding.",
+    "provider": "Anthropic",
+    "category": "General AI / Chat",
+    "pricing": "Freemium",
+    "tags": [
+      "chat",
+      "sonnet",
+      "reasoning",
+      "anthropic",
+      "writing"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Gemini",
+    "url": "https://gemini.google.com",
+    "kind": "tool",
+    "description": "Google's flagship multimodal AI assistant integrated with Workspace, YouTube, and Google Search.",
+    "provider": "Google",
+    "category": "General AI / Chat",
+    "pricing": "Freemium",
+    "tags": [
+      "chat",
+      "multimodal",
+      "google",
+      "workspace",
+      "search"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Microsoft Copilot",
+    "url": "https://copilot.microsoft.com",
+    "kind": "tool",
+    "description": "Microsoft's AI companion combining web search with GPT models across Office 365 and Windows.",
+    "provider": "Microsoft",
+    "category": "General AI / Chat",
+    "pricing": "Freemium",
+    "tags": [
+      "chat",
+      "office",
+      "microsoft",
+      "search",
+      "productivity"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Perplexity",
+    "url": "https://www.perplexity.ai",
+    "kind": "tool",
+    "description": "Conversational AI search engine providing cited, real-time answers across academic and web sources.",
+    "provider": "Perplexity AI",
+    "category": "Search & Research",
+    "pricing": "Freemium",
+    "tags": [
+      "search",
+      "citations",
+      "research",
+      "realtime",
+      "pro-search"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Grok",
+    "url": "https://grok.com",
+    "kind": "tool",
+    "description": "Real-time AI assistant developed by xAI with real-time news access and image understanding.",
+    "provider": "xAI",
+    "category": "General AI / Chat",
+    "pricing": "Paid",
+    "tags": [
+      "chat",
+      "realtime",
+      "xai",
+      "news",
+      "reasoning"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "DeepSeek",
+    "url": "https://chat.deepseek.com",
+    "kind": "tool",
+    "description": "Open-weight reasoning and coding model by DeepSeek offering state-of-the-art math and code capabilities.",
+    "provider": "DeepSeek",
+    "category": "General AI / Chat",
+    "pricing": "Free",
+    "tags": [
+      "coding",
+      "math",
+      "reasoning",
+      "open-weights",
+      "deepseek"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Le Chat Mistral",
+    "url": "https://chat.mistral.ai",
+    "kind": "tool",
+    "description": "Conversational assistant by Mistral AI powered by open European frontier models like Mistral Large.",
+    "provider": "Mistral AI",
+    "category": "General AI / Chat",
+    "pricing": "Freemium",
+    "tags": [
+      "chat",
+      "mistral",
+      "open-weights",
+      "european-ai"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Meta AI",
+    "url": "https://www.meta.ai",
+    "kind": "tool",
+    "description": "Consumer conversational assistant powered by Llama 3 across WhatsApp, Instagram, and web.",
+    "provider": "Meta",
+    "category": "General AI / Chat",
+    "pricing": "Free",
+    "tags": [
+      "chat",
+      "llama",
+      "meta",
+      "image-generation"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Poe",
+    "url": "https://poe.com",
+    "kind": "tool",
+    "description": "Multi-model chat platform by Quora allowing users to explore and build custom bots across all major LLMs.",
+    "provider": "Quora",
+    "category": "General AI / Chat",
+    "pricing": "Freemium",
+    "tags": [
+      "chat",
+      "multi-model",
+      "bots",
+      "quora"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Phind",
+    "url": "https://www.phind.com",
+    "kind": "tool",
+    "description": "Search engine and conversational assistant tuned specifically for developers and technical problem-solving.",
+    "provider": "Phind",
+    "category": "Coding",
+    "pricing": "Freemium",
+    "tags": [
+      "search",
+      "developer",
+      "coding",
+      "technical"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "You.com",
+    "url": "https://you.com",
+    "kind": "tool",
+    "description": "AI-powered productivity search engine with customizable research modes and multi-LLM orchestration.",
+    "provider": "You.com",
+    "category": "Search & Research",
+    "pricing": "Freemium",
+    "tags": [
+      "search",
+      "research",
+      "productivity"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "DuckDuckGo AI Chat",
+    "url": "https://duckduckgo.com/chat",
+    "kind": "tool",
+    "description": "Private, anonymous chat interface to popular LLMs without personal tracking or chat logging.",
+    "provider": "DuckDuckGo",
+    "category": "General AI / Chat",
+    "pricing": "Free",
+    "tags": [
+      "chat",
+      "privacy",
+      "anonymous"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "GitHub Copilot",
+    "url": "https://github.com/features/copilot",
+    "kind": "tool",
+    "description": "World's most widely used AI pair programmer integrated into VS Code, Visual Studio, and JetBrains IDEs.",
+    "provider": "GitHub",
+    "category": "Coding",
+    "pricing": "Paid",
+    "tags": [
+      "coding",
+      "ide",
+      "vscode",
+      "pair-programming",
+      "github"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Cursor",
+    "url": "https://www.cursor.com",
+    "kind": "tool",
+    "description": "AI-native code editor built on VS Code with multi-file edits, codebase indexing, and agent capabilities.",
+    "provider": "Anysphere",
+    "category": "Coding",
+    "pricing": "Freemium",
+    "tags": [
+      "coding",
+      "ide",
+      "editor",
+      "agent",
+      "cursor"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Windsurf",
+    "url": "https://codeium.com/windsurf",
+    "kind": "tool",
+    "description": "Agentic IDE by Codeium featuring Flows that allow developers and AI agents to collaborate in real-time.",
+    "provider": "Codeium",
+    "category": "Coding",
+    "pricing": "Freemium",
+    "tags": [
+      "coding",
+      "ide",
+      "agentic",
+      "flows",
+      "codeium"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Replit",
+    "url": "https://replit.com",
+    "kind": "tool",
+    "description": "Collaborative cloud development environment with Replit Agent for building full-stack apps from natural language.",
+    "provider": "Replit",
+    "category": "Coding",
+    "pricing": "Freemium",
+    "tags": [
+      "coding",
+      "cloud-ide",
+      "replit-agent",
+      "deployment"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Claude Code",
+    "url": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview",
+    "kind": "tool",
+    "description": "Official Anthropic CLI agent that lives in the terminal, reads your codebase, edits files, and runs tests.",
+    "provider": "Anthropic",
+    "category": "Coding Agents",
+    "pricing": "Paid",
+    "tags": [
+      "coding",
+      "cli",
+      "agent",
+      "anthropic",
+      "terminal"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "OpenAI Codex",
+    "url": "https://openai.com/index/openai-codex/",
+    "kind": "tool",
+    "description": "Foundational code generation model that powered the first wave of AI programming tools and Copilot.",
+    "provider": "OpenAI",
+    "category": "Coding",
+    "pricing": "Paid",
+    "tags": [
+      "coding",
+      "openai",
+      "codex",
+      "benchmark"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Continue",
+    "url": "https://continue.dev",
+    "kind": "tool",
+    "description": "Leading open-source AI code assistant extension for VS Code and JetBrains supporting any LLM.",
+    "provider": "Continue",
+    "category": "Coding",
+    "pricing": "Open Source",
+    "tags": [
+      "coding",
+      "open-source",
+      "vscode",
+      "jetbrains",
+      "local-models"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Aider",
+    "url": "https://aider.chat",
+    "kind": "tool",
+    "description": "Popular command-line pair programmer that edits code in git repositories and commits completed work.",
+    "provider": "Paul Gauthier",
+    "category": "Coding Agents",
+    "pricing": "Open Source",
+    "tags": [
+      "coding",
+      "cli",
+      "git",
+      "open-source",
+      "pair-programming"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Cline",
+    "url": "https://github.com/cline/cline",
+    "kind": "tool",
+    "description": "Autonomous coding agent extension for VS Code capable of creating files, running commands, and browsing.",
+    "provider": "Cline",
+    "category": "Coding Agents",
+    "pricing": "Open Source",
+    "tags": [
+      "coding",
+      "vscode",
+      "agent",
+      "open-source",
+      "autonomous"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Supermaven",
+    "url": "https://supermaven.com",
+    "kind": "tool",
+    "description": "Ultra-fast code completion tool with 1-million-token context window and sub-50ms latency.",
+    "provider": "Supermaven",
+    "category": "Coding",
+    "pricing": "Freemium",
+    "tags": [
+      "coding",
+      "completion",
+      "fast",
+      "low-latency"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Sourcegraph Cody",
+    "url": "https://sourcegraph.com/cody",
+    "kind": "tool",
+    "description": "Enterprise code assistant leveraging Sourcegraph's code graph for deep codebase context understanding.",
+    "provider": "Sourcegraph",
+    "category": "Coding",
+    "pricing": "Freemium",
+    "tags": [
+      "coding",
+      "enterprise",
+      "code-graph",
+      "context"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Tabnine",
+    "url": "https://www.tabnine.com",
+    "kind": "tool",
+    "description": "Privacy-first AI code assistant with options for fully on-premise and self-hosted deployment.",
+    "provider": "Tabnine",
+    "category": "Coding",
+    "pricing": "Freemium",
+    "tags": [
+      "coding",
+      "privacy",
+      "enterprise",
+      "on-premise"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "OpenHands",
+    "url": "https://all-hands.dev",
+    "kind": "tool",
+    "description": "Open-source platform for AI software development agents, formerly known as OpenDevin.",
+    "provider": "All Hands AI",
+    "category": "Coding Agents",
+    "pricing": "Open Source",
+    "tags": [
+      "coding",
+      "agents",
+      "open-source",
+      "autonomous"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Lovable",
+    "url": "https://lovable.dev",
+    "kind": "tool",
+    "description": "Full-stack AI app builder generating complete Supabase + React applications from natural language prompts.",
+    "provider": "Lovable",
+    "category": "App Builders",
+    "pricing": "Freemium",
+    "tags": [
+      "app-builder",
+      "react",
+      "supabase",
+      "fullstack",
+      "lovable"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Bolt.new",
+    "url": "https://bolt.new",
+    "kind": "tool",
+    "description": "In-browser full-stack AI development environment running Node.js via WebContainers to build and deploy live apps.",
+    "provider": "StackBlitz",
+    "category": "App Builders",
+    "pricing": "Freemium",
+    "tags": [
+      "app-builder",
+      "webcontainers",
+      "browser-ide",
+      "fullstack",
+      "stackblitz"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "v0",
+    "url": "https://v0.dev",
+    "kind": "tool",
+    "description": "Generative UI system by Vercel creating production-grade React components, Tailwind CSS, and shadcn/ui.",
+    "provider": "Vercel",
+    "category": "App Builders",
+    "pricing": "Freemium",
+    "tags": [
+      "ui",
+      "react",
+      "tailwind",
+      "vercel",
+      "shadcn"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Create.xyz",
+    "url": "https://www.create.xyz",
+    "kind": "tool",
+    "description": "Visual prompt-to-app platform letting anyone build web applications and workflows without manual coding.",
+    "provider": "Create",
+    "category": "App Builders",
+    "pricing": "Freemium",
+    "tags": [
+      "app-builder",
+      "no-code",
+      "visual",
+      "components"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Websim",
+    "url": "https://websim.ai",
+    "kind": "tool",
+    "description": "Interactive simulated web sandbox generating creative, dynamic web pages and interactive games on the fly.",
+    "provider": "Websim",
+    "category": "App Builders",
+    "pricing": "Free",
+    "tags": [
+      "creative",
+      "simulation",
+      "interactive",
+      "web-apps"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Marblism",
+    "url": "https://marblism.com",
+    "kind": "tool",
+    "description": "Boilerplate and app generator transforming prompts into full-stack web applications with authentication and database.",
+    "provider": "Marblism",
+    "category": "App Builders",
+    "pricing": "Freemium",
+    "tags": [
+      "app-builder",
+      "boilerplate",
+      "react",
+      "nodejs"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Databutton",
+    "url": "https://databutton.com",
+    "kind": "tool",
+    "description": "AI app workspace focused on building full-stack Python + React applications with chat-guided iteration.",
+    "provider": "Databutton",
+    "category": "App Builders",
+    "pricing": "Freemium",
+    "tags": [
+      "python",
+      "react",
+      "app-builder",
+      "data-apps"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Framer AI",
+    "url": "https://www.framer.com",
+    "kind": "tool",
+    "description": "Interactive design and publishing platform generating responsive landing pages and marketing websites with AI.",
+    "provider": "Framer",
+    "category": "Website Builders",
+    "pricing": "Freemium",
+    "tags": [
+      "website-builder",
+      "design",
+      "landing-page",
+      "framer"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Relume",
+    "url": "https://www.relume.io",
+    "kind": "tool",
+    "description": "AI website builder that produces complete sitemaps and wireframes exportable directly to Figma and Webflow.",
+    "provider": "Relume",
+    "category": "Website Builders",
+    "pricing": "Freemium",
+    "tags": [
+      "wireframes",
+      "sitemaps",
+      "webflow",
+      "figma"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Softr AI",
+    "url": "https://www.softr.io/ai",
+    "kind": "tool",
+    "description": "No-code portal and internal tools builder creating web apps from Airtable and Google Sheets with AI.",
+    "provider": "Softr",
+    "category": "App Builders",
+    "pricing": "Freemium",
+    "tags": [
+      "no-code",
+      "internal-tools",
+      "airtable",
+      "client-portals"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Midjourney",
+    "url": "https://www.midjourney.com",
+    "kind": "tool",
+    "description": "Premier generative AI art platform famed for photorealistic, stylistic, and imaginative image synthesis.",
+    "provider": "Midjourney",
+    "category": "Image Generation",
+    "pricing": "Paid",
+    "tags": [
+      "image-generation",
+      "art",
+      "photorealism",
+      "creative"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Adobe Firefly",
+    "url": "https://firefly.adobe.com",
+    "kind": "tool",
+    "description": "Commercially safe generative AI models embedded directly inside Photoshop, Illustrator, and web apps.",
+    "provider": "Adobe",
+    "category": "Image Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "image-generation",
+      "adobe",
+      "commercial-safe",
+      "photoshop"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Ideogram",
+    "url": "https://ideogram.ai",
+    "kind": "tool",
+    "description": "State-of-the-art AI image generator renowned for reliable typography, graphic design, and coherent text in images.",
+    "provider": "Ideogram",
+    "category": "Image Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "typography",
+      "graphic-design",
+      "image-generation",
+      "text-in-image"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Leonardo.Ai",
+    "url": "https://leonardo.ai",
+    "kind": "tool",
+    "description": "Comprehensive creative suite offering game asset generation, character design, and custom model training.",
+    "provider": "Leonardo Interactive",
+    "category": "Image Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "game-assets",
+      "image-generation",
+      "canvases",
+      "character-design"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Recraft",
+    "url": "https://www.recraft.ai",
+    "kind": "tool",
+    "description": "AI design tool capable of generating and editing scalable vector art (SVG), 3D graphics, and branded illustrations.",
+    "provider": "Recraft",
+    "category": "Image Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "vector",
+      "svg",
+      "icons",
+      "illustration",
+      "design"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "FLUX.1",
+    "url": "https://blackforestlabs.ai",
+    "kind": "tool",
+    "description": "Open-weight frontier text-to-image suite created by former Stability AI researchers with exceptional prompt fidelity.",
+    "provider": "Black Forest Labs",
+    "category": "Image Generation",
+    "pricing": "Open Source",
+    "tags": [
+      "flux",
+      "open-source",
+      "image-generation",
+      "photorealism"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Stability AI",
+    "url": "https://stability.ai",
+    "kind": "website",
+    "description": "Creator of Stable Diffusion models for open image, audio, and 3D media generation.",
+    "provider": "Stability AI",
+    "category": "Image Generation",
+    "pricing": "Open Source",
+    "tags": [
+      "stable-diffusion",
+      "open-source",
+      "research",
+      "multimodal"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Krea AI",
+    "url": "https://www.krea.ai",
+    "kind": "tool",
+    "description": "Real-time canvas generation, AI upscaling, and visual creative tools with instant interactive feedback.",
+    "provider": "Krea",
+    "category": "Image Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "realtime",
+      "upscaling",
+      "canvas",
+      "interactive"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Magnific AI",
+    "url": "https://magnific.ai",
+    "kind": "tool",
+    "description": "Advanced AI image upscaler and enhancer capable of hallucinations and high-resolution detail synthesis.",
+    "provider": "Freepik",
+    "category": "Image Generation",
+    "pricing": "Paid",
+    "tags": [
+      "upscaling",
+      "enhancer",
+      "high-resolution"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Photoroom",
+    "url": "https://www.photoroom.com",
+    "kind": "tool",
+    "description": "AI-powered photo editor specializing in automated background removal and e-commerce product photography.",
+    "provider": "Photoroom",
+    "category": "Image Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "background-removal",
+      "ecommerce",
+      "photo-editor"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Playground",
+    "url": "https://playground.com",
+    "kind": "tool",
+    "description": "Online graphic design tool and AI canvas combining multiple generative models with visual editing tools.",
+    "provider": "Playground",
+    "category": "Image Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "design",
+      "image-generation",
+      "canvas"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "ComfyUI",
+    "url": "https://github.com/comfyanonymous/ComfyUI",
+    "kind": "tool",
+    "description": "Modular node-based graphical interface for running Stable Diffusion, FLUX, and custom generative workflows.",
+    "provider": "Comfy Org",
+    "category": "Image Generation",
+    "pricing": "Open Source",
+    "tags": [
+      "nodes",
+      "stable-diffusion",
+      "flux",
+      "open-source",
+      "workflows"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Civitai",
+    "url": "https://civitai.com",
+    "kind": "website",
+    "description": "Community platform and model repository for discovering and sharing custom LoRAs, checkpoints, and AI art.",
+    "provider": "Civitai",
+    "category": "Image Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "models",
+      "lora",
+      "community",
+      "checkpoints"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Runway",
+    "url": "https://runwayml.com",
+    "kind": "tool",
+    "description": "Pioneering creative video suite featuring Gen-3 Alpha, motion brush, camera controls, and video-to-video tools.",
+    "provider": "Runway AI",
+    "category": "Video Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "video-generation",
+      "gen-3",
+      "camera-control",
+      "creative"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Higgsfield",
+    "url": "https://higgsfield.ai",
+    "kind": "tool",
+    "description": "AI video and motion generation platform focused on cinematic character control, social creators, and physics simulation.",
+    "provider": "Higgsfield AI",
+    "category": "Video Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "video",
+      "motion",
+      "character-animation",
+      "social"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Luma Dream Machine",
+    "url": "https://lumalabs.ai/dream-machine",
+    "kind": "tool",
+    "description": "High-fidelity AI video model capable of generating smooth 5-second realistic video clips from text and images.",
+    "provider": "Luma AI",
+    "category": "Video Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "video-generation",
+      "3d",
+      "dream-machine",
+      "cinematic"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Kling AI",
+    "url": "https://klingai.com",
+    "kind": "tool",
+    "description": "Advanced video generation model by Kuaishou producing high-definition video up to 2 minutes with realistic physics.",
+    "provider": "Kuaishou",
+    "category": "Video Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "video-generation",
+      "physics",
+      "long-video",
+      "high-definition"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Pika",
+    "url": "https://pika.art",
+    "kind": "tool",
+    "description": "Idea-to-video platform with Pika 2.0, scene ingredients, Pikaffects, and precise video pacing controls.",
+    "provider": "Pika Labs",
+    "category": "Video Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "video-generation",
+      "effects",
+      "animation",
+      "creative"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Google Veo",
+    "url": "https://deepmind.google/technologies/veo/",
+    "kind": "website",
+    "description": "Google DeepMind's flagship generative high-definition 1080p video model supporting cinematic film techniques.",
+    "provider": "Google DeepMind",
+    "category": "Video Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "video-generation",
+      "deepmind",
+      "1080p",
+      "cinematic"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "OpenAI Sora",
+    "url": "https://openai.com/sora/",
+    "kind": "tool",
+    "description": "OpenAI's breakthrough world-simulation video model generating complex scenes with multiple characters and motion.",
+    "provider": "OpenAI",
+    "category": "Video Generation",
+    "pricing": "Paid",
+    "tags": [
+      "video-generation",
+      "sora",
+      "openai",
+      "world-model"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Hailuo AI",
+    "url": "https://hailuoai.video",
+    "kind": "tool",
+    "description": "High-motion generative video tool powered by MiniMax models delivering expressive physical animations.",
+    "provider": "MiniMax",
+    "category": "Video Generation",
+    "pricing": "Free",
+    "tags": [
+      "video-generation",
+      "motion",
+      "minimax"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Hedra",
+    "url": "https://www.hedra.com",
+    "kind": "tool",
+    "description": "AI character creation and video generation engine creating expressive talking avatars from audio and prompts.",
+    "provider": "Hedra",
+    "category": "Video Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "avatars",
+      "talking-head",
+      "voice-sync",
+      "video"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "HeyGen",
+    "url": "https://www.heygen.com",
+    "kind": "tool",
+    "description": "AI video platform for business producing multilingual spokesperson videos with realistic voice cloning.",
+    "provider": "HeyGen",
+    "category": "Video Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "avatars",
+      "spokesperson",
+      "multilingual",
+      "business"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Synthesia",
+    "url": "https://www.synthesia.io",
+    "kind": "tool",
+    "description": "Enterprise AI video generation platform converting text into professional training and corporate videos.",
+    "provider": "Synthesia",
+    "category": "Video Generation",
+    "pricing": "Paid",
+    "tags": [
+      "enterprise",
+      "training",
+      "avatars",
+      "corporate"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Captions",
+    "url": "https://www.captions.ai",
+    "kind": "tool",
+    "description": "AI-powered creative studio for short-form video creators with auto-subtitles, eye contact correction, and dubbing.",
+    "provider": "Captions",
+    "category": "Video Generation",
+    "pricing": "Paid",
+    "tags": [
+      "subtitles",
+      "eye-contact",
+      "short-form",
+      "video-editor"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "ElevenLabs",
+    "url": "https://elevenlabs.io",
+    "kind": "tool",
+    "description": "Industry standard for lifelike AI voice synthesis, voice cloning, sound effects, and conversational voice agents.",
+    "provider": "ElevenLabs",
+    "category": "Voice & Audio",
+    "pricing": "Freemium",
+    "tags": [
+      "voice",
+      "tts",
+      "voice-cloning",
+      "sound-effects",
+      "speech"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Suno",
+    "url": "https://suno.com",
+    "kind": "tool",
+    "description": "Generative music service creating full songs with vocals, lyrics, and instruments across any musical style.",
+    "provider": "Suno",
+    "category": "Voice & Audio",
+    "pricing": "Freemium",
+    "tags": [
+      "music",
+      "song-generation",
+      "lyrics",
+      "vocals",
+      "audio"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Udio",
+    "url": "https://www.udio.com",
+    "kind": "tool",
+    "description": "High-fidelity AI music creation application enabling intricate song composition, stems, and genre blending.",
+    "provider": "Udio",
+    "category": "Voice & Audio",
+    "pricing": "Freemium",
+    "tags": [
+      "music",
+      "composition",
+      "audio",
+      "high-fidelity",
+      "stems"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Descript",
+    "url": "https://www.descript.com",
+    "kind": "tool",
+    "description": "All-in-one audio and video editor where users edit spoken recordings simply by editing a text transcript.",
+    "provider": "Descript",
+    "category": "Voice & Audio",
+    "pricing": "Freemium",
+    "tags": [
+      "audio-editor",
+      "podcast",
+      "transcription",
+      "video-editor"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Cartesia",
+    "url": "https://cartesia.ai",
+    "kind": "tool",
+    "description": "Ultra-low-latency real-time voice intelligence models delivering streaming text-to-speech in under 100ms.",
+    "provider": "Cartesia",
+    "category": "Voice & Audio",
+    "pricing": "Paid",
+    "tags": [
+      "voice",
+      "low-latency",
+      "streaming",
+      "tts"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Deepgram",
+    "url": "https://deepgram.com",
+    "kind": "tool",
+    "description": "Enterprise speech recognition, real-time transcription, and fast voice synthesis API platform.",
+    "provider": "Deepgram",
+    "category": "Voice & Audio",
+    "pricing": "Freemium",
+    "tags": [
+      "transcription",
+      "asr",
+      "speech-to-text",
+      "api"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "OpenAI Whisper",
+    "url": "https://github.com/openai/whisper",
+    "kind": "website",
+    "description": "Open-source automatic speech recognition neural network trained on 680,000 hours of multilingual audio.",
+    "provider": "OpenAI",
+    "category": "Voice & Audio",
+    "pricing": "Open Source",
+    "tags": [
+      "speech-to-text",
+      "open-source",
+      "transcription",
+      "multilingual"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "NotebookLM",
+    "url": "https://notebooklm.google.com",
+    "kind": "tool",
+    "description": "Google's personalized research notebook grounded in your source documents, featuring Audio Overview podcast generation.",
+    "provider": "Google",
+    "category": "Search & Research",
+    "pricing": "Free",
+    "tags": [
+      "research",
+      "notebook",
+      "audio-overview",
+      "google",
+      "documents"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Elicit",
+    "url": "https://elicit.com",
+    "kind": "tool",
+    "description": "AI research assistant that automates literature reviews, extracts key paper claims, and synthesizes findings.",
+    "provider": "Elicit",
+    "category": "Search & Research",
+    "pricing": "Freemium",
+    "tags": [
+      "research",
+      "literature-review",
+      "academic",
+      "papers"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Consensus",
+    "url": "https://consensus.app",
+    "kind": "tool",
+    "description": "Academic search engine using language models to extract science-backed answers directly from peer-reviewed research.",
+    "provider": "Consensus",
+    "category": "Search & Research",
+    "pricing": "Freemium",
+    "tags": [
+      "academic",
+      "science",
+      "peer-reviewed",
+      "citations"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Semantic Scholar",
+    "url": "https://www.semanticscholar.org",
+    "kind": "website",
+    "description": "Free, AI-backed search and discovery engine for academic literature developed by the Allen Institute for AI.",
+    "provider": "Allen Institute for AI",
+    "category": "Search & Research",
+    "pricing": "Free",
+    "tags": [
+      "academic",
+      "papers",
+      "citations",
+      "open-access"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Connected Papers",
+    "url": "https://www.connectedpapers.com",
+    "kind": "tool",
+    "description": "Visual tool to help researchers explore academic papers and find relevant connected literature through visual graphs.",
+    "provider": "Connected Papers",
+    "category": "Search & Research",
+    "pricing": "Freemium",
+    "tags": [
+      "citations",
+      "graph",
+      "academic",
+      "visual-search"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "ChatPDF",
+    "url": "https://www.chatpdf.com",
+    "kind": "tool",
+    "description": "Document chat interface allowing users to upload PDF books, legal contracts, or papers and query them instantly.",
+    "provider": "ChatPDF",
+    "category": "Search & Research",
+    "pricing": "Freemium",
+    "tags": [
+      "pdf",
+      "documents",
+      "chat",
+      "qa"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "SciSpace",
+    "url": "https://scispace.com",
+    "kind": "tool",
+    "description": "Comprehensive research platform with integrated AI copilot for deciphering complex scientific papers.",
+    "provider": "SciSpace",
+    "category": "Search & Research",
+    "pricing": "Freemium",
+    "tags": [
+      "scientific",
+      "papers",
+      "literature-review"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "OpenRouter",
+    "url": "https://openrouter.ai",
+    "kind": "website",
+    "description": "Unified API gateway and model aggregator providing standardized access to hundreds of proprietary and open LLMs.",
+    "provider": "OpenRouter",
+    "category": "Model APIs & Inference",
+    "pricing": "Paid",
+    "tags": [
+      "api",
+      "llm-gateway",
+      "aggregation",
+      "inference",
+      "openrouter"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Hugging Face",
+    "url": "https://huggingface.co",
+    "kind": "website",
+    "description": "The central collaboration hub for open machine learning, hosting models, datasets, and Spaces web applications.",
+    "provider": "Hugging Face",
+    "category": "AI Infrastructure",
+    "pricing": "Freemium",
+    "tags": [
+      "open-source",
+      "models",
+      "datasets",
+      "spaces",
+      "huggingface"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Replicate",
+    "url": "https://replicate.com",
+    "kind": "website",
+    "description": "Serverless cloud platform for running open-source machine learning models with a simple REST API.",
+    "provider": "Replicate",
+    "category": "Model APIs & Inference",
+    "pricing": "Paid",
+    "tags": [
+      "api",
+      "serverless",
+      "cloud",
+      "open-source",
+      "replicate"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Together AI",
+    "url": "https://www.together.ai",
+    "kind": "website",
+    "description": "High-performance cloud for training and running open-source AI models at enterprise scale with fast token speeds.",
+    "provider": "Together AI",
+    "category": "Model APIs & Inference",
+    "pricing": "Paid",
+    "tags": [
+      "inference",
+      "gpu",
+      "open-source",
+      "fast",
+      "together-ai"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Groq",
+    "url": "https://groq.com",
+    "kind": "tool",
+    "description": "Language Processing Unit (LPU) provider delivering ultra-fast inference speeds exceeding 500 tokens per second.",
+    "provider": "Groq",
+    "category": "Model APIs & Inference",
+    "pricing": "Freemium",
+    "tags": [
+      "lpu",
+      "fast-inference",
+      "hardware",
+      "realtime",
+      "groq"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Artificial Analysis",
+    "url": "https://artificialanalysis.ai",
+    "kind": "website",
+    "description": "Independent benchmarking and analysis site comparing AI models and API providers on speed, latency, cost, and quality.",
+    "provider": "Artificial Analysis",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Free",
+    "tags": [
+      "benchmarks",
+      "latency",
+      "pricing-comparison",
+      "analytics"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "LMSYS Chatbot Arena",
+    "url": "https://chat.lmsys.org",
+    "kind": "website",
+    "description": "Crowdsourced open platform comparing LLM responses head-to-head using human preference and Elo rating.",
+    "provider": "LMSYS Org",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Free",
+    "tags": [
+      "benchmarks",
+      "elo-rating",
+      "leaderboard",
+      "blind-test"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Ollama",
+    "url": "https://ollama.com",
+    "kind": "tool",
+    "description": "Lightweight open-source tool to get up and running with Llama 3, DeepSeek, Mistral, and other LLMs locally.",
+    "provider": "Ollama",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "tags": [
+      "local-ai",
+      "cli",
+      "open-source",
+      "offline",
+      "ollama"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "LM Studio",
+    "url": "https://lmstudio.ai",
+    "kind": "tool",
+    "description": "Desktop application to discover, download, and run local LLMs offline on Mac and Windows with hardware acceleration.",
+    "provider": "LM Studio",
+    "category": "Open Source & Local AI",
+    "pricing": "Free",
+    "tags": [
+      "local-ai",
+      "desktop-app",
+      "offline",
+      "hardware-accel"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Open-WebUI",
+    "url": "https://openwebui.com",
+    "kind": "tool",
+    "description": "Feature-rich, self-hosted web interface designed for Ollama and OpenAI-compatible local LLM setups.",
+    "provider": "Open-WebUI",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "tags": [
+      "webui",
+      "self-hosted",
+      "local-ai",
+      "ollama"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "vLLM",
+    "url": "https://github.com/vllm-project/vllm",
+    "kind": "website",
+    "description": "High-throughput and memory-efficient LLM serving engine featuring PagedAttention for production inference.",
+    "provider": "vLLM Project",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "tags": [
+      "inference",
+      "serving",
+      "paged-attention",
+      "open-source"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Notion AI",
+    "url": "https://www.notion.so/product/ai",
+    "kind": "tool",
+    "description": "Connected workplace AI that searches, writes, and summarizes across all your team's pages and knowledge bases.",
+    "provider": "Notion",
+    "category": "Writing & Documents",
+    "pricing": "Paid",
+    "tags": [
+      "notes",
+      "workspace",
+      "writing",
+      "summarization"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Gamma",
+    "url": "https://gamma.app",
+    "kind": "tool",
+    "description": "AI-powered presentation, document, and webpage generator that creates polished slide decks in seconds.",
+    "provider": "Gamma Tech",
+    "category": "Presentations & Design",
+    "pricing": "Freemium",
+    "tags": [
+      "presentations",
+      "slides",
+      "documents",
+      "gamma"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "DeepL",
+    "url": "https://www.deepl.com",
+    "kind": "tool",
+    "description": "World-leading neural machine translation service producing natural, fluent text across 30+ languages.",
+    "provider": "DeepL",
+    "category": "Writing & Documents",
+    "pricing": "Freemium",
+    "tags": [
+      "translation",
+      "multilingual",
+      "writing"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Figma AI",
+    "url": "https://www.figma.com/ai/",
+    "kind": "tool",
+    "description": "Native generative AI tools built into Figma for visual asset generation, auto-naming layers, and prototype generation.",
+    "provider": "Figma",
+    "category": "Presentations & Design",
+    "pricing": "Freemium",
+    "tags": [
+      "design",
+      "ui-ux",
+      "prototyping",
+      "figma"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Make",
+    "url": "https://www.make.com",
+    "kind": "tool",
+    "description": "Visual automation platform enabling complex multi-app workflows and AI agents with drag-and-drop connections.",
+    "provider": "Celonis",
+    "category": "Automation & Workflows",
+    "pricing": "Freemium",
+    "tags": [
+      "automation",
+      "workflows",
+      "integration",
+      "no-code"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "n8n",
+    "url": "https://n8n.io",
+    "kind": "tool",
+    "description": "Fair-code licensed workflow automation tool with extensive LangChain and AI agent building blocks.",
+    "provider": "n8n",
+    "category": "Automation & Workflows",
+    "pricing": "Open Source",
+    "tags": [
+      "automation",
+      "workflows",
+      "self-hosted",
+      "agents"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Dify",
+    "url": "https://dify.ai",
+    "kind": "tool",
+    "description": "Open-source LLM app development platform combining visual prompt engineering, RAG pipelines, and agent orchestration.",
+    "provider": "LangGenius",
+    "category": "Automation & Workflows",
+    "pricing": "Open Source",
+    "tags": [
+      "rag",
+      "agent-builder",
+      "open-source",
+      "workflows"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Smithery",
+    "url": "https://smithery.ai",
+    "kind": "website",
+    "description": "Registry and discovery platform for Model Context Protocol (MCP) servers to extend AI coding agents.",
+    "provider": "Smithery",
+    "category": "Developer Tools & MCP",
+    "pricing": "Free",
+    "tags": [
+      "mcp",
+      "developer-tools",
+      "extensions",
+      "protocols"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Model Context Protocol",
+    "url": "https://github.com/modelcontextprotocol/servers",
+    "kind": "website",
+    "description": "Anthropic's open standard for connecting AI assistants and agents to external tools, databases, and APIs.",
+    "provider": "Anthropic",
+    "category": "Developer Tools & MCP",
+    "pricing": "Open Source",
+    "tags": [
+      "mcp",
+      "protocol",
+      "anthropic",
+      "standards"
+    ],
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Jan",
+    "url": "https://jan.ai",
+    "kind": "tool",
+    "description": "Open-source, local-first alternative to ChatGPT that runs 100% offline on personal computers.",
+    "provider": "Menlo Ventures",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "tags": [
+      "offline",
+      "privacy",
+      "local-llm",
+      "desktop"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "LocalAI",
+    "url": "https://localai.io",
+    "kind": "tool",
+    "description": "Free, open-source drop-in replacement REST API for OpenAI specifications running on consumer hardware without GPU.",
+    "provider": "Ettore Di Giacinto",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "tags": [
+      "local-ai",
+      "api",
+      "drop-in-replacement"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "llama.cpp",
+    "url": "https://github.com/ggerganov/llama.cpp",
+    "kind": "website",
+    "description": "Port of LLM inference in pure C/C++ with zero dependencies, driving most consumer local LLM applications.",
+    "provider": "Georgi Gerganov",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "tags": [
+      "inference",
+      "c-plus-plus",
+      "quantization",
+      "gguf"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "AnythingLLM",
+    "url": "https://anythingllm.com",
+    "kind": "tool",
+    "description": "Full-stack desktop application that turns any document into an intelligent, private chatbot with local RAG.",
+    "provider": "Mintplex Labs",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "tags": [
+      "rag",
+      "documents",
+      "local-ai",
+      "desktop"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Grammarly",
+    "url": "https://www.grammarly.com",
+    "kind": "tool",
+    "description": "AI writing assistance tool checking grammar, clarity, tone, and full sentence rewriting across all apps.",
+    "provider": "Grammarly",
+    "category": "Writing & Documents",
+    "pricing": "Freemium",
+    "tags": [
+      "writing",
+      "grammar",
+      "clarity",
+      "proofreading"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Jasper",
+    "url": "https://www.jasper.ai",
+    "kind": "tool",
+    "description": "Enterprise AI marketing co-pilot designed to generate on-brand copy, blog articles, and social campaigns.",
+    "provider": "Jasper AI",
+    "category": "Writing & Documents",
+    "pricing": "Paid",
+    "tags": [
+      "copywriting",
+      "marketing",
+      "brand-voice"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Copy.ai",
+    "url": "https://www.copy.ai",
+    "kind": "tool",
+    "description": "GTM AI platform automating sales copy, prospecting emails, and marketing workflows at scale.",
+    "provider": "Copy.ai",
+    "category": "Writing & Documents",
+    "pricing": "Freemium",
+    "tags": [
+      "sales",
+      "copywriting",
+      "marketing-automation"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Writer",
+    "url": "https://writer.com",
+    "kind": "tool",
+    "description": "Enterprise generative AI platform with Palmyra models and knowledge graph integrations for corporate teams.",
+    "provider": "Writer",
+    "category": "Writing & Documents",
+    "pricing": "Paid",
+    "tags": [
+      "enterprise",
+      "writing",
+      "governance",
+      "palmyra"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Lex",
+    "url": "https://lex.page",
+    "kind": "tool",
+    "description": "Clean, focused AI word processor designed for writers with integrated feedback and smart brainstorming.",
+    "provider": "Lex",
+    "category": "Writing & Documents",
+    "pricing": "Freemium",
+    "tags": [
+      "editor",
+      "writing",
+      "word-processor"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "QuillBot",
+    "url": "https://quillbot.com",
+    "kind": "tool",
+    "description": "AI-powered paraphrasing tool and grammar checker with customizable fluency and tone settings.",
+    "provider": "Learneo",
+    "category": "Writing & Documents",
+    "pricing": "Freemium",
+    "tags": [
+      "paraphrasing",
+      "writing",
+      "proofreading"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Sudowrite",
+    "url": "https://www.sudowrite.com",
+    "kind": "tool",
+    "description": "Creative writing assistant built specifically for fiction authors, novelists, and screenwriters.",
+    "provider": "Sudowrite",
+    "category": "Writing & Documents",
+    "pricing": "Paid",
+    "tags": [
+      "fiction",
+      "creative-writing",
+      "authors",
+      "storytelling"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Beautiful.ai",
+    "url": "https://www.beautiful.ai",
+    "kind": "tool",
+    "description": "Presentation software that automatically applies principles of good graphic design to every slide layout.",
+    "provider": "Beautiful.ai",
+    "category": "Presentations & Design",
+    "pricing": "Paid",
+    "tags": [
+      "presentations",
+      "slides",
+      "smart-templates"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Tome",
+    "url": "https://tome.app",
+    "kind": "tool",
+    "description": "Generative storytelling and presentation canvas creating complete narrative decks from brief text prompts.",
+    "provider": "Tome",
+    "category": "Presentations & Design",
+    "pricing": "Freemium",
+    "tags": [
+      "storytelling",
+      "presentations",
+      "deck-builder"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Canva Magic Studio",
+    "url": "https://www.canva.com/magic-studio/",
+    "kind": "tool",
+    "description": "Suite of AI design tools built into Canva for magic erase, resizing, and copy generation.",
+    "provider": "Canva",
+    "category": "Presentations & Design",
+    "pricing": "Freemium",
+    "tags": [
+      "design",
+      "social-media",
+      "graphics",
+      "canva"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Spline AI",
+    "url": "https://spline.design/ai",
+    "kind": "tool",
+    "description": "3D design and animation tool allowing creators to generate objects, textures, and interactive physics with text.",
+    "provider": "Spline",
+    "category": "Presentations & Design",
+    "pricing": "Freemium",
+    "tags": [
+      "3d",
+      "interactive",
+      "textures",
+      "webgl"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Uizard",
+    "url": "https://uizard.io",
+    "kind": "tool",
+    "description": "AI UI design tool that turns hand-drawn paper sketches and screenshots into editable wireframes and digital prototypes.",
+    "provider": "Miro",
+    "category": "Presentations & Design",
+    "pricing": "Freemium",
+    "tags": [
+      "ui-design",
+      "wireframes",
+      "prototypes",
+      "sketch-to-design"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Galileo AI",
+    "url": "https://www.usegalileo.ai",
+    "kind": "tool",
+    "description": "Generative interface design platform turning text descriptions into editable Figma designs and mobile UI kits.",
+    "provider": "Galileo",
+    "category": "Presentations & Design",
+    "pricing": "Freemium",
+    "tags": [
+      "ui-design",
+      "figma",
+      "mobile-ui",
+      "components"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Otter.ai",
+    "url": "https://otter.ai",
+    "kind": "tool",
+    "description": "Automated meeting assistant recording audio, transcribing conversations in real-time, and generating action items.",
+    "provider": "Otter.ai",
+    "category": "Productivity & Notes",
+    "pricing": "Freemium",
+    "tags": [
+      "transcription",
+      "meetings",
+      "action-items",
+      "notes"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Granola",
+    "url": "https://www.granola.ai",
+    "kind": "tool",
+    "description": "AI notepad for meetings that combines human typing with audio transcription to produce clean, authentic notes.",
+    "provider": "Granola",
+    "category": "Productivity & Notes",
+    "pricing": "Freemium",
+    "tags": [
+      "notepad",
+      "meetings",
+      "notes",
+      "macos"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Fireflies.ai",
+    "url": "https://fireflies.ai",
+    "kind": "tool",
+    "description": "Voice assistant that joins video calls across Zoom, Teams, and Meet to transcribe and analyze team conversations.",
+    "provider": "Fireflies",
+    "category": "Productivity & Notes",
+    "pricing": "Freemium",
+    "tags": [
+      "meetings",
+      "transcription",
+      "summary",
+      "zoom"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Mem",
+    "url": "https://mem.ai",
+    "kind": "tool",
+    "description": "Self-organizing workspace and personal knowledge base that surfaces connected notes and insights automatically.",
+    "provider": "Mem Labs",
+    "category": "Productivity & Notes",
+    "pricing": "Freemium",
+    "tags": [
+      "notes",
+      "knowledge-base",
+      "pkm"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Limitless",
+    "url": "https://www.limitless.ai",
+    "kind": "tool",
+    "description": "Personal AI memory and pendant device that remembers conversations and organizes daily action plans.",
+    "provider": "Limitless",
+    "category": "Productivity & Notes",
+    "pricing": "Freemium",
+    "tags": [
+      "memory",
+      "hardware",
+      "meetings",
+      "rewind"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "AudioPen",
+    "url": "https://audiopen.ai",
+    "kind": "tool",
+    "description": "Voice-to-text application that takes unorganized rambling voice notes and converts them into structured prose.",
+    "provider": "AudioPen",
+    "category": "Productivity & Notes",
+    "pricing": "Freemium",
+    "tags": [
+      "voice-notes",
+      "transcription",
+      "summarizer"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Krisp",
+    "url": "https://krisp.ai",
+    "kind": "tool",
+    "description": "AI noise cancellation application removing background chatter and microphone echo during conference calls.",
+    "provider": "Krisp",
+    "category": "Productivity & Notes",
+    "pricing": "Freemium",
+    "tags": [
+      "noise-cancellation",
+      "audio",
+      "voice",
+      "calls"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Zapier Central",
+    "url": "https://zapier.com/central",
+    "kind": "tool",
+    "description": "AI workspace by Zapier letting users create bots that take automated actions across 6,000+ business applications.",
+    "provider": "Zapier",
+    "category": "Automation & Workflows",
+    "pricing": "Freemium",
+    "tags": [
+      "automation",
+      "integration",
+      "zapier",
+      "bots"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Flowise",
+    "url": "https://flowiseai.com",
+    "kind": "tool",
+    "description": "Open-source UI visual builder for building customized LLM applications and LangChain agents with drag-and-drop nodes.",
+    "provider": "Flowise",
+    "category": "Automation & Workflows",
+    "pricing": "Open Source",
+    "tags": [
+      "langchain",
+      "open-source",
+      "visual-builder",
+      "agents"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Langflow",
+    "url": "https://www.langflow.org",
+    "kind": "tool",
+    "description": "Dynamic web graph for prototyping multi-agent architectures and RAG pipelines with Python export capabilities.",
+    "provider": "DataStax",
+    "category": "Automation & Workflows",
+    "pricing": "Open Source",
+    "tags": [
+      "agents",
+      "rag",
+      "datastax",
+      "open-source",
+      "python"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Relevance AI",
+    "url": "https://relevanceai.com",
+    "kind": "tool",
+    "description": "B2B workforce platform allowing companies to build, hire, and manage specialized autonomous AI agents.",
+    "provider": "Relevance AI",
+    "category": "Automation & Workflows",
+    "pricing": "Freemium",
+    "tags": [
+      "ai-workforce",
+      "agents",
+      "b2b",
+      "automation"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Activepieces",
+    "url": "https://www.activepieces.com",
+    "kind": "tool",
+    "description": "Open-source business automation platform built for developers with AI-first workflows and self-hosting options.",
+    "provider": "Activepieces",
+    "category": "Automation & Workflows",
+    "pricing": "Open Source",
+    "tags": [
+      "automation",
+      "open-source",
+      "self-hosted",
+      "integration"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Fireworks AI",
+    "url": "https://fireworks.ai",
+    "kind": "website",
+    "description": "High-speed inference platform for open models with fine-tuning, compound AI systems, and function calling.",
+    "provider": "Fireworks AI",
+    "category": "Model APIs & Inference",
+    "pricing": "Paid",
+    "tags": [
+      "inference",
+      "fast",
+      "fine-tuning",
+      "function-calling"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "DeepInfra",
+    "url": "https://deepinfra.com",
+    "kind": "website",
+    "description": "Cost-effective, pay-per-token API provider hosting popular open-source LLMs, embeddings, and image models.",
+    "provider": "DeepInfra",
+    "category": "Model APIs & Inference",
+    "pricing": "Paid",
+    "tags": [
+      "low-cost",
+      "inference",
+      "api",
+      "open-source"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Cerebras Cloud",
+    "url": "https://cerebras.ai",
+    "kind": "website",
+    "description": "Wafer-scale AI inference cloud delivering record-shattering speeds for Llama 3 models exceeding 1,800 tokens/sec.",
+    "provider": "Cerebras",
+    "category": "Model APIs & Inference",
+    "pricing": "Paid",
+    "tags": [
+      "ultra-fast",
+      "wafer-scale",
+      "inference",
+      "hardware"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "SambaNova Cloud",
+    "url": "https://sambanova.ai",
+    "kind": "website",
+    "description": "SN40L chip architecture providing high-speed inference for open models with full 128k context support.",
+    "provider": "SambaNova",
+    "category": "Model APIs & Inference",
+    "pricing": "Paid",
+    "tags": [
+      "hardware",
+      "inference",
+      "fast"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Lambda Labs",
+    "url": "https://lambdalabs.com",
+    "kind": "website",
+    "description": "GPU cloud infrastructure offering cost-effective on-demand NVIDIA H100 and A100 clusters for AI practitioners.",
+    "provider": "Lambda",
+    "category": "AI Infrastructure",
+    "pricing": "Paid",
+    "tags": [
+      "gpu",
+      "cloud",
+      "h100",
+      "compute"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "RunPod",
+    "url": "https://www.runpod.io",
+    "kind": "website",
+    "description": "Globally distributed GPU cloud offering serverless endpoints and bare-metal GPU instances for AI training and inference.",
+    "provider": "RunPod",
+    "category": "AI Infrastructure",
+    "pricing": "Paid",
+    "tags": [
+      "gpu",
+      "serverless",
+      "cloud",
+      "containers"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Modal",
+    "url": "https://modal.com",
+    "kind": "website",
+    "description": "Serverless cloud platform allowing Python developers to run generative AI models in containers with zero infra setup.",
+    "provider": "Modal Labs",
+    "category": "AI Infrastructure",
+    "pricing": "Freemium",
+    "tags": [
+      "serverless",
+      "python",
+      "cloud",
+      "containers"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Cloudflare Workers AI",
+    "url": "https://developers.cloudflare.com/workers-ai/",
+    "kind": "website",
+    "description": "Run machine learning models on Cloudflare's global edge network powered by serverless GPUs.",
+    "provider": "Cloudflare",
+    "category": "AI Infrastructure",
+    "pricing": "Freemium",
+    "tags": [
+      "edge",
+      "serverless",
+      "cloudflare",
+      "inference"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "LangChain",
+    "url": "https://www.langchain.com",
+    "kind": "website",
+    "description": "Standard open-source framework for building context-aware applications with language models and tools.",
+    "provider": "LangChain",
+    "category": "Developer Tools & MCP",
+    "pricing": "Open Source",
+    "tags": [
+      "framework",
+      "agents",
+      "python",
+      "typescript",
+      "open-source"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "LlamaIndex",
+    "url": "https://www.llamaindex.ai",
+    "kind": "website",
+    "description": "Data framework for connecting custom enterprise data sources to large language models for advanced RAG.",
+    "provider": "LlamaIndex",
+    "category": "Developer Tools & MCP",
+    "pricing": "Open Source",
+    "tags": [
+      "rag",
+      "data",
+      "indexing",
+      "vector-search",
+      "open-source"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Promptfoo",
+    "url": "https://www.promptfoo.dev",
+    "kind": "tool",
+    "description": "CLI and library for testing and evaluating LLM application security, prompt regressions, and output quality.",
+    "provider": "Promptfoo",
+    "category": "Developer Tools & MCP",
+    "pricing": "Open Source",
+    "tags": [
+      "testing",
+      "evals",
+      "security",
+      "cli",
+      "open-source"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "LiteLLM",
+    "url": "https://www.litellm.ai",
+    "kind": "tool",
+    "description": "Open-source Python and proxy library that standardizes 100+ LLM API calls into OpenAI format with load balancing.",
+    "provider": "BerriAI",
+    "category": "Developer Tools & MCP",
+    "pricing": "Open Source",
+    "tags": [
+      "proxy",
+      "api",
+      "load-balancing",
+      "caching",
+      "open-source"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Helicone",
+    "url": "https://www.helicone.ai",
+    "kind": "tool",
+    "description": "Open-source LLM observability platform providing cost tracking, latency monitoring, and prompt caching.",
+    "provider": "Helicone",
+    "category": "Developer Tools & MCP",
+    "pricing": "Freemium",
+    "tags": [
+      "observability",
+      "analytics",
+      "cost-tracking",
+      "caching"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "CrewAI",
+    "url": "https://www.crewai.com",
+    "kind": "tool",
+    "description": "Cutting-edge framework for orchestrating role-playing, autonomous AI agents to solve complex collaborative tasks.",
+    "provider": "CrewAI",
+    "category": "Developer Tools & MCP",
+    "pricing": "Open Source",
+    "tags": [
+      "multi-agent",
+      "orchestration",
+      "collaboration",
+      "python"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Phidata",
+    "url": "https://www.phidata.com",
+    "kind": "tool",
+    "category": "Agent & Automation",
+    "pricing": "Open Source",
+    "provider": "Phidata",
+    "description": "Fast framework for building multi-modal, memory-enabled AI agents and workflows.",
+    "featured": true,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17",
+    "tags": [
+      "agents",
+      "automation",
+      "python",
+      "framework",
+      "llm"
+    ]
+  },
+  {
+    "title": "AutoGen",
+    "url": "https://microsoft.github.io/autogen/",
+    "kind": "website",
+    "description": "Microsoft's open-source programming framework for agentic AI enabling multi-agent conversation workflows.",
+    "provider": "Microsoft",
+    "category": "Developer Tools & MCP",
+    "pricing": "Open Source",
+    "tags": [
+      "multi-agent",
+      "microsoft",
+      "framework",
+      "open-source"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Pydantic AI",
+    "url": "https://ai.pydantic.dev",
+    "kind": "website",
+    "description": "Type-safe Python agent framework built by the makers of Pydantic for building reliable production LLM apps.",
+    "provider": "Pydantic",
+    "category": "Developer Tools & MCP",
+    "pricing": "Open Source",
+    "tags": [
+      "type-safe",
+      "python",
+      "pydantic",
+      "structured-outputs"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "There's An AI For That",
+    "url": "https://theresanaiforthat.com",
+    "kind": "website",
+    "description": "Largest database of artificial intelligence tools, tracking thousands of AI solutions updated daily.",
+    "provider": "TAAFT",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Freemium",
+    "tags": [
+      "directory",
+      "discovery",
+      "catalog",
+      "tools"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Futurepedia",
+    "url": "https://www.futurepedia.io",
+    "kind": "website",
+    "description": "Leading directory and resource hub dedicated to discovering verified AI tools, guides, and software updates.",
+    "provider": "Futurepedia",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Free",
+    "tags": [
+      "directory",
+      "discovery",
+      "reviews",
+      "news"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Papers With Code",
+    "url": "https://paperswithcode.com",
+    "kind": "website",
+    "description": "Free and open resource for researchers highlighting machine learning papers, code implementations, and evaluation leaderboards.",
+    "provider": "Meta AI",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Free",
+    "tags": [
+      "research",
+      "papers",
+      "code",
+      "leaderboards"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "SWE-bench",
+    "url": "https://www.swebench.com",
+    "kind": "website",
+    "description": "Rigorous benchmark testing language models on solving real-world software engineering issues from GitHub repositories.",
+    "provider": "Princeton NLP",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Free",
+    "tags": [
+      "benchmark",
+      "software-engineering",
+      "coding-eval"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "AlphaSignal",
+    "url": "https://alphasignal.ai",
+    "kind": "website",
+    "description": "Weekly AI newsletter and summary curator surfacing the most read research papers and technical breakthroughs.",
+    "provider": "AlphaSignal",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Free",
+    "tags": [
+      "newsletter",
+      "curation",
+      "research",
+      "news"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Ben's Bites",
+    "url": "https://bensbites.co",
+    "kind": "website",
+    "description": "Daily digest of the latest artificial intelligence products, tools, and startup launches.",
+    "provider": "Ben Tossell",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Free",
+    "tags": [
+      "newsletter",
+      "daily",
+      "product-launches"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Anyscale",
+    "url": "https://www.anyscale.com",
+    "kind": "website",
+    "description": "Enterprise platform powered by Ray for scaling AI development, distributed training, and production model serving.",
+    "provider": "Anyscale",
+    "category": "AI Infrastructure",
+    "pricing": "Paid",
+    "tags": [
+      "ray",
+      "distributed-computing",
+      "compute",
+      "scale"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Nebius AI Studio",
+    "url": "https://nebius.com",
+    "kind": "website",
+    "description": "European GPU cloud providing dedicated NVIDIA infrastructure and high-speed token inference for open-source AI.",
+    "provider": "Nebius",
+    "category": "AI Infrastructure",
+    "pricing": "Paid",
+    "tags": [
+      "gpu",
+      "cloud",
+      "european",
+      "h100"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Unstructured",
+    "url": "https://unstructured.io",
+    "kind": "tool",
+    "description": "Open-source tools to ingest, clean, and transform unstructured documents into formatted data for LLM and RAG pipelines.",
+    "provider": "Unstructured Technologies",
+    "category": "Developer Tools & MCP",
+    "pricing": "Freemium",
+    "tags": [
+      "data-prep",
+      "etl",
+      "rag",
+      "unstructured-data"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "LangSmith",
+    "url": "https://www.langchain.com/langsmith",
+    "kind": "tool",
+    "description": "Enterprise platform by LangChain to debug, test, evaluate, and monitor LLM chains and agentic applications.",
+    "provider": "LangChain",
+    "category": "Developer Tools & MCP",
+    "pricing": "Freemium",
+    "tags": [
+      "debugging",
+      "monitoring",
+      "tracing",
+      "evals"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Portkey",
+    "url": "https://portkey.ai",
+    "kind": "tool",
+    "description": "Production control panel for AI apps providing fast API gateways, fallbacks, semantic caching, and monitoring.",
+    "provider": "Portkey",
+    "category": "Developer Tools & MCP",
+    "pricing": "Freemium",
+    "tags": [
+      "gateway",
+      "caching",
+      "production",
+      "observability"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Haystack",
+    "url": "https://haystack.deepset.ai",
+    "kind": "website",
+    "description": "Open-source Python framework by deepset for building customizable, production-ready search and RAG systems.",
+    "provider": "deepset",
+    "category": "Developer Tools & MCP",
+    "pricing": "Open Source",
+    "tags": [
+      "rag",
+      "search",
+      "framework",
+      "python"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Vast.ai",
+    "url": "https://vast.ai",
+    "kind": "website",
+    "description": "Decentralized GPU marketplace offering low-cost cloud rental of graphics cards for ML training and fine-tuning.",
+    "provider": "Vast.ai",
+    "category": "AI Infrastructure",
+    "pricing": "Paid",
+    "tags": [
+      "gpu",
+      "marketplace",
+      "low-cost",
+      "compute"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Fish Audio",
+    "url": "https://fish.audio",
+    "kind": "tool",
+    "description": "Next-generation multilingual text-to-speech platform with expressive voice models and instant voice cloning.",
+    "provider": "Fish Audio",
+    "category": "Voice & Audio",
+    "pricing": "Freemium",
+    "tags": [
+      "tts",
+      "voice",
+      "multilingual",
+      "speech"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Fathom",
+    "url": "https://fathom.video",
+    "kind": "tool",
+    "description": "Free AI meeting recorder that records, transcribes, highlights, and summarizes video meetings automatically.",
+    "provider": "Fathom",
+    "category": "Productivity & Notes",
+    "pricing": "Freemium",
+    "tags": [
+      "meetings",
+      "transcription",
+      "summary",
+      "zoom"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Mubert",
+    "url": "https://mubert.com",
+    "kind": "tool",
+    "description": "Generative AI music platform producing royalty-free background tracks, soundscapes, and streams for content creators.",
+    "provider": "Mubert",
+    "category": "Voice & Audio",
+    "pricing": "Freemium",
+    "tags": [
+      "music",
+      "royalty-free",
+      "soundscapes",
+      "streaming"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Soundraw",
+    "url": "https://soundraw.io",
+    "kind": "tool",
+    "description": "AI music generator enabling creators to customize tempo, instrument arrangement, and song duration dynamically.",
+    "provider": "Soundraw",
+    "category": "Voice & Audio",
+    "pricing": "Freemium",
+    "tags": [
+      "music",
+      "composition",
+      "audio-editor",
+      "custom"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Play.ht",
+    "url": "https://play.ht",
+    "kind": "tool",
+    "description": "AI voice generator and speech synthesis platform with over 900 AI voices across 140 languages.",
+    "provider": "Play.ht",
+    "category": "Voice & Audio",
+    "pricing": "Freemium",
+    "tags": [
+      "tts",
+      "voice-generator",
+      "speech",
+      "narration"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Scite",
+    "url": "https://scite.ai",
+    "kind": "tool",
+    "description": "Smart citation index showing whether scientific studies support or contrast the claims made in published literature.",
+    "provider": "Research Solutions",
+    "category": "Search & Research",
+    "pricing": "Freemium",
+    "tags": [
+      "citations",
+      "smart-citations",
+      "academic",
+      "papers"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Humata",
+    "url": "https://www.humata.ai",
+    "kind": "tool",
+    "description": "AI document analysis tool designed to summarize long papers, synthesize reports, and answer technical PDF questions.",
+    "provider": "Humata",
+    "category": "Search & Research",
+    "pricing": "Freemium",
+    "tags": [
+      "pdf",
+      "documents",
+      "analysis",
+      "qa"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Genspark",
+    "url": "https://www.genspark.ai",
+    "kind": "tool",
+    "description": "AI-generated search engine that produces custom Sparkpages summarizing research queries into interactive overviews.",
+    "provider": "MainFunc",
+    "category": "Search & Research",
+    "pricing": "Free",
+    "tags": [
+      "search",
+      "sparkpages",
+      "research",
+      "multimodal"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Felo AI",
+    "url": "https://felo.ai",
+    "kind": "tool",
+    "description": "Multilingual AI search engine translating search results across languages and structuring topic mindmaps.",
+    "provider": "Sflow",
+    "category": "Search & Research",
+    "pricing": "Free",
+    "tags": [
+      "search",
+      "cross-language",
+      "mindmaps"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Vellum",
+    "url": "https://www.vellum.ai",
+    "kind": "tool",
+    "description": "Enterprise platform for prompt engineering, semantic testing, versioning, and deploying LLM applications.",
+    "provider": "Vellum",
+    "category": "Automation & Workflows",
+    "pricing": "Paid",
+    "tags": [
+      "prompt-engineering",
+      "enterprise",
+      "evals",
+      "deploy"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Voiceflow",
+    "url": "https://www.voiceflow.com",
+    "kind": "tool",
+    "description": "Collaborative platform for teams to design, prototype, and build automated conversational AI agents and chatbots.",
+    "provider": "Voiceflow",
+    "category": "Automation & Workflows",
+    "pricing": "Freemium",
+    "tags": [
+      "conversational-ai",
+      "chatbots",
+      "collaboration",
+      "prototyping"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Viggle",
+    "url": "https://viggle.ai",
+    "kind": "tool",
+    "description": "Controllable video-3D motion generator allowing users to animate any static character using reference motions.",
+    "provider": "Viggle",
+    "category": "Video Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "character-animation",
+      "motion-tracking",
+      "creative"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "InVideo AI",
+    "url": "https://invideo.io",
+    "kind": "tool",
+    "description": "Prompt-to-video studio generating complete narrated videos with stock media, voiceover, and captions for YouTube and TikTok.",
+    "provider": "InVideo",
+    "category": "Video Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "video-creator",
+      "youtube",
+      "voiceover",
+      "marketing"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Topaz Video AI",
+    "url": "https://www.topazlabs.com/topaz-video-ai",
+    "kind": "tool",
+    "description": "Production-grade desktop software using neural networks for video upscaling up to 16K, motion deinterlacing, and frame interpolation.",
+    "provider": "Topaz Labs",
+    "category": "Video Generation",
+    "pricing": "Paid",
+    "tags": [
+      "video-upscaling",
+      "enhancer",
+      "frame-interpolation",
+      "desktop"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Clipdrop",
+    "url": "https://clipdrop.co",
+    "kind": "tool",
+    "description": "Ecosystem of visual AI tools for image relighting, text removal, uncropping, and background replacement.",
+    "provider": "Jasper",
+    "category": "Image Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "image-editor",
+      "relight",
+      "uncrop",
+      "cleanup"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Fooocus",
+    "url": "https://github.com/lllyasviel/Fooocus",
+    "kind": "tool",
+    "description": "Offline image generation software focusing on intuitive simplicity, Midjourney-like prompts, and offline privacy.",
+    "provider": "lllyasviel",
+    "category": "Image Generation",
+    "pricing": "Open Source",
+    "tags": [
+      "offline",
+      "image-generation",
+      "open-source",
+      "stable-diffusion"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Roo Code",
+    "url": "https://github.com/RooVetGit/Roo-Code",
+    "kind": "tool",
+    "description": "Open-source autonomous AI programming assistant extension for VS Code with dual-mode planning and execution.",
+    "provider": "RooVetGit",
+    "category": "Coding Agents",
+    "pricing": "Open Source",
+    "tags": [
+      "coding",
+      "vscode",
+      "agent",
+      "planning",
+      "open-source"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Webflow AI",
+    "url": "https://webflow.com/ai",
+    "kind": "tool",
+    "description": "AI-powered web design tools within Webflow to generate layouts, customize styling, and translate content across locales.",
+    "provider": "Webflow",
+    "category": "Website Builders",
+    "pricing": "Freemium",
+    "tags": [
+      "website-builder",
+      "webflow",
+      "cms",
+      "responsive"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Toolify",
+    "url": "https://www.toolify.ai",
+    "kind": "website",
+    "description": "Global directory and traffic ranking aggregator of artificial intelligence tools and websites.",
+    "provider": "Toolify",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Freemium",
+    "tags": [
+      "directory",
+      "traffic-ranking",
+      "ai-tools"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Exo",
+    "url": "https://github.com/exo-explore/exo",
+    "kind": "tool",
+    "description": "Run frontier-level AI models locally across everyday consumer devices like Macs, PCs, and iPhones in a cluster.",
+    "provider": "Exo Labs",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "tags": [
+      "distributed",
+      "local-ai",
+      "cluster",
+      "open-source"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Stack AI",
+    "url": "https://www.stack-ai.com",
+    "kind": "tool",
+    "description": "Enterprise workflow automation platform enabling teams to connect LLMs to databases, SaaS APIs, and document stores.",
+    "provider": "Stack AI",
+    "category": "Automation & Workflows",
+    "pricing": "Freemium",
+    "tags": [
+      "enterprise",
+      "workflows",
+      "rag",
+      "integrations"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Gumloop",
+    "url": "https://www.gumloop.com",
+    "kind": "tool",
+    "description": "No-code AI workflow automation tool for building complex web scrapers, data pipelines, and research automations.",
+    "provider": "Gumloop",
+    "category": "Automation & Workflows",
+    "pricing": "Freemium",
+    "tags": [
+      "scraping",
+      "automation",
+      "no-code",
+      "workflows"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "VectorShift",
+    "url": "https://www.vectorshift.ai",
+    "kind": "tool",
+    "description": "End-to-end AI automation platform with no-code and Python SDKs for building generative search, chatbots, and pipelines.",
+    "provider": "VectorShift",
+    "category": "Automation & Workflows",
+    "pricing": "Freemium",
+    "tags": [
+      "automation",
+      "pipelines",
+      "chatbots",
+      "sdk"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Saner.ai",
+    "url": "https://saner.ai",
+    "kind": "tool",
+    "description": "Simple AI notepad designed for busy minds to capture ideas and automatically organize tasks without manual tagging.",
+    "provider": "Saner",
+    "category": "Productivity & Notes",
+    "pricing": "Freemium",
+    "tags": [
+      "notes",
+      "pkm",
+      "productivity",
+      "adhd-friendly"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Superhuman AI",
+    "url": "https://superhuman.com",
+    "kind": "tool",
+    "description": "Blazing fast email client with built-in AI for drafting replies in your voice, summarizing email threads, and instant triage.",
+    "provider": "Superhuman",
+    "category": "Productivity & Notes",
+    "pricing": "Paid",
+    "tags": [
+      "email",
+      "productivity",
+      "fast",
+      "voice-matching"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Taskade",
+    "url": "https://www.taskade.com",
+    "kind": "tool",
+    "description": "AI-powered collaborative workspace combining task management, mind maps, notes, and custom automated agents.",
+    "provider": "Taskade",
+    "category": "Productivity & Notes",
+    "pricing": "Freemium",
+    "tags": [
+      "tasks",
+      "mindmaps",
+      "project-management",
+      "collaboration"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Reclaim.ai",
+    "url": "https://reclaim.ai",
+    "kind": "tool",
+    "description": "Smart calendar scheduling app that uses AI to find optimal time for tasks, habits, and recurring team meetings.",
+    "provider": "Dropbox",
+    "category": "Productivity & Notes",
+    "pricing": "Freemium",
+    "tags": [
+      "calendar",
+      "scheduling",
+      "time-blocking",
+      "habits"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Tana",
+    "url": "https://tana.inc",
+    "kind": "tool",
+    "description": "Next-generation knowledge workspace combining outliners, supertags, and AI agents for structured thinking.",
+    "provider": "Tana",
+    "category": "Productivity & Notes",
+    "pricing": "Freemium",
+    "tags": [
+      "outliner",
+      "supertags",
+      "pkm",
+      "knowledge-graph"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "ResearchRabbit",
+    "url": "https://www.researchrabbit.ai",
+    "kind": "tool",
+    "description": "Spotify for academic papers: discover connected research papers and author networks through intuitive visual graphs.",
+    "provider": "ResearchRabbit",
+    "category": "Search & Research",
+    "pricing": "Free",
+    "tags": [
+      "academic",
+      "papers",
+      "citations",
+      "literature-mapping"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Wordtune",
+    "url": "https://www.wordtune.com",
+    "kind": "tool",
+    "description": "AI reading and writing companion from AI21 Labs that rephrases sentences for clarity, tone, and professional polish.",
+    "provider": "AI21 Labs",
+    "category": "Writing & Documents",
+    "pricing": "Freemium",
+    "tags": [
+      "writing",
+      "paraphrasing",
+      "clarity",
+      "ai21"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Rytr",
+    "url": "https://rytr.me",
+    "kind": "tool",
+    "description": "Lightweight AI writing assistant that helps create high-quality content for blogs, emails, and social media in seconds.",
+    "provider": "Copysmith",
+    "category": "Writing & Documents",
+    "pricing": "Freemium",
+    "tags": [
+      "writing",
+      "copywriting",
+      "blogs",
+      "social-media"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Musho",
+    "url": "https://musho.ai",
+    "kind": "tool",
+    "description": "AI assistant plugin for Figma that designs beautiful, responsive web landing pages with curated copy and images.",
+    "provider": "Musho",
+    "category": "Presentations & Design",
+    "pricing": "Freemium",
+    "tags": [
+      "figma",
+      "landing-pages",
+      "design",
+      "ui"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Visily",
+    "url": "https://www.visily.ai",
+    "kind": "tool",
+    "description": "Fast AI wireframing and prototyping software designed for non-designers to produce high-fidelity web app mockups.",
+    "provider": "Visily",
+    "category": "Presentations & Design",
+    "pricing": "Freemium",
+    "tags": [
+      "wireframes",
+      "prototypes",
+      "ui-ux",
+      "mockups"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Cassidy",
+    "url": "https://www.cassidyai.com",
+    "kind": "tool",
+    "description": "AI automation platform that learns your company knowledge, voice, and rules to automate internal knowledge workflows.",
+    "provider": "Cassidy",
+    "category": "Automation & Workflows",
+    "pricing": "Paid",
+    "tags": [
+      "enterprise",
+      "knowledge-base",
+      "automation",
+      "internal-ai"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Resemble AI",
+    "url": "https://www.resemble.ai",
+    "kind": "tool",
+    "description": "Generative voice AI engine for speech synthesis, voice cloning, localized dubbing, and neural audio watermarking.",
+    "provider": "Resemble",
+    "category": "Voice & Audio",
+    "pricing": "Paid",
+    "tags": [
+      "voice",
+      "cloning",
+      "watermarking",
+      "dubbing"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Litmaps",
+    "url": "https://www.litmaps.com",
+    "kind": "tool",
+    "description": "Visual literature search and citation tracking tool that creates chronological maps of scientific research discovery.",
+    "provider": "Litmaps",
+    "category": "Search & Research",
+    "pricing": "Freemium",
+    "tags": [
+      "citations",
+      "academic",
+      "literature-review",
+      "mapping"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Storm",
+    "url": "https://storm.genie.stanford.edu",
+    "kind": "website",
+    "description": "Stanford University research project synthesizing Wikipedia-style reports with citations from web searches through LLM dialogue.",
+    "provider": "Stanford OVAL",
+    "category": "Search & Research",
+    "pricing": "Free",
+    "tags": [
+      "stanford",
+      "research",
+      "citations",
+      "report-generation"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Typeface",
+    "url": "https://www.typeface.ai",
+    "kind": "tool",
+    "description": "Enterprise generative AI platform helping marketing teams create personalized content that adheres to strict brand standards.",
+    "provider": "Typeface",
+    "category": "Writing & Documents",
+    "pricing": "Paid",
+    "tags": [
+      "enterprise",
+      "marketing",
+      "brand-identity",
+      "multimodal"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Craft Docs",
+    "url": "https://www.craft.do",
+    "kind": "tool",
+    "description": "Beautiful document editor and knowledge tool with AI assistant for summarizing, rewriting, and brainstorming.",
+    "provider": "Craft",
+    "category": "Writing & Documents",
+    "pricing": "Freemium",
+    "tags": [
+      "documents",
+      "notes",
+      "editor",
+      "apple-design"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Anyword",
+    "url": "https://anyword.com",
+    "kind": "tool",
+    "description": "Performance writing platform that scores and predicts how well marketing copy will convert before publishing.",
+    "provider": "Anyword",
+    "category": "Writing & Documents",
+    "pricing": "Paid",
+    "tags": [
+      "performance",
+      "copywriting",
+      "conversion",
+      "marketing"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Khroma",
+    "url": "https://www.khroma.co",
+    "kind": "website",
+    "description": "AI color tool for designers that learns your preferred colors and generates infinite harmonious palettes and gradients.",
+    "provider": "Khroma",
+    "category": "Presentations & Design",
+    "pricing": "Free",
+    "tags": [
+      "color-palettes",
+      "design",
+      "gradients",
+      "typography"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Fontjoy",
+    "url": "https://fontjoy.com",
+    "kind": "website",
+    "description": "Deep learning font pairing tool that generates balanced, harmonious typography combinations with one click.",
+    "provider": "Jack Qiao",
+    "category": "Presentations & Design",
+    "pricing": "Free",
+    "tags": [
+      "typography",
+      "fonts",
+      "design",
+      "pairing"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Looka",
+    "url": "https://looka.com",
+    "kind": "tool",
+    "description": "AI logo maker and branding platform that generates logos, brand guidelines, and social media brand kits.",
+    "provider": "Looka",
+    "category": "Presentations & Design",
+    "pricing": "Paid",
+    "tags": [
+      "logo-design",
+      "branding",
+      "identity"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Brandmark",
+    "url": "https://brandmark.io",
+    "kind": "tool",
+    "description": "Generative branding platform creating unique logos, color systems, and business card designs in seconds.",
+    "provider": "Brandmark",
+    "category": "Presentations & Design",
+    "pricing": "Paid",
+    "tags": [
+      "logo",
+      "branding",
+      "design",
+      "generative"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "SeaArt",
+    "url": "https://www.seaart.ai",
+    "kind": "tool",
+    "description": "Creative AI painting and art platform featuring anime, photorealism, character generation, and LoRA swapping.",
+    "provider": "SeaArt",
+    "category": "Image Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "image-generation",
+      "anime",
+      "photorealism",
+      "lora"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Tensor.Art",
+    "url": "https://tensor.art",
+    "kind": "website",
+    "description": "Online model sharing community and free cloud image generator for running ComfyUI and SDXL models.",
+    "provider": "Tensor",
+    "category": "Image Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "community",
+      "models",
+      "image-generation",
+      "cloud-gpu"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "NightCafe",
+    "url": "https://creator.nightcafe.studio",
+    "kind": "tool",
+    "description": "Community-focused AI art generator supporting multiple models with daily challenges and art competitions.",
+    "provider": "NightCafe",
+    "category": "Image Generation",
+    "pricing": "Freemium",
+    "tags": [
+      "art-generator",
+      "community",
+      "creative"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Melty",
+    "url": "https://melty.build",
+    "kind": "tool",
+    "description": "Open-source AI code editor that understands the whole compiler and git history to assist refactoring.",
+    "provider": "Melty",
+    "category": "Coding",
+    "pricing": "Open Source",
+    "tags": [
+      "ide",
+      "open-source",
+      "coding",
+      "compiler"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Base44",
+    "url": "https://base44.com",
+    "kind": "tool",
+    "description": "AI web application platform that builds production-ready software prototypes from conversational briefs.",
+    "provider": "Base44",
+    "category": "App Builders",
+    "pricing": "Freemium",
+    "tags": [
+      "prototypes",
+      "web-apps",
+      "app-builder"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Text Generation WebUI",
+    "url": "https://github.com/oobabooga/text-generation-webui",
+    "kind": "tool",
+    "description": "Gradio web interface for running large language models locally, supporting Transformers, ExLlama, and GGUF.",
+    "provider": "Oobabooga",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "tags": [
+      "local-ai",
+      "webui",
+      "gradio",
+      "open-source"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "GPT4All",
+    "url": "https://www.nomic.ai/gpt4all",
+    "kind": "tool",
+    "description": "Free, locally running, privacy-aware chatbot that requires no internet access or high-end GPU.",
+    "provider": "Nomic AI",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "tags": [
+      "local-ai",
+      "privacy",
+      "offline",
+      "desktop"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Lobe Chat",
+    "url": "https://lobehub.com",
+    "kind": "tool",
+    "description": "Modern open-source chat framework with multimodal support, plugin system, and one-click self-hosting.",
+    "provider": "LobeHub",
+    "category": "Open Source & Local AI",
+    "pricing": "Open Source",
+    "tags": [
+      "chat",
+      "open-source",
+      "plugins",
+      "multimodal"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "SEAL Leaderboards",
+    "url": "https://scale.com/leaderboard",
+    "kind": "website",
+    "description": "Scale AI's safety and evaluations leaderboards providing expert-vetted evaluations of frontier reasoning models.",
+    "provider": "Scale AI",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Free",
+    "tags": [
+      "benchmarks",
+      "evals",
+      "frontier-models",
+      "scale-ai"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Open LLM Leaderboard",
+    "url": "https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard",
+    "kind": "website",
+    "description": "Hugging Face's authoritative tracking leaderboard evaluating open-source language models across standard benchmarks.",
+    "provider": "Hugging Face",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Free",
+    "tags": [
+      "open-source",
+      "leaderboard",
+      "benchmarks",
+      "huggingface"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "AI Top Tools",
+    "url": "https://aitoptools.com",
+    "kind": "website",
+    "description": "Curated directory of artificial intelligence software and web services organized by category.",
+    "provider": "AI Top Tools",
+    "category": "Evaluation & Benchmarks",
+    "pricing": "Free",
+    "tags": [
+      "directory",
+      "catalog",
+      "curation"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Bearly AI",
+    "url": "https://bearly.ai",
+    "kind": "tool",
+    "description": "Desktop hotkey companion for researchers providing instant article summarization, grammar fixes, and citations.",
+    "provider": "Bearly",
+    "category": "Writing & Documents",
+    "pricing": "Freemium",
+    "tags": [
+      "hotkey",
+      "summarization",
+      "writing",
+      "desktop"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Motion",
+    "url": "https://www.usemotion.com",
+    "kind": "tool",
+    "description": "Intelligent project and calendar manager that automatically prioritizes tasks and schedules your day.",
+    "provider": "UseMotion",
+    "category": "Productivity & Notes",
+    "pricing": "Paid",
+    "tags": [
+      "calendar",
+      "task-management",
+      "time-blocking",
+      "planning"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Riverside.fm",
+    "url": "https://riverside.fm",
+    "kind": "tool",
+    "description": "Studio-quality remote podcast and video recording platform with automated text-based video clipping and editing.",
+    "provider": "Riverside",
+    "category": "Voice & Audio",
+    "pricing": "Freemium",
+    "tags": [
+      "podcast",
+      "recording",
+      "studio",
+      "clips"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  },
+  {
+    "title": "Podcastle",
+    "url": "https://podcastle.ai",
+    "kind": "tool",
+    "description": "Browser-based audio creation studio with AI noise removal, voice cloning, and text-to-speech podcast generation.",
+    "provider": "Podcastle",
+    "category": "Voice & Audio",
+    "pricing": "Freemium",
+    "tags": [
+      "podcast",
+      "audio",
+      "noise-removal",
+      "recording"
+    ],
+    "featured": false,
+    "origin": "curated",
+    "verifiedAt": "2026-10-17"
+  }
+]

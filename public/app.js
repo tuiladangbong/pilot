@@ -1,4644 +1,759 @@
-// Pilot - AI Resource Hub Frontend Application
-// Vanilla JavaScript, Web Platform APIs, zero external dependencies
+// ==========================================================================
+// YELLOW PAGES — FRONTEND INTERACTION & DIRECTORY ENGINE
+// ==========================================================================
 
-(function () {
-  'use strict';
+import {
+  TOP_PICKS,
+  LATEST_LISTINGS,
+  FREE_THIS_WEEK,
+  DIRECTORY_CATEGORIES,
+  EDITORIAL_ARTICLES
+} from './data/catalogData.js';
 
-  // --- Internationalization (i18n) ---
-  const I18N = {
-    en: {
-      brand_subtitle: 'AI Resource Hub',
-      search_placeholder: 'Search prompts, tools, websites, tags... (Ctrl+K)',
-      search_clear: 'Clear search',
-      view_list: 'List View',
-      view_grid: 'Grid View',
-      add_btn: '+ Add',
-      menu_new_agent: 'New Agent',
-      menu_new_agent_desc: 'Reusable AI role definition & instructions',
-      menu_new_workflow: 'New Workflow',
-      menu_new_workflow_desc: 'Structured steps & reusable AI process',
-      menu_new_tool: 'New Tool / Website',
-      menu_new_tool_desc: 'Save AI web app, service, or documentation',
-      menu_new_prompt: 'New Prompt',
-      menu_new_prompt_desc: 'Save reusable system or task prompt',
+// Application State
+const state = {
+  searchQuery: '',
+  activeCategory: 'all',
+  activeLetter: null,
+  activeSort: 'popular',
+  filters: {
+    category: 'all',
+    pricing: 'all',
+    platform: 'all',
+    openSource: false,
+  },
+  isCurator: false,
+  apiTools: [],
+  allDirectoryTools: [],
+  visitorFavorites: new Set(),
+  selectedTool: null,
+};
 
-      // Sidebar
-      nav_resources: 'Resources',
-      nav_all_resources: 'All Resources',
-      nav_agents: 'Agents',
-      nav_workflows: 'Workflows',
-      nav_tools: 'Tools & Websites',
-      nav_prompts: 'Prompts',
-      nav_favorites: 'Favorites',
-      nav_filter_agents: 'Filter Agents',
-      nav_all_autonomy: 'All Autonomy Levels',
-      autonomy_manual: 'Manual',
-      autonomy_assisted: 'Assisted',
-      autonomy_autonomous: 'Autonomous',
-      nav_all_runtimes: 'All Runtimes',
-      nav_filter_workflows: 'Filter Workflows',
-      nav_all_statuses: 'All Statuses',
-      nav_status_active: 'Active',
-      nav_status_draft: 'Draft',
-      nav_status_archived: 'Archived',
-      nav_all_difficulties: 'All Difficulties',
-      diff_easy: 'Easy',
-      diff_medium: 'Medium',
-      diff_advanced: 'Advanced',
-      nav_filter_tools: 'Filter Tools',
-      nav_all_types: 'All Types (Tools & Sites)',
-      nav_tools_only: 'Tools only',
-      nav_websites_only: 'Websites only',
-      nav_all_categories: 'All Categories',
-      nav_all_pricing: 'All Pricing',
-      pricing_free: 'Free',
-      pricing_freemium: 'Freemium',
-      pricing_paid: 'Paid',
-      pricing_opensource: 'Open Source',
-      pricing_unknown: 'Unknown',
-      nav_models: 'Models / AI',
-      nav_all_models: 'All Models',
-      nav_tags: 'Tags',
-      nav_clear: 'Clear',
-      nav_no_tags: 'No tags yet',
-      nav_future_modules: 'Future Modules',
-      future_workflows: 'Workflows',
-      future_agents: 'Agents',
-      future_collections: 'Collections',
-      future_recipes: 'Recipes',
+// DOM Elements
+const el = {
+  // Search & Navigation
+  searchInput: document.getElementById('search-input'),
+  categoryTabs: document.getElementById('category-tabs'),
+  azLetters: document.getElementById('az-letters'),
+  azClearBtn: document.getElementById('az-clear-btn'),
+  
+  // Sort & Filters
+  sortGroup: document.getElementById('sort-group'),
+  filterCategory: document.getElementById('filter-category'),
+  filterPricing: document.getElementById('filter-pricing'),
+  filterPlatform: document.getElementById('filter-platform'),
+  filterOpenSource: document.getElementById('filter-opensource'),
+  filterResetBtn: document.getElementById('filter-reset-btn'),
+  filterActiveIndicator: document.getElementById('filter-active-indicator'),
+  filterActiveText: document.getElementById('filter-active-text'),
+  clearSearchBtn: document.getElementById('clear-search-btn'),
+  
+  // Containers
+  topPicksSection: document.getElementById('top-picks-section'),
+  topPicksContainer: document.getElementById('top-picks-container'),
+  latestListingsContainer: document.getElementById('latest-listings-container'),
+  freeThisWeekContainer: document.getElementById('free-this-week-container'),
+  mainDirectoryGrid: document.getElementById('main-directory-grid'),
+  searchResultsSection: document.getElementById('search-results-section'),
+  searchResultsGrid: document.getElementById('search-results-grid'),
+  searchResultsDesc: document.getElementById('search-results-desc'),
+  btnSeeTopPicks: document.getElementById('btn-see-top-picks'),
+  
+  // Modals & Dialogs
+  toolDetailDialog: document.getElementById('tool-detail-dialog'),
+  modalCloseBtn: document.getElementById('modal-close-btn'),
+  modalToolLogo: document.getElementById('modal-tool-logo'),
+  modalToolName: document.getElementById('modal-tool-name'),
+  modalToolHostname: document.getElementById('modal-tool-hostname'),
+  modalToolCategory: document.getElementById('modal-tool-category'),
+  modalToolDesc: document.getElementById('modal-tool-desc'),
+  modalToolPricing: document.getElementById('modal-tool-pricing'),
+  modalToolPlatforms: document.getElementById('modal-tool-platforms'),
+  modalToolVerified: document.getElementById('modal-tool-verified'),
+  modalToolFeatured: document.getElementById('modal-tool-featured'),
+  modalToolOpenSource: document.getElementById('modal-tool-opensource'),
+  modalVisitLink: document.getElementById('modal-visit-link'),
+  modalCopyLinkBtn: document.getElementById('modal-copy-link-btn'),
+  modalFavoriteBtn: document.getElementById('modal-favorite-btn'),
+  modalCuratorFeatureBtn: document.getElementById('modal-curator-feature-btn'),
+  modalCuratorEditBtn: document.getElementById('modal-curator-edit-btn'),
+  modalCuratorDeleteBtn: document.getElementById('modal-curator-delete-btn'),
 
-      // Toolbar
-      sort_label: 'Sort:',
-      sort_updated_desc: 'Recently Updated',
-      sort_created_desc: 'Newest First',
-      sort_created_asc: 'Oldest First',
-      sort_title_asc: 'Title (A–Z)',
-      sort_title_desc: 'Title (Z–A)',
+  // Curator Elements
+  curatorPill: document.getElementById('curator-pill'),
+  curatorExitBtn: document.getElementById('curator-exit-btn'),
+  curatorAuthDialog: document.getElementById('curator-auth-dialog'),
+  curatorAuthForm: document.getElementById('curator-auth-form'),
+  curatorKeyInput: document.getElementById('curator-key-input'),
+  curatorModalClose: document.getElementById('curator-modal-close'),
+  curatorCancelBtn: document.getElementById('curator-cancel-btn'),
+  footerCuratorBtn: document.getElementById('footer-curator-btn'),
+  openCuratorLink: document.getElementById('open-curator-link'),
+  curatorAddToolBtn: document.getElementById('curator-add-tool-btn'),
+};
 
-      // Card & Badges
-      badge_tool: 'Tool',
-      badge_website: 'Website',
-      badge_prompt: 'Prompt',
-      badge_workflow: 'Workflow',
-      badge_agent: 'Agent',
-      btn_copy: 'Copy',
-      btn_copy_prompt: 'Copy Prompt',
-      btn_copy_instructions: 'Copy Instructions',
-      btn_copy_full_agent: 'Copy Full Agent',
-      btn_copy_url: 'Copy URL',
-      btn_copied: 'Copied ✓',
-      btn_open: 'Open',
-      btn_open_site: 'Open Site',
+// ==========================================================================
+// INITIALIZATION
+// ==========================================================================
 
-      // Empty & Loading States
-      loading_resources: 'Loading resources...',
-      empty_no_resources: 'No resources found',
-      empty_no_resources_desc: 'Save your first AI tool, website, prompt, or agent to build your operating library.',
-      empty_no_agents: 'No agents yet',
-      empty_no_agents_desc: 'Save a reusable AI role definition, behavioral guidelines, and instructions.',
-      empty_no_workflows: 'No workflows yet',
-      empty_no_workflows_desc: 'Create structured AI processes to streamline your work.',
-      empty_no_tools: 'No AI tools or websites yet',
-      empty_no_tools_desc: 'Save your first AI tool or reference site to build your collection.',
-      empty_no_prompts: 'No prompts yet',
-      empty_no_prompts_desc: 'Save your first AI prompt to build your operating library.',
-      empty_no_favs: 'Nothing favorited yet',
-      empty_no_favs_desc: 'Star useful prompts, tools, websites, workflows, and agents to find them here.',
-      empty_search_no_match: 'No resources match this search',
-      empty_search_desc: (q) => `No items matching "${q}".`,
-      empty_tag_no_match: (tag) => `No resources tagged #${tag}`,
-      empty_tag_desc: 'Try selecting another tag or clearing the filter.',
-      btn_add_agent: '+ Add Agent',
-      btn_add_workflow: '+ Add Workflow',
-      btn_add_tool: '+ Add Tool / Website',
-      btn_add_prompt: '+ Add Prompt',
-      btn_load_more: 'Load More',
-
-      // Modals
-      modal_new_agent: 'New Agent',
-      modal_edit_agent: 'Edit Agent',
-      modal_new_workflow: 'New Workflow',
-      modal_edit_workflow: 'Edit Workflow',
-      modal_new_tool: 'New Tool / Website',
-      modal_edit_tool: 'Edit Tool / Website',
-      modal_new_prompt: 'New Prompt',
-      modal_edit_prompt: 'Edit Prompt',
-      label_role: 'Role',
-      label_goal: 'Goal',
-      label_goal_hint: '(primary outcome to achieve)',
-      label_instructions: 'Instructions / System Definition',
-      label_runtime: 'Runtime / Context',
-      label_autonomy: 'Autonomy Level',
-      label_input_desc: 'Expected Input',
-      label_input_desc_hint: '(what this agent takes in)',
-      label_output_desc: 'Expected Output',
-      label_output_desc_hint: '(what this agent delivers)',
-      label_agent_notes_hint: '(when to use, constraints, tips)',
-      label_agent_links_hint: 'Prompts, Tools, Websites, or Workflows this agent uses or follows',
-      btn_save_agent: 'Save Agent',
-      rel_uses: 'Uses',
-      rel_follows: 'Follows',
-      rel_references: 'References',
-      rel_assigns_to: 'Assigns To',
-      label_purpose: 'Purpose / Goal',
-      label_purpose_hint: '(what this workflow achieves)',
-      label_status: 'Status',
-      label_difficulty: 'Difficulty',
-      label_estimated_time: 'Estimated Time',
-      label_estimated_time_hint: '(e.g. 15 min, 1h)',
-      label_steps: 'Workflow Steps',
-      label_steps_hint: 'Ordered sequence of steps',
-      btn_add_step: '+ Add Step',
-      label_step_title: 'Step Title',
-      label_step_instruction: 'Instructions & Prompts',
-      label_step_optional: 'Optional step',
-      label_step_notes: 'Notes / Tips',
-      label_linked_resources: 'Linked Resources',
-      btn_link_resource: '+ Link Resource',
-      picker_title: 'Link a Resource',
-      picker_search_placeholder: 'Search prompts, tools, websites...',
-      picker_select: 'Link',
-      picker_no_results: 'No matching resources found',
-      btn_save_workflow: 'Save Workflow',
-      btn_copy_workflow: 'Copy Markdown',
-      label_url: 'URL',
-      label_url_hint: 'Paste full URL with http:// or https://',
-      btn_fetch_info: '⚡ Fetch Info',
-      btn_fetching: 'Fetching...',
-      label_title: 'Title',
-      label_kind: 'Kind',
-      opt_kind_tool: 'AI Tool / Web App',
-      opt_kind_website: 'Website / Reference / Directory',
-      label_pricing: 'Pricing',
-      label_favorite: 'Favorite',
-      label_mark_favorite: 'Mark as Favorite',
-      label_provider: 'Provider / Creator',
-      label_category: 'Category',
-      label_description: 'Description',
-      label_desc_hint: '(short tagline or summary)',
-      label_notes: 'Personal Notes',
-      label_notes_hint: '(usage notes, keyboard shortcuts, tips)',
-      label_tags: 'Tags',
-      label_tags_hint_tool: '(comma separated, e.g. coding, llm, fast, api)',
-      label_tags_hint_prompt: '(comma separated, e.g. coding, refactor, architecture)',
-      label_model: 'Intended Model / AI',
-      label_prompt_desc_hint: '(optional summary or usage notes)',
-      label_prompt_content: 'Prompt Content',
-      label_prompt_content_hint: 'Plain text • Preserves exact whitespace',
-      btn_cancel: 'Cancel',
-      btn_save_tool: 'Save Tool',
-      btn_save_prompt: 'Save Prompt',
-      btn_save_changes: 'Save Changes',
-
-      // Detail Dialogs
-      notes_tips_title: 'Personal Notes & Tips',
-      btn_duplicate: 'Duplicate',
-      btn_edit: 'Edit',
-      btn_delete: 'Delete',
-      updated_recently: 'Updated recently',
-      updated_at: (date) => `Updated ${date}`,
-
-      // Delete Dialog
-      delete_resource_title: 'Delete Resource',
-      delete_prompt_title: 'Delete Prompt',
-      delete_confirm_text: (name) => `Are you sure you want to permanently delete "${name}"?`,
-      delete_warning: 'This action cannot be undone.',
-      btn_delete_permanently: 'Delete Permanently',
-
-      // Toasts & Errors
-      toast_copied: 'Copied to clipboard',
-      toast_copy_failed: 'Failed to copy to clipboard',
-      toast_fav_added: 'Marked as favorite',
-      toast_fav_removed: 'Removed from favorites',
-      toast_site_fetched: 'Site info fetched successfully!',
-      toast_enter_url: 'Enter a URL to fetch info',
-      toast_workflow_created: 'Workflow saved successfully',
-      toast_workflow_updated: 'Workflow updated successfully',
-      toast_tool_created: 'Tool saved successfully',
-      toast_tool_updated: 'Tool updated successfully',
-      toast_prompt_created: 'Prompt created successfully',
-      toast_prompt_updated: 'Prompt updated successfully',
-      toast_duplicated: (title) => `Duplicated "${title}"`,
-      toast_deleted: (title) => `Deleted "${title}"`,
-      err_title_required: 'Title is required',
-      err_url_required: 'URL is required',
-      err_prompt_content_required: 'Prompt content is required',
-      err_step_title_required: 'All steps must have a title and instruction',
-
-      // Relative Dates
-      time_just_now: 'just now',
-      time_mins_ago: (n) => `${n}m ago`,
-      time_hours_ago: (n) => `${n}h ago`,
-      time_days_ago: (n) => `${n}d ago`,
-
-      // Filter Pill Labels
-      filter_search: (q) => `Search: "${q}"`,
-      filter_tag: (t) => `#${t}`,
-      filter_kind: (k) => `Kind: ${k}`,
-      filter_category: (c) => `Category: ${c}`,
-      filter_pricing: (p) => `Pricing: ${p}`,
-      filter_model: (m) => `Model: ${m}`,
-      filter_status: (s) => `Status: ${s}`,
-      filter_difficulty: (d) => `Difficulty: ${d}`,
-      filter_autonomy: (a) => `Autonomy: ${a}`,
-      filter_runtime: (r) => `Runtime: ${r}`,
-      workflow_progress: (done, total) => `${done}/${total} steps completed`,
-    },
-
-    vi: {
-      brand_subtitle: 'Trung tâm tài nguyên AI',
-      search_placeholder: 'Tìm kiếm prompt, công cụ, website, thẻ... (Ctrl+K)',
-      search_clear: 'Xóa tìm kiếm',
-      view_list: 'Xem danh sách',
-      view_grid: 'Xem lưới',
-      add_btn: '+ Thêm',
-      menu_new_agent: 'Agent Mới',
-      menu_new_agent_desc: 'Định nghĩa vai trò AI & hướng dẫn tái sử dụng',
-      menu_new_workflow: 'Thêm Quy trình',
-      menu_new_workflow_desc: 'Các bước tuần tự & quy trình AI tái sử dụng',
-      menu_new_tool: 'Thêm Công cụ / Website',
-      menu_new_tool_desc: 'Lưu web app AI, dịch vụ hoặc trang tài liệu tham khảo',
-      menu_new_prompt: 'Thêm Prompt',
-      menu_new_prompt_desc: 'Lưu prompt hệ thống hoặc tác vụ tái sử dụng',
-
-      // Sidebar
-      nav_resources: 'Tài nguyên',
-      nav_all_resources: 'Tất cả tài nguyên',
-      nav_agents: 'Agents',
-      nav_workflows: 'Quy trình',
-      nav_tools: 'Công cụ & Website',
-      nav_prompts: 'Prompts',
-      nav_favorites: 'Yêu thích',
-      nav_filter_agents: 'Lọc Agents',
-      nav_all_autonomy: 'Tất cả mức tự chủ',
-      autonomy_manual: 'Thủ công (Manual)',
-      autonomy_assisted: 'Hỗ trợ (Assisted)',
-      autonomy_autonomous: 'Tự chủ (Autonomous)',
-      nav_all_runtimes: 'Tất cả Runtime',
-      nav_filter_workflows: 'Lọc quy trình',
-      nav_all_statuses: 'Tất cả trạng thái',
-      nav_status_active: 'Đang dùng',
-      nav_status_draft: 'Bản nháp',
-      nav_status_archived: 'Lưu trữ',
-      nav_all_difficulties: 'Mọi mức độ',
-      diff_easy: 'Dễ',
-      diff_medium: 'Trung bình',
-      diff_advanced: 'Nâng cao',
-      nav_filter_tools: 'Lọc công cụ',
-      nav_all_types: 'Tất cả loại (Công cụ & Trang)',
-      nav_tools_only: 'Chỉ công cụ',
-      nav_websites_only: 'Chỉ website',
-      nav_all_categories: 'Tất cả danh mục',
-      nav_all_pricing: 'Tất cả mức giá',
-      pricing_free: 'Miễn phí',
-      pricing_freemium: 'Freemium',
-      pricing_paid: 'Trả phí',
-      pricing_opensource: 'Mã nguồn mở',
-      pricing_unknown: 'Chưa rõ',
-      nav_models: 'Mô hình / AI',
-      nav_all_models: 'Tất cả mô hình',
-      nav_tags: 'Thẻ',
-      nav_clear: 'Xóa lọc',
-      nav_no_tags: 'Chưa có thẻ nào',
-      nav_future_modules: 'Mô-đun sắp tới',
-      future_workflows: 'Quy trình (Workflows)',
-      future_agents: 'Tác nhân (Agents)',
-      future_collections: 'Bộ sưu tập (Collections)',
-      future_recipes: 'Công thức (Recipes)',
-
-      // Toolbar
-      sort_label: 'Sắp xếp:',
-      sort_updated_desc: 'Cập nhật gần đây',
-      sort_created_desc: 'Mới nhất trước',
-      sort_created_asc: 'Cũ nhất trước',
-      sort_title_asc: 'Tiêu đề (A–Z)',
-      sort_title_desc: 'Tiêu đề (Z–A)',
-
-      // Card & Badges
-      badge_tool: 'Công cụ',
-      badge_website: 'Website',
-      badge_prompt: 'Prompt',
-      badge_workflow: 'Quy trình',
-      badge_agent: 'Agent',
-      btn_copy: 'Sao chép',
-      btn_copy_prompt: 'Sao chép Prompt',
-      btn_copy_instructions: 'Sao chép Hướng dẫn',
-      btn_copy_full_agent: 'Sao chép toàn bộ Agent',
-      btn_copy_url: 'Chép URL',
-      btn_copied: 'Đã chép ✓',
-      btn_open: 'Mở',
-      btn_open_site: 'Mở trang web',
-
-      // Empty & Loading States
-      loading_resources: 'Đang tải tài nguyên...',
-      empty_no_resources: 'Không tìm thấy tài nguyên nào',
-      empty_no_resources_desc: 'Lưu công cụ AI, website, prompt hoặc agent đầu tiên của bạn để xây dựng kho vận hành.',
-      empty_no_agents: 'Chưa có Agent nào',
-      empty_no_agents_desc: 'Lưu vai trò AI tái sử dụng, nguyên tắc hành vi và hướng dẫn chi tiết.',
-      empty_no_workflows: 'Chưa có quy trình nào',
-      empty_no_workflows_desc: 'Tạo các quy trình làm việc có cấu trúc để tối ưu hóa công việc của bạn.',
-      empty_no_tools: 'Chưa có công cụ hoặc website AI nào',
-      empty_no_tools_desc: 'Lưu công cụ hoặc trang web AI đầu tiên để bắt đầu bộ sưu tập.',
-      empty_no_prompts: 'Chưa có prompt nào',
-      empty_no_prompts_desc: 'Lưu prompt AI đầu tiên để xây dựng thư viện vận hành cá nhân.',
-      empty_no_favs: 'Chưa có mục yêu thích nào',
-      empty_no_favs_desc: 'Đánh dấu sao các prompt, công cụ, website, quy trình và agent hữu ích để tìm nhanh tại đây.',
-      empty_search_no_match: 'Không tìm thấy tài nguyên phù hợp',
-      empty_search_desc: (q) => `Không có mục nào khớp với "${q}".`,
-      empty_tag_no_match: (tag) => `Không có tài nguyên gắn thẻ #${tag}`,
-      empty_tag_desc: 'Thử chọn một thẻ khác hoặc xóa bộ lọc.',
-      btn_add_agent: '+ Thêm Agent',
-      btn_add_workflow: '+ Thêm Quy trình',
-      btn_add_tool: '+ Thêm Công cụ / Website',
-      btn_add_prompt: '+ Thêm Prompt',
-      btn_load_more: 'Tải thêm',
-
-      // Modals
-      modal_new_agent: 'Thêm Agent Mới',
-      modal_edit_agent: 'Chỉnh sửa Agent',
-      modal_new_workflow: 'Thêm Quy trình mới',
-      modal_edit_workflow: 'Chỉnh sửa Quy trình',
-      modal_new_tool: 'Thêm Công cụ / Website mới',
-      modal_edit_tool: 'Chỉnh sửa Công cụ / Website',
-      modal_new_prompt: 'Thêm Prompt mới',
-      modal_edit_prompt: 'Chỉnh sửa Prompt',
-      label_role: 'Vai trò (Role)',
-      label_goal: 'Mục tiêu (Goal)',
-      label_goal_hint: '(kết quả mong muốn đạt được)',
-      label_instructions: 'Hướng dẫn / Định nghĩa hệ thống',
-      label_runtime: 'Môi trường thực thi (Runtime)',
-      label_autonomy: 'Mức độ tự chủ',
-      label_input_desc: 'Đầu vào mong đợi',
-      label_input_desc_hint: '(dữ liệu cung cấp cho agent)',
-      label_output_desc: 'Đầu ra mong đợi',
-      label_output_desc_hint: '(kết quả bàn giao)',
-      label_agent_notes_hint: '(khi nào nên dùng, hạn chế, mẹo)',
-      label_agent_links_hint: 'Prompt, Công cụ, Website hoặc Quy trình agent này sử dụng',
-      btn_save_agent: 'Lưu Agent',
-      rel_uses: 'Sử dụng (Uses)',
-      rel_follows: 'Theo quy trình (Follows)',
-      rel_references: 'Tham chiếu (References)',
-      rel_assigns_to: 'Giao việc cho (Assigns To)',
-      label_purpose: 'Mục tiêu / Mục đích',
-      label_purpose_hint: '(mục đích đạt được của quy trình)',
-      label_status: 'Trạng thái',
-      label_difficulty: 'Độ khó',
-      label_estimated_time: 'Thời gian ước tính',
-      label_estimated_time_hint: '(ví dụ: 15 phút, 1 giờ)',
-      label_steps: 'Các bước thực hiện',
-      label_steps_hint: 'Trình tự các bước thực hiện',
-      btn_add_step: '+ Thêm bước',
-      label_step_title: 'Tiêu đề bước',
-      label_step_instruction: 'Hướng dẫn & Prompts',
-      label_step_optional: 'Bước tùy chọn (không bắt buộc)',
-      label_step_notes: 'Ghi chú / Mẹo',
-      label_linked_resources: 'Tài nguyên liên kết',
-      btn_link_resource: '+ Liên kết tài nguyên',
-      picker_title: 'Chọn tài nguyên liên kết',
-      picker_search_placeholder: 'Tìm kiếm prompt, công cụ, website...',
-      picker_select: 'Chọn',
-      picker_no_results: 'Không tìm thấy tài nguyên phù hợp',
-      btn_save_workflow: 'Lưu Quy trình',
-      btn_copy_workflow: 'Chép Markdown',
-      label_url: 'URL',
-      label_url_hint: 'Dán URL đầy đủ có http:// hoặc https://',
-      btn_fetch_info: '⚡ Lấy thông tin',
-      btn_fetching: 'Đang lấy...',
-      label_title: 'Tiêu đề',
-      label_kind: 'Loại',
-      opt_kind_tool: 'Công cụ AI / Web App',
-      opt_kind_website: 'Website / Tham khảo / Danh bạ',
-      label_pricing: 'Mức giá',
-      label_favorite: 'Yêu thích',
-      label_mark_favorite: 'Đánh dấu yêu thích',
-      label_provider: 'Nhà cung cấp / Tác giả',
-      label_category: 'Danh mục',
-      label_description: 'Mô tả',
-      label_desc_hint: '(tóm tắt ngắn hoặc khẩu hiệu)',
-      label_notes: 'Ghi chú cá nhân',
-      label_notes_hint: '(ghi chú cách dùng, phím tắt, mẹo)',
-      label_tags: 'Thẻ',
-      label_tags_hint_tool: '(phân tách bằng dấu phẩy, vd: coding, llm, nhanh, api)',
-      label_tags_hint_prompt: '(phân tách bằng dấu phẩy, vd: coding, refactor, python)',
-      label_model: 'Mô hình / AI dự định dùng',
-      label_prompt_desc_hint: '(tóm tắt hoặc ghi chú sử dụng tùy chọn)',
-      label_prompt_content: 'Nội dung Prompt',
-      label_prompt_content_hint: 'Văn bản thuần • Giữ nguyên khoảng trắng',
-      btn_cancel: 'Hủy',
-      btn_save_tool: 'Lưu công cụ',
-      btn_save_prompt: 'Lưu Prompt',
-      btn_save_changes: 'Lưu thay đổi',
-
-      // Detail Dialogs
-      notes_tips_title: 'Ghi chú & Mẹo cá nhân',
-      btn_duplicate: 'Nhân bản',
-      btn_edit: 'Chỉnh sửa',
-      btn_delete: 'Xóa',
-      updated_recently: 'Cập nhật gần đây',
-      updated_at: (date) => `Đã cập nhật ${date}`,
-
-      // Delete Dialog
-      delete_resource_title: 'Xóa tài nguyên',
-      delete_prompt_title: 'Xóa Prompt',
-      delete_confirm_text: (name) => `Bạn có chắc chắn muốn xóa vĩnh viễn "${name}"?`,
-      delete_warning: 'Hành động này không thể hoàn tác.',
-      btn_delete_permanently: 'Xóa vĩnh viễn',
-
-      // Toasts & Errors
-      toast_copied: 'Đã sao chép vào bộ nhớ tạm',
-      toast_copy_failed: 'Không thể sao chép vào bộ nhớ tạm',
-      toast_fav_added: 'Đã thêm vào mục yêu thích',
-      toast_fav_removed: 'Đã xóa khỏi mục yêu thích',
-      toast_site_fetched: 'Đã lấy thông tin trang thành công!',
-      toast_enter_url: 'Vui lòng nhập URL để lấy thông tin',
-      toast_workflow_created: 'Đã lưu quy trình thành công',
-      toast_workflow_updated: 'Đã cập nhật quy trình thành công',
-      toast_tool_created: 'Đã lưu công cụ thành công',
-      toast_tool_updated: 'Đã cập nhật công cụ thành công',
-      toast_prompt_created: 'Đã tạo prompt thành công',
-      toast_prompt_updated: 'Đã cập nhật prompt thành công',
-      toast_duplicated: (title) => `Đã nhân bản "${title}"`,
-      toast_deleted: (title) => `Đã xóa "${title}"`,
-      err_title_required: 'Tiêu đề là bắt buộc',
-      err_url_required: 'URL là bắt buộc',
-      err_prompt_content_required: 'Nội dung Prompt là bắt buộc',
-      err_step_title_required: 'Mỗi bước phải có tiêu đề và hướng dẫn',
-
-      // Relative Dates
-      time_just_now: 'vừa xong',
-      time_mins_ago: (n) => `${n} phút trước`,
-      time_hours_ago: (n) => `${n} giờ trước`,
-      time_days_ago: (n) => `${n} ngày trước`,
-
-      // Filter Pill Labels
-      filter_search: (q) => `Tìm kiếm: "${q}"`,
-      filter_tag: (t) => `#${t}`,
-      filter_kind: (k) => `Loại: ${k === 'website' ? 'Website' : 'Công cụ'}`,
-      filter_category: (c) => `Danh mục: ${c}`,
-      filter_pricing: (p) => `Mức giá: ${p}`,
-      filter_model: (m) => `Mô hình: ${m}`,
-      filter_status: (s) => `Trạng thái: ${s}`,
-      filter_difficulty: (d) => `Độ khó: ${d}`,
-      filter_autonomy: (a) => `Tự chủ: ${a}`,
-      filter_runtime: (r) => `Runtime: ${r}`,
-      workflow_progress: (done, total) => `Đã hoàn thành ${done}/${total} bước`,
-    },
-  };
-
-  // --- State ---
-  const state = {
-    lang: localStorage.getItem('pilot_lang') || 'en', // strictly default to English
-    items: [],
-    total: 0,
-    limit: 50,
-    offset: 0,
-    q: '',
-    tag: null,
-    model: null,
-    toolKind: null,
-    toolCategory: null,
-    toolPricing: null,
-    workflowStatus: null,
-    workflowDifficulty: null,
-    favorite: null, // true | null
-    sort: 'updated_at',
-    order: 'desc',
-    viewMode: localStorage.getItem('pilot_view_mode') || 'list',
-    currentNav: 'all-resources', // 'all-resources' | 'agents' | 'workflows' | 'tools' | 'prompts' | 'favorites'
-    activeDetailPrompt: null,
-    activeDetailTool: null,
-    activeDetailWorkflow: null,
-    activeDetailAgent: null,
-    currentEditingWorkflowSteps: [],
-    currentEditingAgentResources: [],
-    pickerMode: 'workflow_step', // 'workflow_step' | 'agent_resource'
-    activeStepIndexForPicker: null,
-    activeWorkflowChecklistState: {},
-    itemToDelete: null, // { id, title, type: 'prompt' | 'tool' | 'website' | 'workflow' | 'agent' }
-    agentStatus: null,
-    agentAutonomy: null,
-    agentRuntime: null,
-    agentModel: null,
-    tags: [],
-    models: [],
-    categories: [],
-    providers: [],
-    runtimes: [],
-    agentModels: [],
-    isLoading: false,
-  };
-
-  function t(key, ...args) {
-    const langDict = I18N[state.lang] || I18N.en;
-    const val = langDict[key] ?? I18N.en[key] ?? key;
-    if (typeof val === 'function') {
-      return val(...args);
+async function init() {
+  // 1. Load visitor favorites from local storage
+  try {
+    const saved = localStorage.getItem('pilot_visitor_favorites');
+    if (saved) {
+      state.visitorFavorites = new Set(JSON.parse(saved));
     }
-    return val;
+  } catch (err) {
+    console.warn('Could not read visitor favorites:', err);
   }
 
-  function getLocalizedPricing(pricing) {
-    if (!pricing || pricing === 'Unknown') return t('pricing_unknown');
-    const lower = pricing.toLowerCase().replace(/\s+/g, '');
-    if (lower === 'free') return t('pricing_free');
-    if (lower === 'freemium') return t('pricing_freemium');
-    if (lower === 'paid') return t('pricing_paid');
-    if (lower === 'opensource') return t('pricing_opensource');
-    return pricing;
-  }
+  // 2. Aggregate all directory tools for universal search and indexing
+  aggregateDirectoryTools();
 
-  // --- DOM Elements ---
-  const el = {
-    // Header & Global Search
-    search: document.getElementById('global-search'),
-    searchClear: document.getElementById('search-clear-btn'),
-    searchKbd: document.getElementById('search-kbd-hint'),
-    viewListBtn: document.getElementById('view-list-btn'),
-    viewGridBtn: document.getElementById('view-grid-btn'),
-    mobileMenuToggle: document.getElementById('mobile-menu-toggle'),
-    sidebar: document.getElementById('app-sidebar'),
-    langToggleBtn: document.getElementById('lang-toggle-btn'),
-    langCode: document.getElementById('lang-code'),
+  // 3. Render initial sections from structured data
+  renderTopPicks();
+  renderLatestListings();
+  renderFreeThisWeek();
+  renderAllCategories();
 
-    // Add Dropdown
-    addBtn: document.getElementById('add-btn'),
-    addDropdownMenu: document.getElementById('add-dropdown-menu'),
-    menuAddAgentBtn: document.getElementById('menu-add-agent-btn'),
-    menuAddWorkflowBtn: document.getElementById('menu-add-workflow-btn'),
-    menuAddToolBtn: document.getElementById('menu-add-tool-btn'),
-    menuAddPromptBtn: document.getElementById('menu-add-prompt-btn'),
+  // 4. Attach event listeners
+  attachEventListeners();
 
-    // View & Active Filters
-    currentViewTitle: document.getElementById('current-view-title'),
-    activeFiltersContainer: document.getElementById('active-filters-container'),
-    sortSelect: document.getElementById('sort-select'),
+  // 5. Fetch API catalog in background to augment local tools
+  fetchApiCatalog();
 
-    // Badges & Navigation
-    badgeAllResourcesCount: document.getElementById('badge-all-resources-count'),
-    badgeAgentsCount: document.getElementById('badge-agents-count'),
-    badgeWorkflowsCount: document.getElementById('badge-workflows-count'),
-    badgeToolsCount: document.getElementById('badge-tools-count'),
-    badgePromptsCount: document.getElementById('badge-prompts-count'),
-    badgeFavCount: document.getElementById('badge-fav-count'),
-
-    // Sidebar Filters
-    sidebarAgentsFilters: document.getElementById('sidebar-agents-filters'),
-    agentStatusFilterSelect: document.getElementById('agent-status-filter-select'),
-    agentAutonomyFilterSelect: document.getElementById('agent-autonomy-filter-select'),
-    agentRuntimeFilterSelect: document.getElementById('agent-runtime-filter-select'),
-    agentModelFilterSelect: document.getElementById('agent-model-filter-select'),
-    sidebarWorkflowsFilters: document.getElementById('sidebar-workflows-filters'),
-    workflowStatusFilterSelect: document.getElementById('workflow-status-filter-select'),
-    workflowDiffFilterSelect: document.getElementById('workflow-diff-filter-select'),
-    sidebarToolsFilters: document.getElementById('sidebar-tools-filters'),
-    toolKindFilterSelect: document.getElementById('tool-kind-filter-select'),
-    toolCategoryFilterSelect: document.getElementById('tool-category-filter-select'),
-    toolPricingFilterSelect: document.getElementById('tool-pricing-filter-select'),
-    sidebarPromptsFilters: document.getElementById('sidebar-prompts-filters'),
-    modelFilterSelect: document.getElementById('model-filter-select'),
-    modelsDatalist: document.getElementById('models-datalist'),
-    categoriesDatalist: document.getElementById('categories-datalist'),
-    providersDatalist: document.getElementById('providers-datalist'),
-    sidebarTagsList: document.getElementById('sidebar-tags-list'),
-    clearTagBtn: document.getElementById('clear-tag-btn'),
-
-    // Resource Stream & States
-    resourcesList: document.getElementById('resources-list'),
-    loadMoreWrapper: document.getElementById('load-more-wrapper'),
-    loadMoreBtn: document.getElementById('load-more-btn'),
-    loadingState: document.getElementById('loading-state'),
-    loadingText: document.getElementById('loading-text'),
-    emptyState: document.getElementById('empty-state'),
-    emptyStateTitle: document.getElementById('empty-state-title'),
-    emptyStateDesc: document.getElementById('empty-state-desc'),
-    emptyAddAgentBtn: document.getElementById('empty-add-agent-btn'),
-    emptyAddWorkflowBtn: document.getElementById('empty-add-workflow-btn'),
-    emptyAddToolBtn: document.getElementById('empty-add-tool-btn'),
-    emptyAddPromptBtn: document.getElementById('empty-add-prompt-btn'),
-    toastContainer: document.getElementById('toast-container'),
-
-    // Workflow Form Dialog
-    workflowFormDialog: document.getElementById('workflow-form-dialog'),
-    workflowForm: document.getElementById('workflow-form'),
-    workflowFormTitle: document.getElementById('workflow-form-title'),
-    workflowFormCloseBtn: document.getElementById('workflow-form-close-btn'),
-    workflowFormCancelBtn: document.getElementById('workflow-form-cancel-btn'),
-    workflowFormSubmitBtn: document.getElementById('workflow-form-submit-btn'),
-    inputWorkflowId: document.getElementById('workflow-id'),
-    inputWorkflowTitle: document.getElementById('workflow-title'),
-    inputWorkflowPurpose: document.getElementById('workflow-purpose'),
-    inputWorkflowStatus: document.getElementById('workflow-status'),
-    inputWorkflowDifficulty: document.getElementById('workflow-difficulty'),
-    inputWorkflowEstimatedTime: document.getElementById('workflow-estimated-time'),
-    inputWorkflowFavorite: document.getElementById('workflow-favorite'),
-    inputWorkflowDescription: document.getElementById('workflow-description'),
-    inputWorkflowTags: document.getElementById('workflow-tags'),
-    inputWorkflowNotes: document.getElementById('workflow-notes'),
-    workflowAddStepBtn: document.getElementById('workflow-add-step-btn'),
-    workflowFormStepsList: document.getElementById('workflow-form-steps-list'),
-
-    // Workflow Detail Dialog
-    workflowDetailDialog: document.getElementById('workflow-detail-dialog'),
-    workflowDetailCloseBtn: document.getElementById('workflow-detail-close-btn'),
-    workflowDetailFavBtn: document.getElementById('workflow-detail-fav-btn'),
-    workflowDetailTitle: document.getElementById('workflow-detail-title'),
-    workflowDetailStatus: document.getElementById('workflow-detail-status'),
-    workflowDetailDifficulty: document.getElementById('workflow-detail-difficulty'),
-    workflowDetailEstTime: document.getElementById('workflow-detail-est-time'),
-    workflowDetailUpdated: document.getElementById('workflow-detail-updated'),
-    workflowDetailPurposeBox: document.getElementById('workflow-detail-purpose-box'),
-    workflowDetailPurpose: document.getElementById('workflow-detail-purpose'),
-    workflowDetailDescription: document.getElementById('workflow-detail-description'),
-    workflowProgressWrapper: document.getElementById('workflow-progress-wrapper'),
-    workflowProgressText: document.getElementById('workflow-progress-text'),
-    workflowProgressFill: document.getElementById('workflow-progress-fill'),
-    workflowDetailStepsList: document.getElementById('workflow-detail-steps-list'),
-    workflowDetailNotesWrapper: document.getElementById('workflow-detail-notes-wrapper'),
-    workflowDetailNotes: document.getElementById('workflow-detail-notes'),
-    workflowDetailTagsRow: document.getElementById('workflow-detail-tags-row'),
-    workflowDetailDeleteBtn: document.getElementById('workflow-detail-delete-btn'),
-    workflowDetailCopyMdBtn: document.getElementById('workflow-detail-copy-md-btn'),
-    workflowDetailDuplicateBtn: document.getElementById('workflow-detail-duplicate-btn'),
-    workflowDetailEditBtn: document.getElementById('workflow-detail-edit-btn'),
-
-    // Resource Picker Dialog
-    resourcePickerDialog: document.getElementById('resource-picker-dialog'),
-    resourcePickerTitle: document.getElementById('resource-picker-title'),
-    resourcePickerCloseBtn: document.getElementById('resource-picker-close-btn'),
-    resourcePickerSearch: document.getElementById('resource-picker-search'),
-    resourcePickerResults: document.getElementById('resource-picker-results'),
-    resourcePickerCancelBtn: document.getElementById('resource-picker-cancel-btn'),
-
-    // Tool Form Dialog
-    toolFormDialog: document.getElementById('tool-form-dialog'),
-    toolForm: document.getElementById('tool-form'),
-    toolFormTitle: document.getElementById('tool-form-dialog-title'),
-    toolFormError: document.getElementById('tool-form-error-banner'),
-    toolFormWarning: document.getElementById('tool-form-warning-banner'),
-    toolFormCloseBtn: document.getElementById('tool-form-close-btn'),
-    toolFormCancelBtn: document.getElementById('tool-form-cancel-btn'),
-    toolFormSubmitBtn: document.getElementById('tool-form-submit-btn'),
-    inputToolId: document.getElementById('form-tool-id'),
-    inputToolUrl: document.getElementById('tool-url'),
-    toolFetchMetaBtn: document.getElementById('tool-fetch-meta-btn'),
-    inputToolTitle: document.getElementById('tool-title'),
-    inputToolKind: document.getElementById('tool-kind'),
-    inputToolPricing: document.getElementById('tool-pricing'),
-    inputToolFavorite: document.getElementById('tool-favorite'),
-    inputToolProvider: document.getElementById('tool-provider'),
-    inputToolCategory: document.getElementById('tool-category'),
-    inputToolDescription: document.getElementById('tool-description'),
-    inputToolNotes: document.getElementById('tool-notes'),
-    inputToolTags: document.getElementById('tool-tags'),
-    inputToolFaviconUrl: document.getElementById('tool-favicon-url'),
-
-    // Tool Detail Dialog
-    toolDetailDialog: document.getElementById('tool-detail-dialog'),
-    toolDetailCloseBtn: document.getElementById('tool-detail-close-btn'),
-    toolDetailFavBtn: document.getElementById('tool-detail-fav-btn'),
-    toolDetailFavicon: document.getElementById('tool-detail-favicon'),
-    toolDetailTitle: document.getElementById('tool-detail-title'),
-    toolDetailKind: document.getElementById('tool-detail-kind'),
-    toolDetailPricing: document.getElementById('tool-detail-pricing'),
-    toolDetailCategory: document.getElementById('tool-detail-category'),
-    toolDetailProvider: document.getElementById('tool-detail-provider'),
-    toolDetailUpdated: document.getElementById('tool-detail-updated'),
-    toolDetailUrl: document.getElementById('tool-detail-url'),
-    toolDetailCopyUrlBtn: document.getElementById('tool-detail-copy-url-btn'),
-    toolDetailOpenLink: document.getElementById('tool-detail-open-link'),
-    toolDetailDescription: document.getElementById('tool-detail-description'),
-    toolDetailNotesWrapper: document.getElementById('tool-detail-notes-wrapper'),
-    toolDetailNotes: document.getElementById('tool-detail-notes'),
-    toolDetailTagsRow: document.getElementById('tool-detail-tags-row'),
-    toolDetailDeleteBtn: document.getElementById('tool-detail-delete-btn'),
-    toolDetailDuplicateBtn: document.getElementById('tool-detail-duplicate-btn'),
-    toolDetailEditBtn: document.getElementById('tool-detail-edit-btn'),
-
-    // Prompt Form Dialog
-    promptFormDialog: document.getElementById('prompt-form-dialog'),
-    promptForm: document.getElementById('prompt-form'),
-    promptFormTitle: document.getElementById('form-dialog-title'),
-    promptFormError: document.getElementById('form-error-banner'),
-    promptFormCloseBtn: document.getElementById('form-close-btn'),
-    promptFormCancelBtn: document.getElementById('form-cancel-btn'),
-    promptFormSubmitBtn: document.getElementById('form-submit-btn'),
-    inputPromptId: document.getElementById('form-prompt-id'),
-    inputPromptTitle: document.getElementById('prompt-title'),
-    inputPromptModel: document.getElementById('prompt-model'),
-    inputPromptFavorite: document.getElementById('prompt-favorite'),
-    inputPromptDescription: document.getElementById('prompt-description'),
-    inputPromptContent: document.getElementById('prompt-content'),
-    inputPromptTags: document.getElementById('prompt-tags'),
-
-    // Prompt Detail Dialog
-    promptDetailDialog: document.getElementById('prompt-detail-dialog'),
-    promptDetailCloseBtn: document.getElementById('detail-close-btn'),
-    promptDetailFavBtn: document.getElementById('detail-fav-btn'),
-    promptDetailTitle: document.getElementById('detail-title'),
-    promptDetailModel: document.getElementById('detail-model'),
-    promptDetailUpdated: document.getElementById('detail-updated'),
-    promptDetailDescription: document.getElementById('detail-description'),
-    promptDetailTagsRow: document.getElementById('detail-tags-row'),
-    promptDetailContent: document.getElementById('detail-content'),
-    promptDetailCopyBtn: document.getElementById('detail-copy-btn'),
-    promptDetailEditBtn: document.getElementById('detail-edit-btn'),
-    promptDetailDuplicateBtn: document.getElementById('detail-duplicate-btn'),
-    promptDetailDeleteBtn: document.getElementById('detail-delete-btn'),
-
-    // Agent Form Dialog
-    agentFormDialog: document.getElementById('agent-form-dialog'),
-    agentForm: document.getElementById('agent-form'),
-    agentFormTitle: document.getElementById('agent-form-title'),
-    agentFormCloseBtn: document.getElementById('agent-form-close-btn'),
-    agentFormCancelBtn: document.getElementById('agent-form-cancel-btn'),
-    agentFormSubmitBtn: document.getElementById('agent-form-submit-btn'),
-    inputAgentId: document.getElementById('agent-id'),
-    inputAgentTitle: document.getElementById('agent-title'),
-    inputAgentRole: document.getElementById('agent-role'),
-    inputAgentGoal: document.getElementById('agent-goal'),
-    inputAgentDescription: document.getElementById('agent-description'),
-    inputAgentInstructions: document.getElementById('agent-instructions'),
-    agentInstructionsCounter: document.getElementById('agent-instructions-counter'),
-    inputAgentRuntime: document.getElementById('agent-runtime'),
-    inputAgentModel: document.getElementById('agent-model'),
-    inputAgentStatus: document.getElementById('agent-status'),
-    inputAgentAutonomy: document.getElementById('agent-autonomy'),
-    inputAgentInputDesc: document.getElementById('agent-input-desc'),
-    inputAgentOutputDesc: document.getElementById('agent-output-desc'),
-    agentAddResourceBtn: document.getElementById('agent-add-resource-btn'),
-    agentFormResourcesList: document.getElementById('agent-form-resources-list'),
-    inputAgentTags: document.getElementById('agent-tags'),
-    inputAgentFavorite: document.getElementById('agent-favorite'),
-    inputAgentNotes: document.getElementById('agent-notes'),
-
-    // Agent Detail Dialog
-    agentDetailDialog: document.getElementById('agent-detail-dialog'),
-    agentDetailCloseBtn: document.getElementById('agent-detail-close-btn'),
-    agentDetailFavBtn: document.getElementById('agent-detail-fav-btn'),
-    agentDetailTitle: document.getElementById('agent-detail-title'),
-    agentDetailRole: document.getElementById('agent-detail-role'),
-    agentDetailStatus: document.getElementById('agent-detail-status'),
-    agentDetailAutonomy: document.getElementById('agent-detail-autonomy'),
-    agentDetailRuntime: document.getElementById('agent-detail-runtime'),
-    agentDetailModel: document.getElementById('agent-detail-model'),
-    agentDetailUpdated: document.getElementById('agent-detail-updated'),
-    agentDetailGoalBox: document.getElementById('agent-detail-goal-box'),
-    agentDetailGoal: document.getElementById('agent-detail-goal'),
-    agentDetailDescription: document.getElementById('agent-detail-description'),
-    agentDetailCopyInstructionsBtn: document.getElementById('agent-detail-copy-instructions-btn'),
-    agentDetailInstructions: document.getElementById('agent-detail-instructions'),
-    agentDetailContractGrid: document.getElementById('agent-detail-contract-grid'),
-    agentDetailInputCard: document.getElementById('agent-detail-input-card'),
-    agentDetailInput: document.getElementById('agent-detail-input'),
-    agentDetailOutputCard: document.getElementById('agent-detail-output-card'),
-    agentDetailOutput: document.getElementById('agent-detail-output'),
-    agentDetailLinkedSection: document.getElementById('agent-detail-linked-section'),
-    agentDetailLinkedGroups: document.getElementById('agent-detail-linked-groups'),
-    agentDetailNotesWrapper: document.getElementById('agent-detail-notes-wrapper'),
-    agentDetailNotes: document.getElementById('agent-detail-notes'),
-    agentDetailTagsRow: document.getElementById('agent-detail-tags-row'),
-    agentDetailDeleteBtn: document.getElementById('agent-detail-delete-btn'),
-    agentDetailCopyFullBtn: document.getElementById('agent-detail-copy-full-btn'),
-    agentDetailDuplicateBtn: document.getElementById('agent-detail-duplicate-btn'),
-    agentDetailEditBtn: document.getElementById('agent-detail-edit-btn'),
-
-    // Delete Confirmation Dialog
-    deleteDialog: document.getElementById('delete-confirm-dialog'),
-    deleteDialogTitle: document.getElementById('delete-dialog-title'),
-    deletePromptName: document.getElementById('delete-prompt-name'),
-    deleteConfirmPromptMsg: document.getElementById('delete-confirm-prompt-msg'),
-    deleteCancelBtn: document.getElementById('delete-cancel-btn'),
-    deleteConfirmBtn: document.getElementById('delete-confirm-btn'),
-  };
-
-  // --- Utility Functions ---
-
-  function setLanguage(lang) {
-    if (lang !== 'en' && lang !== 'vi') lang = 'en';
-    state.lang = lang;
-    localStorage.setItem('pilot_lang', lang);
-    document.documentElement.lang = lang;
-
-    if (el.langCode) {
-      el.langCode.textContent = lang.toUpperCase();
+  // 6. Check curator status and route
+  checkCuratorStatus();
+  if (window.location.pathname.startsWith('/admin') || window.location.hash === '#admin') {
+    if (!state.isCurator) {
+      el.curatorAuthDialog?.showModal();
     }
-
-    // Apply data-i18n attributes
-    document.querySelectorAll('[data-i18n]').forEach((node) => {
-      const k = node.getAttribute('data-i18n');
-      if (k) node.textContent = t(k);
-    });
-
-    document.querySelectorAll('[data-i18n-placeholder]').forEach((node) => {
-      const k = node.getAttribute('data-i18n-placeholder');
-      if (k) node.placeholder = t(k);
-    });
-
-    document.querySelectorAll('[data-i18n-title]').forEach((node) => {
-      const k = node.getAttribute('data-i18n-title');
-      if (k) node.title = t(k);
-    });
-
-    // Refresh dynamic parts
-    updateActiveFilters();
-    renderTagsList();
-    renderModelOptions();
-    renderCategoryAndProviderOptions();
-    renderResourcesList();
   }
+}
 
-  function toggleLanguage() {
-    const nextLang = state.lang === 'en' ? 'vi' : 'en';
-    setLanguage(nextLang);
-    showToast(nextLang === 'vi' ? 'Đã chuyển sang Tiếng Việt' : 'Switched to English');
-  }
+function aggregateDirectoryTools() {
+  const map = new Map();
 
-  function showToast(message, type = 'success') {
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.textContent = message;
-    el.toastContainer.appendChild(toast);
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(8px)';
-      toast.style.transition = 'all 0.2s';
-      setTimeout(() => toast.remove(), 200);
-    }, 2500);
-  }
+  // Add category tools
+  DIRECTORY_CATEGORIES.forEach(cat => {
+    cat.tools.forEach(tool => {
+      map.set(tool.slug || tool.id, { ...tool, category: cat.id });
+    });
+  });
 
-  function formatRelativeDate(isoDateString) {
-    if (!isoDateString) return '';
+  // Add top picks
+  TOP_PICKS.forEach(tool => {
+    map.set(tool.slug || tool.id, { ...tool });
+  });
+
+  // Add latest
+  LATEST_LISTINGS.forEach(tool => {
+    map.set(tool.slug || tool.id, { ...tool });
+  });
+
+  // Add free this week
+  FREE_THIS_WEEK.forEach(tool => {
+    map.set(tool.slug || tool.id, { ...tool });
+  });
+
+  state.allDirectoryTools = Array.from(map.values());
+}
+
+// ==========================================================================
+// RENDERING FUNCTIONS
+// ==========================================================================
+
+function createBrandLogoHtml(tool, size = 24) {
+  const color = tool.color || '#111111';
+  const initials = tool.initials || (tool.name ? tool.name.substring(0, 2).toUpperCase() : 'YP');
+  
+  // Favicon fallback via Google / DuckDuckGo if website is available
+  let faviconHtml = '';
+  if (tool.website) {
     try {
-      const date = new Date(isoDateString);
-      const now = new Date();
-      const diffSec = Math.floor((now - date) / 1000);
-      if (diffSec < 60) return t('time_just_now');
-      const diffMin = Math.floor(diffSec / 60);
-      if (diffMin < 60) return t('time_mins_ago', diffMin);
-      const diffHours = Math.floor(diffMin / 60);
-      if (diffHours < 24) return t('time_hours_ago', diffHours);
-      const diffDays = Math.floor(diffHours / 24);
-      if (diffDays < 7) return t('time_days_ago', diffDays);
-      const locale = state.lang === 'vi' ? 'vi-VN' : 'en-US';
-      return date.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
-    } catch {
-      return '';
-    }
-  }
-
-  async function copyToClipboard(text, btnElement) {
-    try {
-      await navigator.clipboard.writeText(text);
-      if (btnElement) {
-        const originalContent = btnElement.innerHTML;
-        btnElement.classList.add('copied');
-        btnElement.textContent = t('btn_copied');
-        setTimeout(() => {
-          btnElement.classList.remove('copied');
-          btnElement.innerHTML = originalContent;
-        }, 1800);
-      }
-      showToast(t('toast_copied'));
-    } catch {
-      showToast(t('toast_copy_failed'), 'error');
-    }
-  }
-
-  function debounce(fn, ms) {
-    let timer;
-    return function (...args) {
-      clearTimeout(timer);
-      timer = setTimeout(() => fn.apply(this, args), ms);
-    };
-  }
-
-  function escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
-
-  // --- API Requests ---
-
-  async function apiFetch(endpoint, options = {}) {
-    try {
-      const response = await fetch(endpoint, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(options.headers || {}),
-        },
-        ...options,
-      });
-
-      const data = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        const errorMsg = data?.error?.message || `Request failed (${response.status})`;
-        throw new Error(errorMsg);
-      }
-
-      return data;
-    } catch (err) {
-      console.error('API Error:', err);
-      throw err;
-    }
-  }
-
-  // --- Data Loading & Navigation ---
-
-  async function loadData(append = false) {
-    if (!append) {
-      state.offset = 0;
-      el.resourcesList.innerHTML = '';
-      el.loadingState.classList.remove('hidden');
-      el.emptyState.classList.add('hidden');
-    }
-
-    state.isLoading = true;
-
-    try {
-      const params = new URLSearchParams();
-      if (state.q) params.set('q', state.q);
-      if (state.tag) params.set('tag', state.tag);
-      if (state.favorite !== null) params.set('favorite', String(state.favorite));
-      params.set('sort', state.sort);
-      params.set('order', state.order);
-      params.set('limit', String(state.limit));
-      params.set('offset', String(state.offset));
-
-      let endpoint = '/api/resources';
-
-      if (state.currentNav === 'agents') {
-        endpoint = '/api/agents';
-        if (state.agentStatus) params.set('status', state.agentStatus);
-        if (state.agentAutonomy) params.set('autonomy_level', state.agentAutonomy);
-        if (state.agentRuntime) params.set('runtime', state.agentRuntime);
-        if (state.agentModel) params.set('model', state.agentModel);
-      } else if (state.currentNav === 'workflows') {
-        endpoint = '/api/workflows';
-        if (state.workflowStatus) params.set('status', state.workflowStatus);
-        if (state.workflowDifficulty) params.set('difficulty', state.workflowDifficulty);
-      } else if (state.currentNav === 'tools') {
-        endpoint = '/api/tools';
-        if (state.toolKind) params.set('kind', state.toolKind);
-        if (state.toolCategory) params.set('category', state.toolCategory);
-        if (state.toolPricing) params.set('pricing', state.toolPricing);
-      } else if (state.currentNav === 'prompts') {
-        endpoint = '/api/prompts';
-        if (state.model) params.set('model', state.model);
-      } else if (state.currentNav === 'favorites') {
-        endpoint = '/api/resources';
-        params.set('favorite', 'true');
-      } else {
-        // all-resources: generic mixed listing
-        endpoint = '/api/resources';
-        if (state.toolKind) params.set('type', state.toolKind);
-      }
-
-      const res = await apiFetch(`${endpoint}?${params.toString()}`);
-      const newItems = res.data || [];
-      state.total = res.meta?.total ?? 0;
-
-      if (append) {
-        state.items.push(...newItems);
-      } else {
-        state.items = newItems;
-      }
-
-      renderResourcesList(append);
-      updateCounts();
-      updateActiveFilters();
-
-      // Load More Visibility
-      if (state.items.length < state.total) {
-        el.loadMoreWrapper.classList.remove('hidden');
-      } else {
-        el.loadMoreWrapper.classList.add('hidden');
-      }
-    } catch (err) {
-      showToast(err.message, 'error');
-      if (!append && state.items.length === 0) {
-        showEmptyState(t('empty_no_resources'), err.message);
-      }
-    } finally {
-      state.isLoading = false;
-      el.loadingState.classList.add('hidden');
-    }
-  }
-
-  async function loadTags() {
-    try {
-      const res = await apiFetch('/api/tags');
-      state.tags = res.data || [];
-      renderTagsList();
-    } catch (err) {
-      console.warn('Failed to load tags:', err);
-    }
-  }
-
-  async function loadModels() {
-    try {
-      const res = await apiFetch('/api/models');
-      state.models = res.data || [];
-      renderModelOptions();
-    } catch (err) {
-      console.warn('Failed to load models:', err);
-    }
-  }
-
-  async function loadToolMetadataOptions() {
-    try {
-      const [catRes, provRes] = await Promise.all([
-        apiFetch('/api/tools/categories'),
-        apiFetch('/api/tools/providers'),
-      ]);
-      state.categories = catRes.data || [];
-      state.providers = provRes.data || [];
-      renderCategoryAndProviderOptions();
-    } catch (err) {
-      console.warn('Failed to load tool options:', err);
-    }
-  }
-
-  async function loadAgentMetadataOptions() {
-    try {
-      const [runtimesRes, modelsRes] = await Promise.all([
-        apiFetch('/api/agents/meta/runtimes'),
-        apiFetch('/api/agents/meta/models'),
-      ]);
-      state.runtimes = runtimesRes.data || [];
-      state.agentModels = modelsRes.data || [];
-      renderAgentMetadataOptions();
-    } catch (err) {
-      console.warn('Failed to load agent metadata:', err);
-    }
-  }
-
-  function renderAgentMetadataOptions() {
-    if (el.agentRuntimeFilterSelect) {
-      const current = el.agentRuntimeFilterSelect.value;
-      el.agentRuntimeFilterSelect.innerHTML = `<option value="">${t('nav_all_runtimes')}</option>`;
-      for (const r of state.runtimes) {
-        if (!r) continue;
-        const opt = document.createElement('option');
-        opt.value = r;
-        opt.textContent = r;
-        el.agentRuntimeFilterSelect.appendChild(opt);
-      }
-      el.agentRuntimeFilterSelect.value = current;
-    }
-
-    if (el.agentModelFilterSelect) {
-      const current = el.agentModelFilterSelect.value;
-      el.agentModelFilterSelect.innerHTML = `<option value="">${t('nav_all_models')}</option>`;
-      for (const m of state.agentModels) {
-        if (!m) continue;
-        const opt = document.createElement('option');
-        opt.value = m;
-        opt.textContent = m;
-        el.agentModelFilterSelect.appendChild(opt);
-      }
-      el.agentModelFilterSelect.value = current;
-    }
-  }
-
-  async function updateCounts() {
-    try {
-      const [allRes, agentsRes, workflowsRes, toolsRes, promptsRes, favRes] = await Promise.all([
-        apiFetch('/api/resources?limit=1'),
-        apiFetch('/api/agents?limit=1'),
-        apiFetch('/api/workflows?limit=1'),
-        apiFetch('/api/tools?limit=1'),
-        apiFetch('/api/prompts?limit=1'),
-        apiFetch('/api/resources?favorite=true&limit=1'),
-      ]);
-
-      el.badgeAllResourcesCount.textContent = allRes.meta?.total ?? 0;
-      if (el.badgeAgentsCount) el.badgeAgentsCount.textContent = agentsRes.meta?.total ?? 0;
-      if (el.badgeWorkflowsCount) el.badgeWorkflowsCount.textContent = workflowsRes.meta?.total ?? 0;
-      el.badgeToolsCount.textContent = toolsRes.meta?.total ?? 0;
-      el.badgePromptsCount.textContent = promptsRes.meta?.total ?? 0;
-      el.badgeFavCount.textContent = favRes.meta?.total ?? 0;
-    } catch {
-      // Non-critical badge counts
-    }
-  }
-
-  // --- Rendering Functions (XSS Safe) ---
-
-  function renderTagsList() {
-    el.sidebarTagsList.innerHTML = '';
-
-    if (state.tags.length === 0) {
-      const hint = document.createElement('span');
-      hint.className = 'empty-hint';
-      hint.textContent = t('nav_no_tags');
-      el.sidebarTagsList.appendChild(hint);
-      el.clearTagBtn.classList.add('hidden');
-      return;
-    }
-
-    el.clearTagBtn.classList.toggle('hidden', !state.tag);
-
-    for (const tagItem of state.tags) {
-      const btn = document.createElement('button');
-      btn.className = `tag-nav-btn ${state.tag === tagItem.name ? 'active' : ''}`;
-
-      const nameSpan = document.createElement('span');
-      nameSpan.textContent = `#${tagItem.name}`;
-
-      const countSpan = document.createElement('span');
-      countSpan.className = 'tag-nav-count';
-      countSpan.textContent = String(tagItem.count);
-
-      btn.appendChild(nameSpan);
-      btn.appendChild(countSpan);
-
-      btn.addEventListener('click', () => {
-        if (state.tag === tagItem.name) {
-          state.tag = null;
-        } else {
-          state.tag = tagItem.name;
-        }
-        loadData();
-        renderTagsList();
-      });
-
-      el.sidebarTagsList.appendChild(btn);
-    }
-  }
-
-  function renderModelOptions() {
-    const current = el.modelFilterSelect.value;
-    el.modelFilterSelect.innerHTML = `<option value="">${t('nav_all_models')}</option>`;
-    el.modelsDatalist.innerHTML = '';
-
-    for (const m of state.models) {
-      const opt = document.createElement('option');
-      opt.value = m;
-      opt.textContent = m;
-      if (m === current) opt.selected = true;
-      el.modelFilterSelect.appendChild(opt);
-
-      const dOpt = document.createElement('option');
-      dOpt.value = m;
-      el.modelsDatalist.appendChild(dOpt);
-    }
-  }
-
-  function renderCategoryAndProviderOptions() {
-    // Categories select & datalist
-    const currentCat = el.toolCategoryFilterSelect.value;
-    el.toolCategoryFilterSelect.innerHTML = `<option value="">${t('nav_all_categories')}</option>`;
-    el.categoriesDatalist.innerHTML = '';
-
-    for (const c of state.categories) {
-      const opt = document.createElement('option');
-      opt.value = c;
-      opt.textContent = c;
-      if (c === currentCat) opt.selected = true;
-      el.toolCategoryFilterSelect.appendChild(opt);
-
-      const dOpt = document.createElement('option');
-      dOpt.value = c;
-      el.categoriesDatalist.appendChild(dOpt);
-    }
-
-    // Providers datalist
-    el.providersDatalist.innerHTML = '';
-    for (const p of state.providers) {
-      const dOpt = document.createElement('option');
-      dOpt.value = p;
-      el.providersDatalist.appendChild(dOpt);
-    }
-  }
-
-  function renderResourcesList(append = false) {
-    if (!append) {
-      el.resourcesList.innerHTML = '';
-    }
-
-    if (state.items.length === 0) {
-      el.resourcesList.classList.add('hidden');
-      if (state.q) {
-        showEmptyState(t('empty_search_no_match'), t('empty_search_desc', state.q));
-      } else if (state.currentNav === 'favorites') {
-        showEmptyState(t('empty_no_favs'), t('empty_no_favs_desc'));
-      } else if (state.tag) {
-        showEmptyState(t('empty_tag_no_match', state.tag), t('empty_tag_desc'));
-      } else if (state.currentNav === 'agents') {
-        showEmptyState(t('empty_no_agents'), t('empty_no_agents_desc'));
-      } else if (state.currentNav === 'workflows') {
-        showEmptyState(t('empty_no_workflows'), t('empty_no_workflows_desc'));
-      } else if (state.currentNav === 'tools') {
-        showEmptyState(t('empty_no_tools'), t('empty_no_tools_desc'));
-      } else if (state.currentNav === 'prompts') {
-        showEmptyState(t('empty_no_prompts'), t('empty_no_prompts_desc'));
-      } else {
-        showEmptyState(t('empty_no_resources'), t('empty_no_resources_desc'));
-      }
-      return;
-    }
-
-    el.emptyState.classList.add('hidden');
-    el.resourcesList.classList.remove('hidden');
-
-    const sliceItems = append ? state.items.slice(state.offset) : state.items;
-    for (const item of sliceItems) {
-      const itemType = item.type || (item.content !== undefined ? 'prompt' : (item.steps !== undefined || item.extra?.stepCount !== undefined ? 'workflow' : (item.role !== undefined || item.instructions !== undefined || item.extra?.role !== undefined ? 'agent' : 'tool')));
-      if (itemType === 'prompt') {
-        const card = createPromptCardElement(item);
-        el.resourcesList.appendChild(card);
-      } else if (itemType === 'workflow') {
-        const card = createWorkflowCardElement(item);
-        el.resourcesList.appendChild(card);
-      } else if (itemType === 'agent') {
-        const card = createAgentCardElement(item);
-        el.resourcesList.appendChild(card);
-      } else {
-        const card = createToolCardElement(item);
-        el.resourcesList.appendChild(card);
-      }
-    }
-  }
-
-  // --- Card Elements Builders ---
-
-  function createToolCardElement(tool) {
-    const card = document.createElement('article');
-    card.className = 'prompt-card';
-    card.setAttribute('data-id', tool.id);
-
-    // Kind & Pricing normalizers
-    const kind = tool.kind || tool.type || 'tool';
-    const pricing = tool.pricing || tool.extra?.pricing || 'Unknown';
-    const hostname = tool.hostname || tool.extra?.hostname || '';
-    const url = tool.url || tool.extra?.url || '#';
-    const category = tool.category || tool.extra?.category || null;
-    const provider = tool.provider || tool.extra?.provider || null;
-
-    // Header Row
-    const headerRow = document.createElement('div');
-    headerRow.className = 'card-header-row';
-
-    const titleGroup = document.createElement('div');
-    titleGroup.className = 'card-title-group';
-
-    // Favorite Button
-    const favBtn = document.createElement('button');
-    favBtn.className = `favorite-star-btn ${tool.favorite ? 'active' : ''}`;
-    favBtn.title = tool.favorite ? 'Unfavorite' : 'Favorite';
-    favBtn.setAttribute('aria-label', favBtn.title);
-    favBtn.innerHTML = `
-      <svg class="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="${tool.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-    `;
-    favBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleToolFavorite(tool, favBtn);
-    });
-
-    // Favicon image
-    const faviconImg = document.createElement('img');
-    faviconImg.className = 'tool-favicon';
-    faviconImg.alt = '';
-    faviconImg.width = 18;
-    faviconImg.height = 18;
-    faviconImg.loading = 'lazy';
-    faviconImg.src = tool.faviconUrl || `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`;
-    faviconImg.onerror = () => {
-      faviconImg.style.display = 'none';
-    };
-
-    const title = document.createElement('h2');
-    title.className = 'card-title';
-    title.textContent = tool.title;
-
-    titleGroup.appendChild(favBtn);
-    titleGroup.appendChild(faviconImg);
-    titleGroup.appendChild(title);
-
-    // Kind Badge
-    const kindBadge = document.createElement('span');
-    kindBadge.className = `badge badge-kind kind-${kind}`;
-    kindBadge.textContent = kind === 'website' ? t('badge_website') : t('badge_tool');
-    titleGroup.appendChild(kindBadge);
-
-    // Pricing Badge
-    if (pricing && pricing !== 'Unknown') {
-      const pricingBadge = document.createElement('span');
-      const pricingClass = pricing.toLowerCase().replace(/\s+/g, '');
-      pricingBadge.className = `badge badge-pricing pricing-${pricingClass}`;
-      pricingBadge.textContent = getLocalizedPricing(pricing);
-      titleGroup.appendChild(pricingBadge);
-    }
-
-    // Quick Actions
-    const quickActions = document.createElement('div');
-    quickActions.className = 'card-actions-quick';
-
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'btn btn-copy';
-    copyBtn.innerHTML = `
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      <span>${t('btn_copy_url')}</span>
-    `;
-    copyBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      copyToClipboard(url, copyBtn);
-    });
-
-    const openLink = document.createElement('a');
-    openLink.className = 'btn btn-secondary btn-sm';
-    openLink.href = url;
-    openLink.target = '_blank';
-    openLink.rel = 'noopener noreferrer';
-    openLink.innerHTML = `
-      <span>${t('btn_open')}</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-    `;
-    openLink.addEventListener('click', (e) => e.stopPropagation());
-
-    quickActions.appendChild(copyBtn);
-    quickActions.appendChild(openLink);
-
-    headerRow.appendChild(titleGroup);
-    headerRow.appendChild(quickActions);
-    card.appendChild(headerRow);
-
-    // Host & Provider & Category row
-    const hostRow = document.createElement('div');
-    hostRow.className = 'card-host-row';
-    hostRow.style.display = 'flex';
-    hostRow.style.alignItems = 'center';
-    hostRow.style.gap = '0.5rem';
-    hostRow.style.margin = '0.35rem 0';
-
-    if (hostname) {
-      const hostLink = document.createElement('a');
-      hostLink.className = 'tool-host-link';
-      hostLink.href = url;
-      hostLink.target = '_blank';
-      hostLink.rel = 'noopener noreferrer';
-      hostLink.textContent = hostname;
-      hostLink.addEventListener('click', (e) => e.stopPropagation());
-      hostRow.appendChild(hostLink);
-    }
-
-    if (category) {
-      const catBadge = document.createElement('span');
-      catBadge.className = 'badge badge-category';
-      catBadge.textContent = category;
-      hostRow.appendChild(catBadge);
-    }
-
-    if (provider) {
-      const provBadge = document.createElement('span');
-      provBadge.className = 'badge badge-provider';
-      provBadge.textContent = provider;
-      hostRow.appendChild(provBadge);
-    }
-
-    card.appendChild(hostRow);
-
-    // Optional Description
-    if (tool.description) {
-      const desc = document.createElement('p');
-      desc.className = 'card-description';
-      desc.textContent = tool.description;
-      card.appendChild(desc);
-    }
-
-    // Optional Notes snippet if in list view and no description
-    if (!tool.description && tool.notes) {
-      const notesSnippet = document.createElement('p');
-      notesSnippet.className = 'card-description';
-      notesSnippet.style.fontStyle = 'italic';
-      notesSnippet.textContent = tool.notes;
-      card.appendChild(notesSnippet);
-    }
-
-    // Footer row: Tags & Date
-    const footerRow = document.createElement('div');
-    footerRow.className = 'card-footer-row';
-
-    const metaLeft = document.createElement('div');
-    metaLeft.className = 'card-meta-left';
-
-    const tags = Array.isArray(tool.tags) ? tool.tags : [];
-    if (tags.length > 0) {
-      for (const tag of tags.slice(0, 4)) {
-        const tagPill = document.createElement('span');
-        tagPill.className = 'card-tag';
-        tagPill.textContent = `#${tag}`;
-        tagPill.addEventListener('click', (e) => {
-          e.stopPropagation();
-          state.tag = tag;
-          loadData();
-          renderTagsList();
-        });
-        metaLeft.appendChild(tagPill);
-      }
-      if (tags.length > 4) {
-        const moreTag = document.createElement('span');
-        moreTag.className = 'card-tag';
-        moreTag.textContent = `+${tags.length - 4}`;
-        metaLeft.appendChild(moreTag);
-      }
-    }
-
-    const timeSpan = document.createElement('span');
-    timeSpan.textContent = formatRelativeDate(tool.updatedAt);
-    metaLeft.appendChild(timeSpan);
-
-    footerRow.appendChild(metaLeft);
-    card.appendChild(footerRow);
-
-    // Open detail dialog on card click
-    card.addEventListener('click', () => {
-      openToolDetailDialog(tool);
-    });
-
-    return card;
-  }
-
-  function createPromptCardElement(prompt) {
-    const card = document.createElement('article');
-    card.className = 'prompt-card';
-    card.setAttribute('data-id', prompt.id);
-
-    // Header row: Title + Actions (Favorite + Copy)
-    const headerRow = document.createElement('div');
-    headerRow.className = 'card-header-row';
-
-    const titleGroup = document.createElement('div');
-    titleGroup.className = 'card-title-group';
-
-    // Favorite button
-    const favBtn = document.createElement('button');
-    favBtn.className = `favorite-star-btn ${prompt.favorite ? 'active' : ''}`;
-    favBtn.title = prompt.favorite ? 'Unfavorite' : 'Favorite';
-    favBtn.setAttribute('aria-label', favBtn.title);
-    favBtn.innerHTML = `
-      <svg class="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="${prompt.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-    `;
-    favBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      togglePromptFavorite(prompt, favBtn);
-    });
-
-    const title = document.createElement('h2');
-    title.className = 'card-title';
-    title.textContent = prompt.title;
-
-    titleGroup.appendChild(favBtn);
-    titleGroup.appendChild(title);
-
-    // Prompt Badge
-    const promptBadge = document.createElement('span');
-    promptBadge.className = 'badge badge-kind kind-prompt';
-    promptBadge.textContent = t('badge_prompt');
-    titleGroup.appendChild(promptBadge);
-
-    const quickActions = document.createElement('div');
-    quickActions.className = 'card-actions-quick';
-
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'btn btn-copy';
-    copyBtn.innerHTML = `
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      <span>${t('btn_copy')}</span>
-    `;
-    copyBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const content = prompt.content || prompt.extra?.content || '';
-      copyToClipboard(content, copyBtn);
-    });
-
-    quickActions.appendChild(copyBtn);
-    headerRow.appendChild(titleGroup);
-    headerRow.appendChild(quickActions);
-    card.appendChild(headerRow);
-
-    // Optional Description
-    if (prompt.description) {
-      const desc = document.createElement('p');
-      desc.className = 'card-description';
-      desc.textContent = prompt.description;
-      card.appendChild(desc);
-    }
-
-    // Snippet preview (in list view)
-    const content = prompt.content || prompt.extra?.content;
-    if (content) {
-      const preview = document.createElement('div');
-      preview.className = 'card-content-preview';
-      preview.textContent = content;
-      card.appendChild(preview);
-    }
-
-    // Footer row: Model, Tags, Date
-    const footerRow = document.createElement('div');
-    footerRow.className = 'card-footer-row';
-
-    const metaLeft = document.createElement('div');
-    metaLeft.className = 'card-meta-left';
-
-    const model = prompt.model || prompt.extra?.model;
-    if (model) {
-      const modelBadge = document.createElement('span');
-      modelBadge.className = 'model-badge';
-      modelBadge.textContent = model;
-      metaLeft.appendChild(modelBadge);
-    }
-
-    const tags = Array.isArray(prompt.tags) ? prompt.tags : [];
-    if (tags.length > 0) {
-      for (const tag of tags.slice(0, 4)) {
-        const tagPill = document.createElement('span');
-        tagPill.className = 'card-tag';
-        tagPill.textContent = `#${tag}`;
-        tagPill.addEventListener('click', (e) => {
-          e.stopPropagation();
-          state.tag = tag;
-          loadData();
-          renderTagsList();
-        });
-        metaLeft.appendChild(tagPill);
-      }
-      if (tags.length > 4) {
-        const moreTag = document.createElement('span');
-        moreTag.className = 'card-tag';
-        moreTag.textContent = `+${tags.length - 4}`;
-        metaLeft.appendChild(moreTag);
-      }
-    }
-
-    const timeSpan = document.createElement('span');
-    timeSpan.textContent = formatRelativeDate(prompt.updatedAt);
-    metaLeft.appendChild(timeSpan);
-
-    footerRow.appendChild(metaLeft);
-    card.appendChild(footerRow);
-
-    // Open detail on card click
-    card.addEventListener('click', () => {
-      openPromptDetailDialog(prompt);
-    });
-
-    return card;
-  }
-
-  function createWorkflowCardElement(workflow) {
-    const card = document.createElement('article');
-    card.className = 'prompt-card';
-    card.setAttribute('data-id', workflow.id);
-
-    // Header row: Title + Actions (Favorite + Copy Markdown)
-    const headerRow = document.createElement('div');
-    headerRow.className = 'card-header-row';
-
-    const titleGroup = document.createElement('div');
-    titleGroup.className = 'card-title-group';
-
-    // Favorite button
-    const favBtn = document.createElement('button');
-    favBtn.className = `favorite-star-btn ${workflow.favorite ? 'active' : ''}`;
-    favBtn.title = workflow.favorite ? 'Unfavorite' : 'Favorite';
-    favBtn.setAttribute('aria-label', favBtn.title);
-    favBtn.innerHTML = `
-      <svg class="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="${workflow.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-    `;
-    favBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleWorkflowFavorite(workflow, favBtn);
-    });
-
-    const title = document.createElement('h2');
-    title.className = 'card-title';
-    title.textContent = workflow.title;
-
-    titleGroup.appendChild(favBtn);
-    titleGroup.appendChild(title);
-
-    // Workflow Badge
-    const wfBadge = document.createElement('span');
-    wfBadge.className = 'badge badge-workflow';
-    wfBadge.textContent = t('badge_workflow');
-    titleGroup.appendChild(wfBadge);
-
-    // Difficulty badge
-    const difficulty = workflow.difficulty || workflow.extra?.difficulty || 'Medium';
-    const diffBadge = document.createElement('span');
-    diffBadge.className = `badge badge-difficulty diff-${difficulty.toLowerCase()}`;
-    diffBadge.textContent = difficulty;
-    titleGroup.appendChild(diffBadge);
-
-    // Status badge if Draft or Archived
-    const status = workflow.status || workflow.extra?.status || 'Active';
-    if (status !== 'Active') {
-      const statusBadge = document.createElement('span');
-      statusBadge.className = `badge badge-status status-${status.toLowerCase()}`;
-      statusBadge.textContent = status;
-      titleGroup.appendChild(statusBadge);
-    }
-
-    const quickActions = document.createElement('div');
-    quickActions.className = 'card-actions-quick';
-
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'btn btn-copy';
-    copyBtn.innerHTML = `
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      <span>${t('btn_copy_workflow')}</span>
-    `;
-    copyBtn.addEventListener('click', async (e) => {
-      e.stopPropagation();
-      const md = await getWorkflowMarkdown(workflow);
-      copyToClipboard(md, copyBtn);
-    });
-
-    quickActions.appendChild(copyBtn);
-    headerRow.appendChild(titleGroup);
-    headerRow.appendChild(quickActions);
-    card.appendChild(headerRow);
-
-    // Purpose or description snippet
-    const summaryText = workflow.purpose || workflow.extra?.purpose || workflow.description;
-    if (summaryText) {
-      const desc = document.createElement('p');
-      desc.className = 'card-description';
-      desc.textContent = summaryText;
-      card.appendChild(desc);
-    }
-
-    // Footer row: Step count, Est time, Tags, Date
-    const footerRow = document.createElement('div');
-    footerRow.className = 'card-footer-row';
-
-    const metaLeft = document.createElement('div');
-    metaLeft.className = 'card-meta-left';
-
-    const stepCount = workflow.stepCount !== undefined
-      ? workflow.stepCount
-      : (workflow.steps ? workflow.steps.length : (workflow.extra?.stepCount ?? 0));
-    const stepCountPill = document.createElement('span');
-    stepCountPill.className = 'workflow-step-count-pill';
-    stepCountPill.textContent = `${stepCount} ${stepCount === 1 ? 'step' : 'steps'}`;
-    metaLeft.appendChild(stepCountPill);
-
-    const estTime = workflow.estimatedTime || workflow.extra?.estimatedTime;
-    if (estTime) {
-      const timeBadge = document.createElement('span');
-      timeBadge.className = 'model-badge';
-      timeBadge.textContent = `⏱ ${estTime}`;
-      metaLeft.appendChild(timeBadge);
-    }
-
-    const tags = Array.isArray(workflow.tags) ? workflow.tags : [];
-    if (tags.length > 0) {
-      for (const tag of tags.slice(0, 4)) {
-        const tagPill = document.createElement('span');
-        tagPill.className = 'card-tag';
-        tagPill.textContent = `#${tag}`;
-        tagPill.addEventListener('click', (e) => {
-          e.stopPropagation();
-          state.tag = tag;
-          loadData();
-          renderTagsList();
-        });
-        metaLeft.appendChild(tagPill);
-      }
-      if (tags.length > 4) {
-        const moreTag = document.createElement('span');
-        moreTag.className = 'card-tag';
-        moreTag.textContent = `+${tags.length - 4}`;
-        metaLeft.appendChild(moreTag);
-      }
-    }
-
-    const timeSpan = document.createElement('span');
-    timeSpan.textContent = formatRelativeDate(workflow.updatedAt);
-    metaLeft.appendChild(timeSpan);
-
-    footerRow.appendChild(metaLeft);
-    card.appendChild(footerRow);
-
-    card.addEventListener('click', () => {
-      openWorkflowDetailDialog(workflow);
-    });
-
-    return card;
-  }
-
-  function createAgentCardElement(agent) {
-    const card = document.createElement('article');
-    card.className = 'prompt-card';
-    card.setAttribute('data-id', agent.id);
-
-    // Header row: Title + Actions (Favorite + Copy Instructions)
-    const headerRow = document.createElement('div');
-    headerRow.className = 'card-header-row';
-
-    const titleGroup = document.createElement('div');
-    titleGroup.className = 'card-title-group';
-
-    // Favorite button
-    const favBtn = document.createElement('button');
-    favBtn.className = `favorite-star-btn ${agent.favorite ? 'active' : ''}`;
-    favBtn.title = agent.favorite ? 'Unfavorite' : 'Favorite';
-    favBtn.setAttribute('aria-label', favBtn.title);
-    favBtn.innerHTML = `
-      <svg class="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="${agent.favorite ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-      </svg>
-    `;
-    favBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleAgentFavorite(agent, favBtn);
-    });
-
-    const title = document.createElement('h2');
-    title.className = 'card-title';
-    title.textContent = agent.title;
-
-    titleGroup.appendChild(favBtn);
-    titleGroup.appendChild(title);
-
-    // Agent Badge
-    const agBadge = document.createElement('span');
-    agBadge.className = 'badge badge-agent';
-    agBadge.textContent = t('badge_agent');
-    titleGroup.appendChild(agBadge);
-
-    // Autonomy badge
-    const autonomy = agent.autonomyLevel || agent.extra?.autonomyLevel || 'Manual';
-    const autoBadge = document.createElement('span');
-    autoBadge.className = `badge badge-autonomy autonomy-${autonomy.toLowerCase()}`;
-    autoBadge.textContent = autonomy;
-    titleGroup.appendChild(autoBadge);
-
-    // Status badge if Draft or Archived
-    const status = agent.status || agent.extra?.status || 'Active';
-    if (status !== 'Active') {
-      const statusBadge = document.createElement('span');
-      statusBadge.className = `badge badge-status status-${status.toLowerCase()}`;
-      statusBadge.textContent = status;
-      titleGroup.appendChild(statusBadge);
-    }
-
-    const quickActions = document.createElement('div');
-    quickActions.className = 'card-actions-quick';
-
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'btn btn-copy';
-    copyBtn.innerHTML = `
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-      <span>${t('btn_copy_instructions')}</span>
-    `;
-    copyBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const instructions = agent.instructions || agent.extra?.instructions || '';
-      copyToClipboard(instructions, copyBtn);
-    });
-
-    quickActions.appendChild(copyBtn);
-
-    headerRow.appendChild(titleGroup);
-    headerRow.appendChild(quickActions);
-    card.appendChild(headerRow);
-
-    // Role Subtitle row
-    const roleText = agent.role || agent.extra?.role;
-    if (roleText) {
-      const roleRow = document.createElement('div');
-      roleRow.className = 'card-role-row';
-      roleRow.textContent = roleText;
-      card.appendChild(roleRow);
-    }
-
-    // Goal or description
-    const goalText = agent.goal || agent.extra?.goal;
-    const descText = agent.description || agent.extra?.description;
-    if (goalText) {
-      const goalEl = document.createElement('div');
-      goalEl.className = 'card-goal-preview';
-      const goalLabel = document.createElement('strong');
-      goalLabel.textContent = `${t('label_goal')}: `;
-      goalEl.appendChild(goalLabel);
-      goalEl.appendChild(document.createTextNode(goalText));
-      card.appendChild(goalEl);
-    } else if (descText) {
-      const desc = document.createElement('p');
-      desc.className = 'card-description';
-      desc.textContent = descText;
-      card.appendChild(desc);
-    }
-
-    // Instructions Preview (first ~2-3 lines)
-    const instructions = agent.instructions || agent.extra?.instructions;
-    if (instructions) {
-      const preview = document.createElement('div');
-      preview.className = 'card-content-preview';
-      preview.textContent = instructions;
-      card.appendChild(preview);
-    }
-
-    // Footer row: Runtime, Model, Linked resource count, Tags, Date
-    const footerRow = document.createElement('div');
-    footerRow.className = 'card-footer-row';
-
-    const metaLeft = document.createElement('div');
-    metaLeft.className = 'card-meta-left';
-
-    const runtime = agent.runtime || agent.extra?.runtime;
-    if (runtime) {
-      const rtBadge = document.createElement('span');
-      rtBadge.className = 'badge badge-runtime';
-      rtBadge.textContent = runtime;
-      metaLeft.appendChild(rtBadge);
-    }
-
-    const model = agent.model || agent.extra?.model;
-    if (model) {
-      const modelBadge = document.createElement('span');
-      modelBadge.className = 'model-badge';
-      modelBadge.textContent = model;
-      metaLeft.appendChild(modelBadge);
-    }
-
-    const linkedCount = agent.linkedResourceCount !== undefined
-      ? agent.linkedResourceCount
-      : (Array.isArray(agent.linkedResources) ? agent.linkedResources.length : (agent.extra?.linkedResourceCount ?? 0));
-    if (linkedCount > 0) {
-      const linksPill = document.createElement('span');
-      linksPill.className = 'workflow-step-count-pill';
-      linksPill.textContent = `🔗 ${linkedCount} ${linkedCount === 1 ? 'link' : 'links'}`;
-      metaLeft.appendChild(linksPill);
-    }
-
-    const tags = Array.isArray(agent.tags) ? agent.tags : [];
-    if (tags.length > 0) {
-      for (const tag of tags.slice(0, 4)) {
-        const tagPill = document.createElement('span');
-        tagPill.className = 'card-tag';
-        tagPill.textContent = `#${tag}`;
-        tagPill.addEventListener('click', (e) => {
-          e.stopPropagation();
-          state.tag = tag;
-          loadData();
-          renderTagsList();
-        });
-        metaLeft.appendChild(tagPill);
-      }
-      if (tags.length > 4) {
-        const moreTag = document.createElement('span');
-        moreTag.className = 'card-tag';
-        moreTag.textContent = `+${tags.length - 4}`;
-        metaLeft.appendChild(moreTag);
-      }
-    }
-
-    const timeSpan = document.createElement('span');
-    timeSpan.textContent = formatRelativeDate(agent.updatedAt);
-    metaLeft.appendChild(timeSpan);
-
-    footerRow.appendChild(metaLeft);
-    card.appendChild(footerRow);
-
-    card.addEventListener('click', () => {
-      openAgentDetailDialog(agent);
-    });
-
-    return card;
-  }
-
-  async function getWorkflowMarkdown(wf) {
-    let full = wf;
-    if (!full.steps) {
-      try {
-        const res = await apiFetch(`/api/workflows/${wf.id}`);
-        full = res.data;
-      } catch {
-        // fallback to summary
-      }
-    }
-    return formatWorkflowToMarkdown(full);
-  }
-
-  function formatWorkflowToMarkdown(wf) {
-    let md = `# ${wf.title}\n`;
-    const purpose = wf.purpose || wf.extra?.purpose;
-    if (purpose) md += `\n> ${purpose}\n`;
-    if (wf.description && wf.description !== purpose) md += `\n${wf.description}\n`;
-
-    md += `\n- **Status:** ${wf.status || 'Active'}`;
-    md += `\n- **Difficulty:** ${wf.difficulty || 'Medium'}`;
-    const estTime = wf.estimatedTime || wf.extra?.estimatedTime;
-    if (estTime) md += `\n- **Estimated Time:** ${estTime}`;
-    const tags = Array.isArray(wf.tags) ? wf.tags : [];
-    if (tags.length > 0) md += `\n- **Tags:** ${tags.map((t) => '#' + t).join(' ')}`;
-    md += '\n';
-
-    if (Array.isArray(wf.steps) && wf.steps.length > 0) {
-      md += `\n## Steps\n`;
-      wf.steps.forEach((step, idx) => {
-        md += `\n### Step ${idx + 1}: ${step.title}\n`;
-        const stepInst = step.instructions || step.instruction;
-        if (stepInst) {
-          md += `\n${stepInst}\n`;
-        }
-        if (Array.isArray(step.linkedResources) && step.linkedResources.length > 0) {
-          md += `\n**Linked Resources:**\n`;
-          step.linkedResources.forEach((lr) => {
-            const type = (lr.targetResourceType || 'Resource').toUpperCase();
-            const title = lr.targetResourceTitle || lr.targetResourceId;
-            md += `- [${type}] ${title}\n`;
-          });
-        }
-      });
-    }
-
-    if (wf.notes) {
-      md += `\n## Personal Notes & Tips\n\n${wf.notes}\n`;
-    }
-
-    return md.trim();
-  }
-
-  function showEmptyState(title, desc) {
-    el.emptyStateTitle.textContent = title;
-    el.emptyStateDesc.textContent = desc;
-    el.emptyState.classList.remove('hidden');
-  }
-
-  function updateActiveFilters() {
-    el.activeFiltersContainer.innerHTML = '';
-
-    // Title text
-    if (state.currentNav === 'favorites') {
-      el.currentViewTitle.textContent = t('nav_favorites');
-    } else if (state.currentNav === 'agents') {
-      el.currentViewTitle.textContent = t('nav_agents');
-    } else if (state.currentNav === 'workflows') {
-      el.currentViewTitle.textContent = t('nav_workflows');
-    } else if (state.currentNav === 'tools') {
-      el.currentViewTitle.textContent = t('nav_tools');
-    } else if (state.currentNav === 'prompts') {
-      el.currentViewTitle.textContent = t('nav_prompts');
-    } else {
-      el.currentViewTitle.textContent = t('nav_all_resources');
-    }
-
-    // Pill for Search
-    if (state.q) {
-      const pill = createFilterPill(t('filter_search', state.q), () => {
-        state.q = '';
-        el.search.value = '';
-        el.searchClear.classList.add('hidden');
-        loadData();
-      });
-      el.activeFiltersContainer.appendChild(pill);
-    }
-
-    // Pill for Tag
-    if (state.tag) {
-      const pill = createFilterPill(t('filter_tag', state.tag), () => {
-        state.tag = null;
-        loadData();
-        renderTagsList();
-      });
-      el.activeFiltersContainer.appendChild(pill);
-    }
-
-    // Pill for Agent Status
-    if (state.agentStatus) {
-      const pill = createFilterPill(t('filter_status', state.agentStatus), () => {
-        state.agentStatus = null;
-        if (el.agentStatusFilterSelect) el.agentStatusFilterSelect.value = '';
-        loadData();
-      });
-      el.activeFiltersContainer.appendChild(pill);
-    }
-
-    // Pill for Agent Autonomy
-    if (state.agentAutonomy) {
-      const pill = createFilterPill(t('filter_autonomy', state.agentAutonomy), () => {
-        state.agentAutonomy = null;
-        if (el.agentAutonomyFilterSelect) el.agentAutonomyFilterSelect.value = '';
-        loadData();
-      });
-      el.activeFiltersContainer.appendChild(pill);
-    }
-
-    // Pill for Agent Runtime
-    if (state.agentRuntime) {
-      const pill = createFilterPill(t('filter_runtime', state.agentRuntime), () => {
-        state.agentRuntime = null;
-        if (el.agentRuntimeFilterSelect) el.agentRuntimeFilterSelect.value = '';
-        loadData();
-      });
-      el.activeFiltersContainer.appendChild(pill);
-    }
-
-    // Pill for Agent Model
-    if (state.agentModel) {
-      const pill = createFilterPill(t('filter_model', state.agentModel), () => {
-        state.agentModel = null;
-        if (el.agentModelFilterSelect) el.agentModelFilterSelect.value = '';
-        loadData();
-      });
-      el.activeFiltersContainer.appendChild(pill);
-    }
-
-    // Pill for Workflow Status
-    if (state.workflowStatus) {
-      const pill = createFilterPill(t('filter_status', state.workflowStatus), () => {
-        state.workflowStatus = null;
-        if (el.workflowStatusFilterSelect) el.workflowStatusFilterSelect.value = '';
-        loadData();
-      });
-      el.activeFiltersContainer.appendChild(pill);
-    }
-
-    // Pill for Workflow Difficulty
-    if (state.workflowDifficulty) {
-      const pill = createFilterPill(t('filter_difficulty', state.workflowDifficulty), () => {
-        state.workflowDifficulty = null;
-        if (el.workflowDiffFilterSelect) el.workflowDiffFilterSelect.value = '';
-        loadData();
-      });
-      el.activeFiltersContainer.appendChild(pill);
-    }
-
-    // Pill for Tool Kind
-    if (state.toolKind) {
-      const pill = createFilterPill(t('filter_kind', state.toolKind), () => {
-        state.toolKind = null;
-        el.toolKindFilterSelect.value = '';
-        loadData();
-      });
-      el.activeFiltersContainer.appendChild(pill);
-    }
-
-    // Pill for Tool Category
-    if (state.toolCategory) {
-      const pill = createFilterPill(t('filter_category', state.toolCategory), () => {
-        state.toolCategory = null;
-        el.toolCategoryFilterSelect.value = '';
-        loadData();
-      });
-      el.activeFiltersContainer.appendChild(pill);
-    }
-
-    // Pill for Tool Pricing
-    if (state.toolPricing) {
-      const pill = createFilterPill(t('filter_pricing', getLocalizedPricing(state.toolPricing)), () => {
-        state.toolPricing = null;
-        el.toolPricingFilterSelect.value = '';
-        loadData();
-      });
-      el.activeFiltersContainer.appendChild(pill);
-    }
-
-    // Pill for Prompt Model
-    if (state.model) {
-      const pill = createFilterPill(t('filter_model', state.model), () => {
-        state.model = null;
-        el.modelFilterSelect.value = '';
-        loadData();
-      });
-      el.activeFiltersContainer.appendChild(pill);
-    }
-  }
-
-  function createFilterPill(text, onRemove) {
-    const pill = document.createElement('span');
-    pill.className = 'filter-pill';
-
-    const textNode = document.createTextNode(text);
-    const removeBtn = document.createElement('button');
-    removeBtn.className = 'filter-pill-remove';
-    removeBtn.setAttribute('aria-label', `Remove filter ${text}`);
-    removeBtn.innerHTML = '&times;';
-    removeBtn.addEventListener('click', onRemove);
-
-    pill.appendChild(textNode);
-    pill.appendChild(removeBtn);
-    return pill;
-  }
-
-  // --- Favorites Toggle ---
-
-  async function togglePromptFavorite(prompt, starButtonElement) {
-    const nextState = !prompt.favorite;
-    prompt.favorite = nextState;
-
-    if (starButtonElement) {
-      starButtonElement.classList.toggle('active', nextState);
-      const starIcon = starButtonElement.querySelector('.star-icon');
-      if (starIcon) {
-        starIcon.setAttribute('fill', nextState ? 'currentColor' : 'none');
-      }
-    }
-
-    try {
-      await apiFetch(`/api/prompts/${prompt.id}/favorite`, {
-        method: 'PATCH',
-        body: JSON.stringify({ favorite: nextState }),
-      });
-      updateCounts();
-      showToast(nextState ? t('toast_fav_added') : t('toast_fav_removed'));
-      if (state.currentNav === 'favorites' && !nextState) {
-        loadData();
-      }
-    } catch (err) {
-      prompt.favorite = !nextState;
-      if (starButtonElement) {
-        starButtonElement.classList.toggle('active', !nextState);
-      }
-      showToast(err.message, 'error');
-    }
-  }
-
-  async function toggleToolFavorite(tool, starButtonElement) {
-    const nextState = !tool.favorite;
-    tool.favorite = nextState;
-
-    if (starButtonElement) {
-      starButtonElement.classList.toggle('active', nextState);
-      const starIcon = starButtonElement.querySelector('.star-icon');
-      if (starIcon) {
-        starIcon.setAttribute('fill', nextState ? 'currentColor' : 'none');
-      }
-    }
-
-    try {
-      await apiFetch(`/api/tools/${tool.id}/favorite`, {
-        method: 'PATCH',
-        body: JSON.stringify({ favorite: nextState }),
-      });
-      updateCounts();
-      showToast(nextState ? t('toast_fav_added') : t('toast_fav_removed'));
-      if (state.currentNav === 'favorites' && !nextState) {
-        loadData();
-      }
-    } catch (err) {
-      tool.favorite = !nextState;
-      if (starButtonElement) {
-        starButtonElement.classList.toggle('active', !nextState);
-      }
-      showToast(err.message, 'error');
-    }
-  }
-
-  async function toggleWorkflowFavorite(wf, starButtonElement) {
-    const nextState = !wf.favorite;
-    wf.favorite = nextState;
-
-    if (starButtonElement) {
-      starButtonElement.classList.toggle('active', nextState);
-      const starIcon = starButtonElement.querySelector('.star-icon');
-      if (starIcon) {
-        starIcon.setAttribute('fill', nextState ? 'currentColor' : 'none');
-      }
-    }
-
-    try {
-      await apiFetch(`/api/workflows/${wf.id}/favorite`, {
-        method: 'PATCH',
-        body: JSON.stringify({ favorite: nextState }),
-      });
-      updateCounts();
-      showToast(nextState ? t('toast_fav_added') : t('toast_fav_removed'));
-      if (state.currentNav === 'favorites' && !nextState) {
-        loadData();
-      }
-    } catch (err) {
-      wf.favorite = !nextState;
-      if (starButtonElement) {
-        starButtonElement.classList.toggle('active', !nextState);
-      }
-      showToast(err.message, 'error');
-    }
-  }
-
-  async function toggleAgentFavorite(agent, starButtonElement) {
-    const nextState = !agent.favorite;
-    agent.favorite = nextState;
-
-    if (starButtonElement) {
-      starButtonElement.classList.toggle('active', nextState);
-      const starIcon = starButtonElement.querySelector('.star-icon');
-      if (starIcon) {
-        starIcon.setAttribute('fill', nextState ? 'currentColor' : 'none');
-      }
-    }
-
-    try {
-      await apiFetch(`/api/agents/${agent.id}/favorite`, {
-        method: 'PATCH',
-        body: JSON.stringify({ favorite: nextState }),
-      });
-      updateCounts();
-      showToast(nextState ? t('toast_fav_added') : t('toast_fav_removed'));
-      if (state.currentNav === 'favorites' && !nextState) {
-        loadData();
-      }
-    } catch (err) {
-      agent.favorite = !nextState;
-      if (starButtonElement) {
-        starButtonElement.classList.toggle('active', !nextState);
-      }
-      showToast(err.message, 'error');
-    }
-  }
-
-  // --- Tool Detail Dialog ---
-
-  async function openToolDetailDialog(toolOrId) {
-    let tool = typeof toolOrId === 'string' ? null : toolOrId;
-
-    if (!tool || !tool.url) {
-      const id = typeof toolOrId === 'string' ? toolOrId : toolOrId.id;
-      try {
-        const res = await apiFetch(`/api/tools/${id}`);
-        tool = res.data;
-      } catch {
-        showToast('Failed to load tool details', 'error');
-        return;
-      }
-    }
-
-    state.activeDetailTool = tool;
-
-    el.toolDetailTitle.textContent = tool.title;
-    el.toolDetailFavBtn.classList.toggle('active', Boolean(tool.favorite));
-    const starIcon = el.toolDetailFavBtn.querySelector('.star-icon');
-    if (starIcon) {
-      starIcon.setAttribute('fill', tool.favorite ? 'currentColor' : 'none');
-    }
-
-    // Favicon
-    if (tool.faviconUrl || tool.hostname) {
-      el.toolDetailFavicon.src = tool.faviconUrl || `https://www.google.com/s2/favicons?domain=${tool.hostname}&sz=32`;
-      el.toolDetailFavicon.classList.remove('hidden');
-    } else {
-      el.toolDetailFavicon.classList.add('hidden');
-    }
-
-    // Meta badges
-    el.toolDetailKind.textContent = tool.kind === 'website' ? t('badge_website') : t('badge_tool');
-    el.toolDetailKind.className = `badge badge-kind kind-${tool.kind}`;
-
-    const pricing = tool.pricing || 'Unknown';
-    el.toolDetailPricing.textContent = getLocalizedPricing(pricing);
-    el.toolDetailPricing.className = `badge badge-pricing pricing-${pricing.toLowerCase().replace(/\s+/g, '')}`;
-
-    if (tool.category) {
-      el.toolDetailCategory.textContent = tool.category;
-      el.toolDetailCategory.classList.remove('hidden');
-    } else {
-      el.toolDetailCategory.classList.add('hidden');
-    }
-
-    if (tool.provider) {
-      el.toolDetailProvider.textContent = tool.provider;
-      el.toolDetailProvider.classList.remove('hidden');
-    } else {
-      el.toolDetailProvider.classList.add('hidden');
-    }
-
-    el.toolDetailUpdated.textContent = t('updated_at', formatRelativeDate(tool.updatedAt));
-
-    // URL & Direct Open
-    el.toolDetailUrl.textContent = tool.url;
-    el.toolDetailOpenLink.href = tool.url;
-
-    // Description
-    if (tool.description) {
-      el.toolDetailDescription.textContent = tool.description;
-      el.toolDetailDescription.classList.remove('hidden');
-    } else {
-      el.toolDetailDescription.classList.add('hidden');
-    }
-
-    // Notes
-    if (tool.notes) {
-      el.toolDetailNotes.textContent = tool.notes;
-      el.toolDetailNotesWrapper.classList.remove('hidden');
-    } else {
-      el.toolDetailNotesWrapper.classList.add('hidden');
-    }
-
-    // Tags
-    el.toolDetailTagsRow.innerHTML = '';
-    const tags = Array.isArray(tool.tags) ? tool.tags : [];
-    if (tags.length > 0) {
-      for (const tag of tags) {
-        const tagSpan = document.createElement('span');
-        tagSpan.className = 'card-tag';
-        tagSpan.textContent = `#${tag}`;
-        tagSpan.addEventListener('click', () => {
-          el.toolDetailDialog.close();
-          state.tag = tag;
-          loadData();
-          renderTagsList();
-        });
-        el.toolDetailTagsRow.appendChild(tagSpan);
-      }
-      el.toolDetailTagsRow.classList.remove('hidden');
-    } else {
-      el.toolDetailTagsRow.classList.add('hidden');
-    }
-
-    // Update URL query param without reload
-    const currentUrl = new URL(window.location);
-    currentUrl.searchParams.set('tool', tool.id);
-    currentUrl.searchParams.delete('prompt');
-    window.history.replaceState({}, '', currentUrl);
-
-    el.toolDetailDialog.showModal();
-  }
-
-  function closeToolDetailDialog() {
-    state.activeDetailTool = null;
-    el.toolDetailDialog.close();
-
-    const currentUrl = new URL(window.location);
-    currentUrl.searchParams.delete('tool');
-    window.history.replaceState({}, '', currentUrl);
-  }
-
-  // --- Prompt Detail Dialog ---
-
-  async function openPromptDetailDialog(promptOrId) {
-    let prompt = typeof promptOrId === 'string' ? null : promptOrId;
-
-    if (!prompt || !prompt.content) {
-      const id = typeof promptOrId === 'string' ? promptOrId : promptOrId.id;
-      try {
-        const res = await apiFetch(`/api/prompts/${id}`);
-        prompt = res.data;
-      } catch {
-        showToast('Failed to load prompt details', 'error');
-        return;
-      }
-    }
-
-    state.activeDetailPrompt = prompt;
-
-    el.promptDetailTitle.textContent = prompt.title;
-    el.promptDetailFavBtn.classList.toggle('active', Boolean(prompt.favorite));
-    const starIcon = el.promptDetailFavBtn.querySelector('.star-icon');
-    if (starIcon) {
-      starIcon.setAttribute('fill', prompt.favorite ? 'currentColor' : 'none');
-    }
-
-    // Model
-    if (prompt.model) {
-      el.promptDetailModel.textContent = prompt.model;
-      el.promptDetailModel.classList.remove('hidden');
-    } else {
-      el.promptDetailModel.classList.add('hidden');
-    }
-
-    // Dates
-    el.promptDetailUpdated.textContent = t('updated_at', formatRelativeDate(prompt.updatedAt));
-
-    // Description
-    if (prompt.description) {
-      el.promptDetailDescription.textContent = prompt.description;
-      el.promptDetailDescription.classList.remove('hidden');
-    } else {
-      el.promptDetailDescription.classList.add('hidden');
-    }
-
-    // Tags
-    el.promptDetailTagsRow.innerHTML = '';
-    const tags = Array.isArray(prompt.tags) ? prompt.tags : [];
-    if (tags.length > 0) {
-      for (const tag of tags) {
-        const tagSpan = document.createElement('span');
-        tagSpan.className = 'card-tag';
-        tagSpan.textContent = `#${tag}`;
-        tagSpan.addEventListener('click', () => {
-          el.promptDetailDialog.close();
-          state.tag = tag;
-          loadData();
-          renderTagsList();
-        });
-        el.promptDetailTagsRow.appendChild(tagSpan);
-      }
-      el.promptDetailTagsRow.classList.remove('hidden');
-    } else {
-      el.promptDetailTagsRow.classList.add('hidden');
-    }
-
-    // Content
-    el.promptDetailContent.textContent = prompt.content;
-
-    // Update URL query param without reload
-    const currentUrl = new URL(window.location);
-    currentUrl.searchParams.set('prompt', prompt.id);
-    currentUrl.searchParams.delete('tool');
-    window.history.replaceState({}, '', currentUrl);
-
-    el.promptDetailDialog.showModal();
-  }
-
-  function closePromptDetailDialog() {
-    state.activeDetailPrompt = null;
-    el.promptDetailDialog.close();
-
-    const currentUrl = new URL(window.location);
-    currentUrl.searchParams.delete('prompt');
-    window.history.replaceState({}, '', currentUrl);
-  }
-
-  // --- Workflow Detail Dialog ---
-
-  async function openWorkflowDetailDialog(wfOrId) {
-    let wf = typeof wfOrId === 'string' ? null : wfOrId;
-
-    if (!wf || !wf.steps) {
-      const id = typeof wfOrId === 'string' ? wfOrId : wfOrId.id;
-      try {
-        const res = await apiFetch(`/api/workflows/${id}`);
-        wf = res.data;
-      } catch {
-        showToast('Failed to load workflow details', 'error');
-        return;
-      }
-    }
-
-    state.activeDetailWorkflow = wf;
-
-    el.workflowDetailTitle.textContent = wf.title;
-    el.workflowDetailFavBtn.classList.toggle('active', Boolean(wf.favorite));
-    const starIcon = el.workflowDetailFavBtn.querySelector('.star-icon');
-    if (starIcon) {
-      starIcon.setAttribute('fill', wf.favorite ? 'currentColor' : 'none');
-    }
-
-    // Status badge
-    const status = wf.status || 'Active';
-    el.workflowDetailStatus.textContent = status;
-    el.workflowDetailStatus.className = `badge badge-status status-${status.toLowerCase()}`;
-
-    // Difficulty badge
-    const difficulty = wf.difficulty || 'Medium';
-    el.workflowDetailDifficulty.textContent = difficulty;
-    el.workflowDetailDifficulty.className = `badge badge-difficulty diff-${difficulty.toLowerCase()}`;
-
-    // Estimated time
-    const estTime = wf.estimatedTime || wf.extra?.estimatedTime;
-    if (estTime) {
-      el.workflowDetailEstTime.textContent = `⏱ ${estTime}`;
-      el.workflowDetailEstTime.classList.remove('hidden');
-    } else {
-      el.workflowDetailEstTime.classList.add('hidden');
-    }
-
-    el.workflowDetailUpdated.textContent = t('updated_at', formatRelativeDate(wf.updatedAt));
-
-    // Purpose Box
-    const purpose = wf.purpose || wf.extra?.purpose;
-    if (purpose) {
-      el.workflowDetailPurpose.textContent = purpose;
-      el.workflowDetailPurposeBox.classList.remove('hidden');
-    } else {
-      el.workflowDetailPurposeBox.classList.add('hidden');
-    }
-
-    // Description
-    if (wf.description && wf.description !== purpose) {
-      el.workflowDetailDescription.textContent = wf.description;
-      el.workflowDetailDescription.classList.remove('hidden');
-    } else {
-      el.workflowDetailDescription.classList.add('hidden');
-    }
-
-    // Notes
-    if (wf.notes) {
-      el.workflowDetailNotes.textContent = wf.notes;
-      el.workflowDetailNotesWrapper.classList.remove('hidden');
-    } else {
-      el.workflowDetailNotesWrapper.classList.add('hidden');
-    }
-
-    // Tags
-    el.workflowDetailTagsRow.innerHTML = '';
-    const tags = Array.isArray(wf.tags) ? wf.tags : [];
-    if (tags.length > 0) {
-      for (const tag of tags) {
-        const tagSpan = document.createElement('span');
-        tagSpan.className = 'card-tag';
-        tagSpan.textContent = `#${tag}`;
-        tagSpan.addEventListener('click', () => {
-          el.workflowDetailDialog.close();
-          state.tag = tag;
-          loadData();
-          renderTagsList();
-        });
-        el.workflowDetailTagsRow.appendChild(tagSpan);
-      }
-      el.workflowDetailTagsRow.classList.remove('hidden');
-    } else {
-      el.workflowDetailTagsRow.classList.add('hidden');
-    }
-
-    // Render interactive steps
-    renderWorkflowDetailSteps(wf);
-
-    // Update URL query param without reload
-    const currentUrl = new URL(window.location);
-    currentUrl.searchParams.set('workflow', wf.id);
-    currentUrl.searchParams.delete('tool');
-    currentUrl.searchParams.delete('prompt');
-    window.history.replaceState({}, '', currentUrl);
-
-    el.workflowDetailDialog.showModal();
-  }
-
-  function closeWorkflowDetailDialog() {
-    state.activeDetailWorkflow = null;
-    el.workflowDetailDialog.close();
-
-    const currentUrl = new URL(window.location);
-    currentUrl.searchParams.delete('workflow');
-    window.history.replaceState({}, '', currentUrl);
-  }
-
-  function renderWorkflowDetailSteps(wf) {
-    el.workflowDetailStepsList.innerHTML = '';
-    const steps = Array.isArray(wf.steps) ? wf.steps : [];
-    const totalSteps = steps.length;
-
-    function updateProgress() {
-      let doneCount = 0;
-      steps.forEach((s, idx) => {
-        const checkKey = `${wf.id}:${s.id || idx}`;
-        if (state.activeWorkflowChecklistState[checkKey]) {
-          doneCount++;
-        }
-      });
-
-      el.workflowProgressText.textContent = t('workflow_progress', doneCount, totalSteps);
-      const pct = totalSteps > 0 ? Math.round((doneCount / totalSteps) * 100) : 0;
-      el.workflowProgressFill.style.width = `${pct}%`;
-    }
-
-    updateProgress();
-
-    steps.forEach((step, idx) => {
-      const stepKey = `${wf.id}:${step.id || idx}`;
-      const isChecked = Boolean(state.activeWorkflowChecklistState[stepKey]);
-
-      const card = document.createElement('div');
-      card.className = `workflow-step-card ${isChecked ? 'completed' : ''}`;
-
-      // Step header row
-      const header = document.createElement('div');
-      header.className = 'workflow-step-header';
-
-      const left = document.createElement('div');
-      left.className = 'step-header-left';
-
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.className = 'step-checkbox';
-      checkbox.id = `step-check-${idx}`;
-      checkbox.checked = isChecked;
-
-      checkbox.addEventListener('change', () => {
-        state.activeWorkflowChecklistState[stepKey] = checkbox.checked;
-        card.classList.toggle('completed', checkbox.checked);
-        updateProgress();
-      });
-
-      const label = document.createElement('label');
-      label.className = 'step-title-label';
-      label.htmlFor = `step-check-${idx}`;
-      label.textContent = `${idx + 1}. ${step.title}`;
-
-      left.appendChild(checkbox);
-      left.appendChild(label);
-
-      const copyStepBtn = document.createElement('button');
-      copyStepBtn.className = 'btn btn-copy btn-sm';
-      copyStepBtn.title = t('btn_copy_step');
-      copyStepBtn.innerHTML = `
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        <span>${t('btn_copy_step')}</span>
+      const hostname = new URL(tool.website).hostname;
+      const faviconUrl = `https://icons.duckduckgo.com/ip3/${hostname}.ico`;
+      return `
+        <div class="${size > 30 ? 'tool-brand-logo' : 'tool-mini-logo'}" style="background-color: ${color};">
+          <img src="${faviconUrl}" alt="${escapeHtml(tool.name)}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <span style="display: none;">${escapeHtml(initials)}</span>
+        </div>
       `;
-      copyStepBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const instText = step.instructions || step.instruction || '';
-        const copyText = `${step.title}\n\n${instText}`.trim();
-        copyToClipboard(copyText, copyStepBtn);
-      });
-
-      header.appendChild(left);
-      header.appendChild(copyStepBtn);
-      card.appendChild(header);
-
-      // Step instructions
-      const inst = step.instructions || step.instruction || '';
-      if (inst) {
-        const instBox = document.createElement('div');
-        instBox.className = 'step-instructions';
-        instBox.textContent = inst;
-        card.appendChild(instBox);
-      }
-
-      // Step linked resources
-      const linked = Array.isArray(step.linkedResources) ? step.linkedResources : [];
-      if (linked.length > 0) {
-        const linkedSection = document.createElement('div');
-        linkedSection.className = 'step-linked-section';
-
-        const linkedLabel = document.createElement('div');
-        linkedLabel.className = 'step-linked-label';
-        linkedLabel.textContent = t('picker_linked_resources');
-        linkedSection.appendChild(linkedLabel);
-
-        const chipsWrap = document.createElement('div');
-        chipsWrap.className = 'step-linked-chips';
-
-        linked.forEach((lr) => {
-          const chip = document.createElement('div');
-          chip.className = 'linked-resource-chip';
-          chip.title = `Click to view ${lr.targetResourceTitle}`;
-
-          const typeBadge = document.createElement('span');
-          typeBadge.className = `badge badge-kind kind-${lr.targetResourceType || 'tool'}`;
-          typeBadge.textContent = lr.targetResourceType === 'prompt' ? t('badge_prompt') : (lr.targetResourceType === 'website' ? t('badge_website') : t('badge_tool'));
-
-          const nameSpan = document.createElement('span');
-          nameSpan.className = 'chip-title';
-          nameSpan.textContent = lr.targetResourceTitle || lr.targetResourceId;
-
-          const arrowIcon = document.createElement('span');
-          arrowIcon.className = 'chip-arrow';
-          arrowIcon.innerHTML = '&nearr;';
-
-          chip.appendChild(typeBadge);
-          chip.appendChild(nameSpan);
-          chip.appendChild(arrowIcon);
-
-          chip.addEventListener('click', () => {
-            el.workflowDetailDialog.close();
-            if (lr.targetResourceType === 'prompt') {
-              openPromptDetailDialog(lr.targetResourceId);
-            } else {
-              openToolDetailDialog(lr.targetResourceId);
-            }
-          });
-
-          chipsWrap.appendChild(chip);
-        });
-
-        linkedSection.appendChild(chipsWrap);
-        card.appendChild(linkedSection);
-      }
-
-      el.workflowDetailStepsList.appendChild(card);
-    });
+    } catch (e) {}
   }
 
-  // --- Agent Detail Dialog ---
-
-  async function openAgentDetailDialog(agentOrId) {
-    let agent = typeof agentOrId === 'string' ? null : agentOrId;
-
-    if (!agent || !agent.instructions) {
-      const id = typeof agentOrId === 'string' ? agentOrId : agentOrId.id;
-      try {
-        const res = await apiFetch(`/api/agents/${id}`);
-        agent = res.data;
-      } catch {
-        showToast('Failed to load agent details', 'error');
-        return;
-      }
-    }
-
-    state.activeDetailAgent = agent;
-
-    el.agentDetailTitle.textContent = agent.title;
-    el.agentDetailRole.textContent = agent.role || '';
-    el.agentDetailFavBtn.classList.toggle('active', Boolean(agent.favorite));
-    const starIcon = el.agentDetailFavBtn.querySelector('.star-icon');
-    if (starIcon) {
-      starIcon.setAttribute('fill', agent.favorite ? 'currentColor' : 'none');
-    }
-
-    // Status badge
-    const status = agent.status || 'Active';
-    el.agentDetailStatus.textContent = status;
-    el.agentDetailStatus.className = `badge badge-status status-${status.toLowerCase()}`;
-
-    // Autonomy badge
-    const autonomy = agent.autonomyLevel || 'Manual';
-    el.agentDetailAutonomy.textContent = autonomy;
-    el.agentDetailAutonomy.className = `badge badge-autonomy autonomy-${autonomy.toLowerCase()}`;
-
-    // Runtime badge
-    if (agent.runtime) {
-      el.agentDetailRuntime.textContent = agent.runtime;
-      el.agentDetailRuntime.classList.remove('hidden');
-    } else {
-      el.agentDetailRuntime.classList.add('hidden');
-    }
-
-    // Model badge
-    if (agent.model) {
-      el.agentDetailModel.textContent = agent.model;
-      el.agentDetailModel.classList.remove('hidden');
-    } else {
-      el.agentDetailModel.classList.add('hidden');
-    }
-
-    el.agentDetailUpdated.textContent = t('updated_at', formatRelativeDate(agent.updatedAt));
-
-    // Goal Box
-    if (agent.goal) {
-      el.agentDetailGoal.textContent = agent.goal;
-      el.agentDetailGoalBox.classList.remove('hidden');
-    } else {
-      el.agentDetailGoalBox.classList.add('hidden');
-    }
-
-    // Description
-    if (agent.description && agent.description !== agent.goal) {
-      el.agentDetailDescription.textContent = agent.description;
-      el.agentDetailDescription.classList.remove('hidden');
-    } else {
-      el.agentDetailDescription.classList.add('hidden');
-    }
-
-    // Instructions
-    el.agentDetailInstructions.textContent = agent.instructions || '';
-
-    // Contract Grid (Expected Input / Expected Output)
-    const hasInput = Boolean(agent.inputDescription);
-    const hasOutput = Boolean(agent.outputDescription);
-    if (hasInput || hasOutput) {
-      el.agentDetailContractGrid.classList.remove('hidden');
-      if (hasInput) {
-        el.agentDetailInput.textContent = agent.inputDescription;
-        el.agentDetailInputCard.classList.remove('hidden');
-      } else {
-        el.agentDetailInputCard.classList.add('hidden');
-      }
-      if (hasOutput) {
-        el.agentDetailOutput.textContent = agent.outputDescription;
-        el.agentDetailOutputCard.classList.remove('hidden');
-      } else {
-        el.agentDetailOutputCard.classList.add('hidden');
-      }
-    } else {
-      el.agentDetailContractGrid.classList.add('hidden');
-    }
-
-    // Linked Resources Section
-    renderAgentDetailLinkedResources(agent);
-
-    // Notes
-    if (agent.notes) {
-      el.agentDetailNotes.textContent = agent.notes;
-      el.agentDetailNotesWrapper.classList.remove('hidden');
-    } else {
-      el.agentDetailNotesWrapper.classList.add('hidden');
-    }
-
-    // Tags
-    el.agentDetailTagsRow.innerHTML = '';
-    const tags = Array.isArray(agent.tags) ? agent.tags : [];
-    if (tags.length > 0) {
-      for (const tag of tags) {
-        const tagSpan = document.createElement('span');
-        tagSpan.className = 'card-tag';
-        tagSpan.textContent = `#${tag}`;
-        tagSpan.addEventListener('click', () => {
-          el.agentDetailDialog.close();
-          state.tag = tag;
-          loadData();
-          renderTagsList();
-        });
-        el.agentDetailTagsRow.appendChild(tagSpan);
-      }
-      el.agentDetailTagsRow.classList.remove('hidden');
-    } else {
-      el.agentDetailTagsRow.classList.add('hidden');
-    }
-
-    // Update URL query param without reload
-    const currentUrl = new URL(window.location);
-    currentUrl.searchParams.set('agent', agent.id);
-    currentUrl.searchParams.delete('tool');
-    currentUrl.searchParams.delete('prompt');
-    currentUrl.searchParams.delete('workflow');
-    window.history.replaceState({}, '', currentUrl);
-
-    el.agentDetailDialog.showModal();
-  }
-
-  function closeAgentDetailDialog() {
-    state.activeDetailAgent = null;
-    el.agentDetailDialog.close();
-
-    const currentUrl = new URL(window.location);
-    currentUrl.searchParams.delete('agent');
-    window.history.replaceState({}, '', currentUrl);
-  }
-
-  function renderAgentDetailLinkedResources(agent) {
-    el.agentDetailLinkedGroups.innerHTML = '';
-    const linked = Array.isArray(agent.linkedResources) ? agent.linkedResources : [];
-
-    if (linked.length === 0) {
-      el.agentDetailLinkedSection.classList.add('hidden');
-      return;
-    }
-
-    el.agentDetailLinkedSection.classList.remove('hidden');
-
-    const groups = {
-      USES: [],
-      FOLLOWS: [],
-      REFERENCES: [],
-      ASSIGNS_TO: [],
-    };
-
-    for (const item of linked) {
-      const rel = item.relationshipType || 'USES';
-      if (groups[rel]) {
-        groups[rel].push(item);
-      } else {
-        groups.USES.push(item);
-      }
-    }
-
-    const relLabels = {
-      USES: t('rel_uses'),
-      FOLLOWS: t('rel_follows'),
-      REFERENCES: t('rel_references'),
-      ASSIGNS_TO: t('rel_assigns_to'),
-    };
-
-    for (const [relKey, items] of Object.entries(groups)) {
-      if (items.length === 0) continue;
-
-      const groupDiv = document.createElement('div');
-      groupDiv.className = 'agent-rel-group';
-
-      const groupHeader = document.createElement('div');
-      groupHeader.className = 'agent-rel-header';
-      groupHeader.textContent = relLabels[relKey] || relKey;
-      groupDiv.appendChild(groupHeader);
-
-      const chipsWrap = document.createElement('div');
-      chipsWrap.className = 'step-linked-chips';
-
-      for (const lr of items) {
-        const chip = document.createElement('button');
-        chip.type = 'button';
-        chip.className = 'linked-chip';
-
-        const type = lr.targetResourceType || 'tool';
-        const typeBadge = document.createElement('span');
-        typeBadge.className = `badge badge-kind kind-${type}`;
-        typeBadge.textContent = type === 'prompt' ? t('badge_prompt') : (type === 'workflow' ? t('badge_workflow') : (type === 'agent' ? t('badge_agent') : (type === 'website' ? t('badge_website') : t('badge_tool'))));
-
-        const nameSpan = document.createElement('span');
-        nameSpan.className = 'chip-title';
-        nameSpan.textContent = lr.targetResourceTitle || lr.targetResourceId;
-
-        const arrowIcon = document.createElement('span');
-        arrowIcon.className = 'chip-arrow';
-        arrowIcon.innerHTML = '&nearr;';
-
-        chip.appendChild(typeBadge);
-        chip.appendChild(nameSpan);
-        chip.appendChild(arrowIcon);
-
-        chip.addEventListener('click', () => {
-          el.agentDetailDialog.close();
-          if (lr.targetResourceType === 'prompt') {
-            openPromptDetailDialog(lr.targetResourceId);
-          } else if (lr.targetResourceType === 'workflow') {
-            openWorkflowDetailDialog(lr.targetResourceId);
-          } else if (lr.targetResourceType === 'agent') {
-            openAgentDetailDialog(lr.targetResourceId);
-          } else {
-            openToolDetailDialog(lr.targetResourceId);
-          }
-        });
-
-        chipsWrap.appendChild(chip);
-      }
-
-      groupDiv.appendChild(chipsWrap);
-      el.agentDetailLinkedGroups.appendChild(groupDiv);
-    }
-  }
-
-  // --- Tool Form Dialog (Create / Edit) ---
-
-  function openToolFormDialog(toolToEdit = null) {
-    el.toolFormError.classList.add('hidden');
-    el.toolFormError.textContent = '';
-    el.toolFormWarning.classList.add('hidden');
-    el.toolFormWarning.textContent = '';
-    el.toolFormSubmitBtn.disabled = false;
-
-    if (toolToEdit) {
-      el.toolFormTitle.textContent = t('modal_edit_tool');
-      el.inputToolId.value = toolToEdit.id;
-      el.inputToolUrl.value = toolToEdit.url;
-      el.inputToolTitle.value = toolToEdit.title;
-      el.inputToolKind.value = toolToEdit.kind || 'tool';
-      el.inputToolPricing.value = toolToEdit.pricing || 'Freemium';
-      el.inputToolFavorite.checked = Boolean(toolToEdit.favorite);
-      el.inputToolProvider.value = toolToEdit.provider || '';
-      el.inputToolCategory.value = toolToEdit.category || '';
-      el.inputToolDescription.value = toolToEdit.description || '';
-      el.inputToolNotes.value = toolToEdit.notes || '';
-      el.inputToolTags.value = Array.isArray(toolToEdit.tags) ? toolToEdit.tags.join(', ') : '';
-      el.inputToolFaviconUrl.value = toolToEdit.faviconUrl || '';
-      el.toolFormSubmitBtn.querySelector('span').textContent = t('btn_save_changes');
-    } else {
-      el.toolFormTitle.textContent = t('modal_new_tool');
-      el.toolForm.reset();
-      el.inputToolId.value = '';
-      el.inputToolKind.value = 'tool';
-      el.inputToolPricing.value = 'Freemium';
-      el.inputToolFavorite.checked = state.currentNav === 'favorites';
-      if (state.tag) el.inputToolTags.value = state.tag;
-      if (state.toolCategory) el.inputToolCategory.value = state.toolCategory;
-      el.inputToolFaviconUrl.value = '';
-      el.toolFormSubmitBtn.querySelector('span').textContent = t('btn_save_tool');
-    }
-
-    el.toolFormDialog.showModal();
-    setTimeout(() => el.inputToolUrl.focus(), 50);
-  }
-
-  function closeToolFormDialog() {
-    el.toolFormDialog.close();
-  }
-
-  async function handleFetchMetadata() {
-    const rawUrl = el.inputToolUrl.value.trim();
-    if (!rawUrl) {
-      showToast(t('toast_enter_url'), 'error');
-      el.inputToolUrl.focus();
-      return;
-    }
-
-    const btnText = el.toolFetchMetaBtn.querySelector('.btn-text');
-    const spinner = el.toolFetchMetaBtn.querySelector('.spinner-sm');
-    el.toolFetchMetaBtn.disabled = true;
-    if (btnText) btnText.textContent = t('btn_fetching');
-    if (spinner) spinner.classList.remove('hidden');
-
-    try {
-      const res = await apiFetch('/api/tools/fetch-metadata', {
-        method: 'POST',
-        body: JSON.stringify({ url: rawUrl }),
-      });
-
-      const meta = res.data;
-      if (meta) {
-        if (meta.title && (!el.inputToolTitle.value || el.inputToolTitle.value.trim() === '')) {
-          el.inputToolTitle.value = meta.title;
-        }
-        if (meta.description && (!el.inputToolDescription.value || el.inputToolDescription.value.trim() === '')) {
-          el.inputToolDescription.value = meta.description;
-        }
-        if (meta.provider && (!el.inputToolProvider.value || el.inputToolProvider.value.trim() === '')) {
-          el.inputToolProvider.value = meta.provider;
-        }
-        if (meta.faviconUrl) {
-          el.inputToolFaviconUrl.value = meta.faviconUrl;
-        }
-        showToast(t('toast_site_fetched'));
-      }
-    } catch (err) {
-      showToast(err.message, 'error');
-    } finally {
-      el.toolFetchMetaBtn.disabled = false;
-      if (btnText) btnText.textContent = t('btn_fetch_info');
-      if (spinner) spinner.classList.add('hidden');
-    }
-  }
-
-  async function handleToolFormSubmit(e) {
-    if (e) e.preventDefault();
-
-    const title = el.inputToolTitle.value.trim();
-    const url = el.inputToolUrl.value.trim();
-    const kind = el.inputToolKind.value;
-    const pricing = el.inputToolPricing.value;
-    const favorite = el.inputToolFavorite.checked;
-    const provider = el.inputToolProvider.value.trim() || null;
-    const category = el.inputToolCategory.value.trim() || null;
-    const description = el.inputToolDescription.value.trim() || null;
-    const notes = el.inputToolNotes.value || null;
-    const faviconUrl = el.inputToolFaviconUrl.value.trim() || null;
-    const tags = el.inputToolTags.value
-      .split(',')
-      .map((t) => t.trim())
-      .filter((t) => t.length > 0);
-
-    if (!title) {
-      el.toolFormError.textContent = t('err_title_required');
-      el.toolFormError.classList.remove('hidden');
-      el.inputToolTitle.focus();
-      return;
-    }
-
-    if (!url) {
-      el.toolFormError.textContent = t('err_url_required');
-      el.toolFormError.classList.remove('hidden');
-      el.inputToolUrl.focus();
-      return;
-    }
-
-    const toolId = el.inputToolId.value;
-    const isEdit = Boolean(toolId);
-
-    el.toolFormSubmitBtn.disabled = true;
-    el.toolFormError.classList.add('hidden');
-
-    try {
-      const payload = {
-        title,
-        url,
-        kind,
-        pricing,
-        favorite,
-        provider,
-        category,
-        description,
-        notes,
-        faviconUrl,
-        tags,
-      };
-
-      let saved;
-      if (isEdit) {
-        const res = await apiFetch(`/api/tools/${toolId}`, {
-          method: 'PUT',
-          body: JSON.stringify(payload),
-        });
-        saved = res.data;
-        showToast(t('toast_tool_updated'));
-      } else {
-        const res = await apiFetch('/api/tools', {
-          method: 'POST',
-          body: JSON.stringify(payload),
-        });
-        saved = res.data;
-        if (res.warning) {
-          showToast(res.warning, 'error');
-        } else {
-          showToast(t('toast_tool_created'));
-        }
-      }
-
-      closeToolFormDialog();
-      await loadData();
-      await loadTags();
-      await loadToolMetadataOptions();
-
-      if (isEdit && state.activeDetailTool?.id === toolId) {
-        openToolDetailDialog(saved);
-      }
-    } catch (err) {
-      el.toolFormError.textContent = err.message;
-      el.toolFormError.classList.remove('hidden');
-    } finally {
-      el.toolFormSubmitBtn.disabled = false;
-    }
-  }
-
-  // --- Prompt Form Dialog (Create / Edit) ---
-
-  function openPromptFormDialog(promptToEdit = null) {
-    el.promptFormError.classList.add('hidden');
-    el.promptFormError.textContent = '';
-    el.promptFormSubmitBtn.disabled = false;
-
-    if (promptToEdit) {
-      el.promptFormTitle.textContent = t('modal_edit_prompt');
-      el.inputPromptId.value = promptToEdit.id;
-      el.inputPromptTitle.value = promptToEdit.title;
-      el.inputPromptModel.value = promptToEdit.model || '';
-      el.inputPromptFavorite.checked = Boolean(promptToEdit.favorite);
-      el.inputPromptDescription.value = promptToEdit.description || '';
-      el.inputPromptContent.value = promptToEdit.content || '';
-      el.inputPromptTags.value = Array.isArray(promptToEdit.tags) ? promptToEdit.tags.join(', ') : '';
-      el.promptFormSubmitBtn.querySelector('span').textContent = t('btn_save_changes');
-    } else {
-      el.promptFormTitle.textContent = t('modal_new_prompt');
-      el.promptForm.reset();
-      el.inputPromptId.value = '';
-      el.inputPromptFavorite.checked = state.currentNav === 'favorites';
-      if (state.tag) el.inputPromptTags.value = state.tag;
-      if (state.model) el.inputPromptModel.value = state.model;
-      el.promptFormSubmitBtn.querySelector('span').textContent = t('btn_save_prompt');
-    }
-
-    el.promptFormDialog.showModal();
-    setTimeout(() => el.inputPromptTitle.focus(), 50);
-  }
-
-  function closePromptFormDialog() {
-    el.promptFormDialog.close();
-  }
-
-  async function handlePromptFormSubmit(e) {
-    if (e) e.preventDefault();
-
-    const title = el.inputPromptTitle.value.trim();
-    const content = el.inputPromptContent.value;
-    const model = el.inputPromptModel.value.trim() || null;
-    const description = el.inputPromptDescription.value.trim() || null;
-    const favorite = el.inputPromptFavorite.checked;
-    const tags = el.inputPromptTags.value
-      .split(',')
-      .map((t) => t.trim())
-      .filter((t) => t.length > 0);
-
-    if (!title) {
-      el.promptFormError.textContent = t('err_title_required');
-      el.promptFormError.classList.remove('hidden');
-      el.inputPromptTitle.focus();
-      return;
-    }
-
-    if (!content || content.trim() === '') {
-      el.promptFormError.textContent = t('err_prompt_content_required');
-      el.promptFormError.classList.remove('hidden');
-      el.inputPromptContent.focus();
-      return;
-    }
-
-    const promptId = el.inputPromptId.value;
-    const isEdit = Boolean(promptId);
-
-    el.promptFormSubmitBtn.disabled = true;
-    el.promptFormError.classList.add('hidden');
-
-    try {
-      const payload = { title, description, content, model, favorite, tags };
-      let saved;
-
-      if (isEdit) {
-        const res = await apiFetch(`/api/prompts/${promptId}`, {
-          method: 'PUT',
-          body: JSON.stringify(payload),
-        });
-        saved = res.data;
-        showToast(t('toast_prompt_updated'));
-      } else {
-        const res = await apiFetch('/api/prompts', {
-          method: 'POST',
-          body: JSON.stringify(payload),
-        });
-        saved = res.data;
-        showToast(t('toast_prompt_created'));
-      }
-
-      closePromptFormDialog();
-      await loadData();
-      await loadTags();
-      await loadModels();
-
-      if (isEdit && state.activeDetailPrompt?.id === promptId) {
-        openPromptDetailDialog(saved);
-      }
-    } catch (err) {
-      el.promptFormError.textContent = err.message;
-      el.promptFormError.classList.remove('hidden');
-    } finally {
-      el.promptFormSubmitBtn.disabled = false;
-    }
-  }
-
-  // --- Workflow Form Dialog (Create / Edit) ---
-
-  function openWorkflowFormDialog(workflowToEdit = null) {
-    if (workflowToEdit) {
-      el.workflowFormTitle.textContent = t('modal_edit_workflow');
-      el.inputWorkflowId.value = workflowToEdit.id;
-      el.inputWorkflowTitle.value = workflowToEdit.title || '';
-      el.inputWorkflowPurpose.value = workflowToEdit.purpose || '';
-      el.inputWorkflowStatus.value = workflowToEdit.status || 'Active';
-      el.inputWorkflowDifficulty.value = workflowToEdit.difficulty || 'Medium';
-      el.inputWorkflowEstimatedTime.value = workflowToEdit.estimatedTime || '';
-      el.inputWorkflowFavorite.checked = Boolean(workflowToEdit.favorite);
-      el.inputWorkflowDescription.value = workflowToEdit.description || '';
-      el.inputWorkflowNotes.value = workflowToEdit.notes || '';
-      el.inputWorkflowTags.value = Array.isArray(workflowToEdit.tags) ? workflowToEdit.tags.join(', ') : '';
-      state.currentEditingWorkflowSteps = JSON.parse(JSON.stringify(workflowToEdit.steps || [])).map((s) => ({
-        ...s,
-        instructions: s.instructions || s.instruction || '',
-      }));
-      el.workflowFormSubmitBtn.querySelector('span').textContent = t('btn_save_changes');
-    } else {
-      el.workflowFormTitle.textContent = t('modal_new_workflow');
-      el.workflowForm.reset();
-      el.inputWorkflowId.value = '';
-      el.inputWorkflowStatus.value = 'Active';
-      el.inputWorkflowDifficulty.value = 'Medium';
-      el.inputWorkflowFavorite.checked = state.currentNav === 'favorites';
-      if (state.tag) el.inputWorkflowTags.value = state.tag;
-
-      state.currentEditingWorkflowSteps = [
-        {
-          title: '',
-          instructions: '',
-          linkedResources: [],
-        },
-      ];
-      el.workflowFormSubmitBtn.querySelector('span').textContent = t('btn_save_workflow');
-    }
-
-    renderWorkflowFormSteps();
-    el.workflowFormDialog.showModal();
-    setTimeout(() => el.inputWorkflowTitle.focus(), 50);
-  }
-
-  function closeWorkflowFormDialog() {
-    el.workflowFormDialog.close();
-  }
-
-  function renderWorkflowFormSteps() {
-    el.workflowFormStepsList.innerHTML = '';
-
-    if (state.currentEditingWorkflowSteps.length === 0) {
-      state.currentEditingWorkflowSteps.push({
-        title: '',
-        instructions: '',
-        linkedResources: [],
-      });
-    }
-
-    const total = state.currentEditingWorkflowSteps.length;
-
-    state.currentEditingWorkflowSteps.forEach((step, idx) => {
-      const stepRow = document.createElement('div');
-      stepRow.className = 'form-step-builder-card';
-
-      // Step Header
-      const header = document.createElement('div');
-      header.className = 'step-builder-header';
-
-      const numLabel = document.createElement('span');
-      numLabel.className = 'step-builder-num';
-      numLabel.textContent = `${t('label_step_number', idx + 1)}`;
-
-      const stepControls = document.createElement('div');
-      stepControls.className = 'step-builder-controls';
-
-      // Move Up
-      const moveUpBtn = document.createElement('button');
-      moveUpBtn.type = 'button';
-      moveUpBtn.className = 'btn btn-icon btn-sm';
-      moveUpBtn.title = t('btn_step_move_up');
-      moveUpBtn.textContent = '↑';
-      moveUpBtn.disabled = idx === 0;
-      moveUpBtn.addEventListener('click', () => {
-        const item = state.currentEditingWorkflowSteps.splice(idx, 1)[0];
-        state.currentEditingWorkflowSteps.splice(idx - 1, 0, item);
-        renderWorkflowFormSteps();
-      });
-
-      // Move Down
-      const moveDownBtn = document.createElement('button');
-      moveDownBtn.type = 'button';
-      moveDownBtn.className = 'btn btn-icon btn-sm';
-      moveDownBtn.title = t('btn_step_move_down');
-      moveDownBtn.textContent = '↓';
-      moveDownBtn.disabled = idx === total - 1;
-      moveDownBtn.addEventListener('click', () => {
-        const item = state.currentEditingWorkflowSteps.splice(idx, 1)[0];
-        state.currentEditingWorkflowSteps.splice(idx + 1, 0, item);
-        renderWorkflowFormSteps();
-      });
-
-      // Delete Step
-      const delStepBtn = document.createElement('button');
-      delStepBtn.type = 'button';
-      delStepBtn.className = 'btn btn-icon btn-danger btn-sm';
-      delStepBtn.title = t('btn_step_delete');
-      delStepBtn.textContent = '✕';
-      delStepBtn.disabled = total <= 1;
-      delStepBtn.addEventListener('click', () => {
-        state.currentEditingWorkflowSteps.splice(idx, 1);
-        renderWorkflowFormSteps();
-      });
-
-      stepControls.appendChild(moveUpBtn);
-      stepControls.appendChild(moveDownBtn);
-      stepControls.appendChild(delStepBtn);
-
-      header.appendChild(numLabel);
-      header.appendChild(stepControls);
-      stepRow.appendChild(header);
-
-      // Step Title Input
-      const titleGroup = document.createElement('div');
-      titleGroup.className = 'form-group';
-      const titleInput = document.createElement('input');
-      titleInput.type = 'text';
-      titleInput.className = 'form-step-title-input';
-      titleInput.placeholder = t('step_title_placeholder');
-      titleInput.value = step.title || '';
-      titleInput.addEventListener('input', (e) => {
-        step.title = e.target.value;
-      });
-      titleGroup.appendChild(titleInput);
-      stepRow.appendChild(titleGroup);
-
-      // Step Instructions Textarea
-      const instGroup = document.createElement('div');
-      instGroup.className = 'form-group';
-      const instTextarea = document.createElement('textarea');
-      instTextarea.className = 'form-step-instructions-textarea';
-      instTextarea.rows = 3;
-      instTextarea.placeholder = t('step_instructions_placeholder');
-      instTextarea.value = step.instructions || '';
-      instTextarea.addEventListener('input', (e) => {
-        step.instructions = e.target.value;
-      });
-      instGroup.appendChild(instTextarea);
-      stepRow.appendChild(instGroup);
-
-      // Linked Resources Section
-      const linkedBox = document.createElement('div');
-      linkedBox.className = 'step-builder-linked-box';
-
-      const linkedHeader = document.createElement('div');
-      linkedHeader.className = 'step-builder-linked-header';
-
-      const linkedTitle = document.createElement('span');
-      linkedTitle.className = 'label-hint';
-      linkedTitle.textContent = t('picker_linked_resources');
-
-      const addResourceBtn = document.createElement('button');
-      addResourceBtn.type = 'button';
-      addResourceBtn.className = 'btn btn-secondary btn-sm';
-      addResourceBtn.innerHTML = `
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        <span>${t('picker_link_btn')}</span>
+  return `
+    <div class="${size > 30 ? 'tool-brand-logo' : 'tool-mini-logo'}" style="background-color: ${color};">
+      <span>${escapeHtml(initials)}</span>
+    </div>
+  `;
+}
+
+function renderTopPicks() {
+  if (!el.topPicksContainer) return;
+  el.topPicksContainer.innerHTML = TOP_PICKS.map(tool => {
+    return `
+      <div class="ranked-pick-row" data-tool-id="${escapeHtml(tool.id)}" data-slug="${escapeHtml(tool.slug)}">
+        <div class="rank-indicator">${tool.rank || 1}</div>
+        ${createBrandLogoHtml(tool, 38)}
+        <div class="ranked-info">
+          <div class="ranked-title-row">
+            <span class="ranked-name">${escapeHtml(tool.name)}</span>
+            <span class="ranked-meta">${escapeHtml(tool.pricingLabel)} | ${escapeHtml(tool.displayUrl || '')}</span>
+          </div>
+          <div class="ranked-desc">${escapeHtml(tool.description)}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderLatestListings() {
+  if (!el.latestListingsContainer) return;
+  el.latestListingsContainer.innerHTML = LATEST_LISTINGS.map(tool => {
+    return `
+      <div class="sidebar-tool-row" data-tool-id="${escapeHtml(tool.id)}" data-slug="${escapeHtml(tool.slug)}">
+        ${createBrandLogoHtml(tool, 24)}
+        <div class="tool-info">
+          <div class="tool-name-line">
+            <span class="tool-name">${escapeHtml(tool.name)}</span>
+          </div>
+          <div class="tool-desc">${escapeHtml(tool.description)}</div>
+          <div class="tool-meta">${escapeHtml(tool.pricingLabel)} | ${escapeHtml(tool.displayUrl || '')}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderFreeThisWeek() {
+  if (!el.freeThisWeekContainer) return;
+  el.freeThisWeekContainer.innerHTML = FREE_THIS_WEEK.map(tool => {
+    return `
+      <div class="sidebar-tool-row" data-tool-id="${escapeHtml(tool.id)}" data-slug="${escapeHtml(tool.slug)}">
+        ${createBrandLogoHtml(tool, 24)}
+        <div class="tool-info">
+          <div class="tool-name-line">
+            <span class="tool-name">${escapeHtml(tool.name)}</span>
+          </div>
+          <div class="tool-desc">${escapeHtml(tool.description)}</div>
+          ${tool.promoText ? `<div class="sidebar-promo-callout">${escapeHtml(tool.promoText)}</div>` : ''}
+          <div class="tool-meta">${escapeHtml(tool.pricingLabel)} | ${escapeHtml(tool.displayUrl || '')}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderAllCategories() {
+  DIRECTORY_CATEGORIES.forEach(cat => {
+    const container = document.getElementById(`cat-list-${cat.id}`);
+    if (!container) return;
+
+    container.innerHTML = cat.tools.map(tool => {
+      return `
+        <div class="tool-row-item" data-tool-id="${escapeHtml(tool.id)}" data-slug="${escapeHtml(tool.slug)}" data-category="${escapeHtml(cat.id)}">
+          ${createBrandLogoHtml(tool, 24)}
+          <div class="tool-info">
+            <div class="tool-name-line">
+              <span class="tool-name">${escapeHtml(tool.name)}</span>
+            </div>
+            <div class="tool-desc">${escapeHtml(tool.description)}</div>
+            <div class="tool-meta">${escapeHtml(tool.pricingLabel)} | ${escapeHtml(tool.displayUrl || '')}</div>
+          </div>
+        </div>
       `;
-      addResourceBtn.addEventListener('click', () => {
-        openResourcePicker(idx);
-      });
+    }).join('');
+  });
+}
 
-      linkedHeader.appendChild(linkedTitle);
-      linkedHeader.appendChild(addResourceBtn);
-      linkedBox.appendChild(linkedHeader);
+// ==========================================================================
+// SEARCH, FILTERING & DYNAMIC MATCHING
+// ==========================================================================
 
-      const linkedChips = document.createElement('div');
-      linkedChips.className = 'step-linked-chips';
+function applyFilters() {
+  const hasSearch = state.searchQuery.trim().length > 0;
+  const hasLetter = state.activeLetter !== null;
+  const hasCategory = state.activeCategory !== 'all';
+  const hasPricing = state.filters.pricing !== 'all';
+  const hasPlatform = state.filters.platform !== 'all';
+  const hasOpenSource = state.filters.openSource === true;
 
-      const linked = Array.isArray(step.linkedResources) ? step.linkedResources : [];
-      if (linked.length > 0) {
-        linked.forEach((lr, lrIdx) => {
-          const chip = document.createElement('div');
-          chip.className = 'linked-resource-chip';
+  const isFiltering = hasSearch || hasLetter || hasCategory || hasPricing || hasPlatform || hasOpenSource;
 
-          const kindBadge = document.createElement('span');
-          kindBadge.className = `badge badge-kind kind-${lr.targetResourceType || 'tool'}`;
-          kindBadge.textContent = lr.targetResourceType === 'prompt' ? t('badge_prompt') : (lr.targetResourceType === 'website' ? t('badge_website') : t('badge_tool'));
+  if (!isFiltering) {
+    // Show standard newspaper directory view
+    el.searchResultsSection?.classList.add('hidden');
+    el.mainDirectoryGrid?.classList.remove('hidden');
+    el.topPicksSection?.classList.remove('hidden');
+    el.filterActiveIndicator?.classList.add('hidden');
+    return;
+  }
 
-          const titleSpan = document.createElement('span');
-          titleSpan.className = 'chip-title';
-          titleSpan.textContent = lr.targetResourceTitle || lr.targetResourceId;
+  // Active filter state: show search results view
+  el.searchResultsSection?.classList.remove('hidden');
+  el.mainDirectoryGrid?.classList.add('hidden');
+  el.topPicksSection?.classList.add('hidden');
+  el.filterActiveIndicator?.classList.remove('hidden');
 
-          const removeBtn = document.createElement('button');
-          removeBtn.type = 'button';
-          removeBtn.className = 'chip-remove-btn';
-          removeBtn.innerHTML = '&times;';
-          removeBtn.title = 'Unlink';
-          removeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            step.linkedResources.splice(lrIdx, 1);
-            renderWorkflowFormSteps();
-          });
+  // Filter combined pool of tools
+  let results = [...state.allDirectoryTools];
 
-          chip.appendChild(kindBadge);
-          chip.appendChild(titleSpan);
-          chip.appendChild(removeBtn);
-          linkedChips.appendChild(chip);
-        });
-      }
-
-      linkedBox.appendChild(linkedChips);
-      stepRow.appendChild(linkedBox);
-
-      el.workflowFormStepsList.appendChild(stepRow);
+  if (hasSearch) {
+    const q = state.searchQuery.toLowerCase();
+    results = results.filter(t => {
+      const name = (t.name || '').toLowerCase();
+      const desc = (t.description || '').toLowerCase();
+      const cat = (t.category || '').toLowerCase();
+      return name.includes(q) || desc.includes(q) || cat.includes(q);
     });
   }
 
-  async function handleWorkflowFormSubmit(e) {
-    if (e) e.preventDefault();
+  if (hasLetter) {
+    const l = state.activeLetter.toUpperCase();
+    results = results.filter(t => (t.name || '').toUpperCase().startsWith(l));
+  }
 
-    const title = el.inputWorkflowTitle.value.trim();
-    const purpose = el.inputWorkflowPurpose.value.trim() || null;
-    const status = el.inputWorkflowStatus.value;
-    const difficulty = el.inputWorkflowDifficulty.value;
-    const estimatedTime = el.inputWorkflowEstimatedTime.value.trim() || null;
-    const favorite = el.inputWorkflowFavorite.checked;
-    const description = el.inputWorkflowDescription.value.trim() || null;
-    const notes = el.inputWorkflowNotes.value.trim() || null;
-    const tags = el.inputWorkflowTags.value
-      .split(',')
-      .map((t) => t.trim())
-      .filter((t) => t.length > 0);
+  if (hasCategory) {
+    results = results.filter(t => (t.category || '').toLowerCase() === state.activeCategory.toLowerCase());
+  }
 
-    if (!title) {
-      showToast(t('err_title_required'), 'error');
-      el.inputWorkflowTitle.focus();
-      return;
+  if (hasPricing) {
+    results = results.filter(t => (t.pricingType || '').toLowerCase() === state.filters.pricing.toLowerCase());
+  }
+
+  if (hasPlatform) {
+    results = results.filter(t => Array.isArray(t.platforms) && t.platforms.some(p => p.toLowerCase().includes(state.filters.platform.toLowerCase())));
+  }
+
+  if (hasOpenSource) {
+    results = results.filter(t => t.openSource === true);
+  }
+
+  // Sorting
+  results = sortTools(results, state.activeSort);
+
+  // Update indicators
+  if (el.filterActiveText) {
+    const terms = [];
+    if (hasSearch) terms.push(`"${state.searchQuery}"`);
+    if (hasLetter) terms.push(`Letter '${state.activeLetter}'`);
+    if (hasCategory) terms.push(`Category: ${state.activeCategory.toUpperCase()}`);
+    if (hasPricing) terms.push(`Pricing: ${state.filters.pricing}`);
+    if (hasOpenSource) terms.push(`Open Source`);
+    el.filterActiveText.textContent = `Showing ${results.length} tools matching ${terms.join(', ')}`;
+  }
+
+  if (el.searchResultsDesc) {
+    el.searchResultsDesc.textContent = `Found ${results.length} verified listings`;
+  }
+
+  // Render cards
+  if (el.searchResultsGrid) {
+    if (results.length === 0) {
+      el.searchResultsGrid.innerHTML = `
+        <div style="grid-column: 1 / -1; padding: 24px; text-align: center; border: 1.5px dashed var(--border-dark);">
+          <p style="font-family: var(--font-headline); font-size: 16px; margin-bottom: 6px;">No tools found matching your criteria</p>
+          <p style="font-size: 12px; color: var(--ink-secondary);">Try clearing some filters or searching for broader terms like "design", "coding", or "AI".</p>
+        </div>
+      `;
+    } else {
+      el.searchResultsGrid.innerHTML = results.map(tool => {
+        return `
+          <div class="search-result-card" data-tool-id="${escapeHtml(tool.id)}" data-slug="${escapeHtml(tool.slug)}">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              ${createBrandLogoHtml(tool, 26)}
+              <div style="min-width: 0;">
+                <div style="font-family: var(--font-directory); font-weight: 700; font-size: 13.5px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                  ${escapeHtml(tool.name)}
+                </div>
+                <div style="font-size: 10px; color: var(--ink-muted); text-transform: uppercase;">
+                  ${escapeHtml(tool.category || '')}
+                </div>
+              </div>
+            </div>
+            <p style="font-family: var(--font-directory); font-size: 11.5px; line-height: 1.25; color: var(--ink-secondary); margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+              ${escapeHtml(tool.description)}
+            </p>
+            <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--ink-muted); border-top: 1px solid var(--border-subtle); padding-top: 4px;">
+              <span>${escapeHtml(tool.pricingLabel || '')}</span>
+              <span>${escapeHtml(tool.displayUrl || '')}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
+  }
+}
 
-    // Clean steps
-    const steps = state.currentEditingWorkflowSteps
-      .map((s, idx) => {
-        const inst = (s.instructions || s.instruction || s.title || '').trim();
+function sortTools(tools, sortMode) {
+  const sorted = [...tools];
+  switch (sortMode) {
+    case 'az':
+      return sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    case 'newest':
+      return sorted.reverse();
+    case 'free-first':
+      return sorted.sort((a, b) => {
+        const aFree = a.pricingType === 'free' ? 0 : 1;
+        const bFree = b.pricingType === 'free' ? 0 : 1;
+        return aFree - bFree;
+      });
+    case 'price-asc':
+      return sorted.sort((a, b) => (a.pricingType === 'free' ? -1 : 1));
+    case 'price-desc':
+      return sorted.sort((a, b) => (a.pricingType === 'paid' ? -1 : 1));
+    case 'popular':
+    default:
+      return sorted.sort((a, b) => (a.rank || 99) - (b.rank || 99));
+  }
+}
+
+// ==========================================================================
+// BACKGROUND API SYNC
+// ==========================================================================
+
+async function fetchApiCatalog() {
+  try {
+    const res = await fetch('/api/resources?limit=250');
+    if (!res.ok) return;
+    const json = await res.json();
+    if (Array.isArray(json.data)) {
+      state.apiTools = json.data.map(item => {
         return {
-          stepOrder: idx + 1,
-          title: s.title.trim(),
-          instruction: inst,
-          instructions: inst,
-          linkedResources: Array.isArray(s.linkedResources) ? s.linkedResources : [],
+          id: item.id,
+          name: item.title,
+          slug: item.slug || item.id,
+          description: item.description || '',
+          category: (item.tools?.category || item.type || 'ai').toLowerCase(),
+          pricingLabel: item.tools?.pricing || 'Unknown',
+          pricingType: normalizePricing(item.tools?.pricing),
+          website: item.tools?.url || '',
+          displayUrl: item.tools?.hostname || '',
+          platforms: ['Web'],
+          openSource: (item.tags || []).some(t => t.name === 'open-source' || t.name === 'open source'),
+          featured: Boolean(item.featured),
         };
-      })
-      .filter((s) => s.title.length > 0);
+      });
 
-    if (steps.length === 0) {
-      showToast(t('err_workflow_steps_required'), 'error');
-      return;
+      // Merge unique items from API into allDirectoryTools
+      const existingSlugs = new Set(state.allDirectoryTools.map(t => t.slug));
+      state.apiTools.forEach(t => {
+        if (!existingSlugs.has(t.slug)) {
+          state.allDirectoryTools.push(t);
+        }
+      });
     }
-
-    const workflowId = el.inputWorkflowId.value;
-    const isEdit = Boolean(workflowId);
-
-    el.workflowFormSubmitBtn.disabled = true;
-
-    try {
-      const payload = {
-        title,
-        purpose,
-        status,
-        difficulty,
-        estimatedTime,
-        favorite,
-        description,
-        notes,
-        tags,
-        steps,
-      };
-
-      let saved;
-      if (isEdit) {
-        const res = await apiFetch(`/api/workflows/${workflowId}`, {
-          method: 'PUT',
-          body: JSON.stringify(payload),
-        });
-        saved = res.data;
-        showToast(t('toast_workflow_updated'));
-      } else {
-        const res = await apiFetch('/api/workflows', {
-          method: 'POST',
-          body: JSON.stringify(payload),
-        });
-        saved = res.data;
-        showToast(t('toast_workflow_created'));
-      }
-
-      closeWorkflowFormDialog();
-      await loadData();
-      await loadTags();
-
-      if (isEdit && state.activeDetailWorkflow?.id === workflowId) {
-        openWorkflowDetailDialog(saved);
-      }
-    } catch (err) {
-      showToast(err.message, 'error');
-    } finally {
-      el.workflowFormSubmitBtn.disabled = false;
-    }
+  } catch (err) {
+    console.warn('API background fetch skipped:', err.message);
   }
+}
 
-  // --- Agent Form Dialog (Create / Edit) ---
+function normalizePricing(pricing) {
+  if (!pricing) return 'freemium';
+  const p = pricing.toLowerCase();
+  if (p.includes('free') && !p.includes('$')) return 'free';
+  if (p.includes('$') || p.includes('paid')) return 'paid';
+  return 'freemium';
+}
 
-  function openAgentFormDialog(agentToEdit = null) {
-    if (agentToEdit) {
-      el.agentFormTitle.textContent = t('modal_edit_agent');
-      el.inputAgentId.value = agentToEdit.id;
-      el.inputAgentTitle.value = agentToEdit.title || '';
-      el.inputAgentRole.value = agentToEdit.role || '';
-      el.inputAgentGoal.value = agentToEdit.goal || '';
-      el.inputAgentDescription.value = agentToEdit.description || '';
-      el.inputAgentInstructions.value = agentToEdit.instructions || '';
-      el.inputAgentRuntime.value = agentToEdit.runtime || '';
-      el.inputAgentModel.value = agentToEdit.model || '';
-      el.inputAgentStatus.value = agentToEdit.status || 'Active';
-      el.inputAgentAutonomy.value = agentToEdit.autonomyLevel || 'Manual';
-      el.inputAgentInputDesc.value = agentToEdit.inputDescription || '';
-      el.inputAgentOutputDesc.value = agentToEdit.outputDescription || '';
-      el.inputAgentFavorite.checked = Boolean(agentToEdit.favorite);
-      el.inputAgentTags.value = Array.isArray(agentToEdit.tags) ? agentToEdit.tags.join(', ') : '';
-      el.inputAgentNotes.value = agentToEdit.notes || '';
+// ==========================================================================
+// EVENT LISTENERS & INTERACTIONS
+// ==========================================================================
 
-      state.currentEditingAgentResources = Array.isArray(agentToEdit.linkedResources)
-        ? JSON.parse(JSON.stringify(agentToEdit.linkedResources))
-        : [];
-      el.agentFormSubmitBtn.querySelector('span').textContent = t('btn_save_changes');
+function attachEventListeners() {
+  // 1. Search Input
+  let debounceTimer;
+  el.searchInput?.addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      state.searchQuery = e.target.value;
+      applyFilters();
+    }, 120);
+  });
+
+  // 2. Clear search button
+  el.clearSearchBtn?.addEventListener('click', () => {
+    resetAllFilters();
+  });
+
+  // 3. Category Tabs
+  el.categoryTabs?.addEventListener('click', (e) => {
+    const btn = e.target.closest('.cat-tab');
+    if (!btn) return;
+    const cat = btn.dataset.category;
+    
+    // Update active tab style
+    document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    state.activeCategory = cat;
+    if (el.filterCategory) el.filterCategory.value = cat;
+    applyFilters();
+  });
+
+  // 4. A-Z Letters
+  el.azLetters?.addEventListener('click', (e) => {
+    const btn = e.target.closest('.az-btn');
+    if (!btn) return;
+    const letter = btn.dataset.letter;
+
+    if (state.activeLetter === letter) {
+      state.activeLetter = null;
+      btn.classList.remove('active');
     } else {
-      el.agentFormTitle.textContent = t('modal_new_agent');
-      el.agentForm.reset();
-      el.inputAgentId.value = '';
-      el.inputAgentStatus.value = 'Active';
-      el.inputAgentAutonomy.value = 'Manual';
-      el.inputAgentFavorite.checked = state.currentNav === 'favorites';
-      if (state.tag) el.inputAgentTags.value = state.tag;
-      state.currentEditingAgentResources = [];
-      el.agentFormSubmitBtn.querySelector('span').textContent = t('btn_save_agent');
+      document.querySelectorAll('.az-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.activeLetter = letter;
     }
+    applyFilters();
+  });
 
-    updateAgentInstructionsCounter();
-    renderAgentFormResources();
-    el.agentFormDialog.showModal();
-    setTimeout(() => el.inputAgentTitle.focus(), 50);
-  }
+  el.azClearBtn?.addEventListener('click', () => {
+    state.activeLetter = null;
+    document.querySelectorAll('.az-btn').forEach(b => b.classList.remove('active'));
+    applyFilters();
+  });
 
-  function closeAgentFormDialog() {
-    el.agentFormDialog.close();
-  }
+  // 5. Sort Group
+  el.sortGroup?.addEventListener('click', (e) => {
+    const btn = e.target.closest('.sort-btn');
+    if (!btn) return;
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.activeSort = btn.dataset.sort;
+    applyFilters();
+  });
 
-  function updateAgentInstructionsCounter() {
-    const len = el.inputAgentInstructions.value.length;
-    el.agentInstructionsCounter.textContent = `${len} chars`;
-  }
-
-  function renderAgentFormResources() {
-    el.agentFormResourcesList.innerHTML = '';
-
-    if (state.currentEditingAgentResources.length === 0) {
-      const hint = document.createElement('div');
-      hint.className = 'empty-hint';
-      hint.style.padding = '0.75rem';
-      hint.textContent = 'No resources linked yet. Click "+ Link Resource" to attach prompts, tools, websites, or workflows.';
-      el.agentFormResourcesList.appendChild(hint);
-      return;
-    }
-
-    state.currentEditingAgentResources.forEach((item, idx) => {
-      const row = document.createElement('div');
-      row.className = 'agent-resource-item-row';
-
-      const left = document.createElement('div');
-      left.className = 'item-row-left';
-
-      const kindBadge = document.createElement('span');
-      const type = item.targetResourceType || 'tool';
-      kindBadge.className = `badge badge-kind kind-${type}`;
-      kindBadge.textContent = type === 'prompt' ? t('badge_prompt') : (type === 'workflow' ? t('badge_workflow') : (type === 'agent' ? t('badge_agent') : (type === 'website' ? t('badge_website') : t('badge_tool'))));
-
-      const titleSpan = document.createElement('span');
-      titleSpan.className = 'item-row-title';
-      titleSpan.textContent = item.targetResourceTitle || item.targetResourceId;
-
-      left.appendChild(kindBadge);
-      left.appendChild(titleSpan);
-
-      const right = document.createElement('div');
-      right.className = 'item-row-right';
-
-      const relSelect = document.createElement('select');
-      relSelect.className = 'item-rel-select';
-      relSelect.innerHTML = `
-        <option value="USES">${t('rel_uses')}</option>
-        <option value="FOLLOWS">${t('rel_follows')}</option>
-        <option value="REFERENCES">${t('rel_references')}</option>
-        <option value="ASSIGNS_TO">${t('rel_assigns_to')}</option>
-      `;
-      relSelect.value = item.relationshipType || 'USES';
-      relSelect.addEventListener('change', (e) => {
-        item.relationshipType = e.target.value;
-      });
-
-      const delBtn = document.createElement('button');
-      delBtn.type = 'button';
-      delBtn.className = 'btn btn-icon btn-danger btn-sm';
-      delBtn.title = 'Remove';
-      delBtn.textContent = '✕';
-      delBtn.addEventListener('click', () => {
-        state.currentEditingAgentResources.splice(idx, 1);
-        renderAgentFormResources();
-      });
-
-      right.appendChild(relSelect);
-      right.appendChild(delBtn);
-
-      row.appendChild(left);
-      row.appendChild(right);
-      el.agentFormResourcesList.appendChild(row);
+  // 6. Filter Selects & Checkboxes
+  el.filterCategory?.addEventListener('change', (e) => {
+    state.activeCategory = e.target.value;
+    document.querySelectorAll('.cat-tab').forEach(b => {
+      b.classList.toggle('active', b.dataset.category === state.activeCategory);
     });
-  }
+    applyFilters();
+  });
 
-  async function handleAgentFormSubmit(e) {
-    if (e) e.preventDefault();
+  el.filterPricing?.addEventListener('change', (e) => {
+    state.filters.pricing = e.target.value;
+    applyFilters();
+  });
 
-    const title = el.inputAgentTitle.value.trim();
-    const role = el.inputAgentRole.value.trim();
-    const instructions = el.inputAgentInstructions.value; // preserves exact whitespace
-    const goal = el.inputAgentGoal.value.trim() || null;
-    const description = el.inputAgentDescription.value.trim() || null;
-    const runtime = el.inputAgentRuntime.value.trim() || null;
-    const model = el.inputAgentModel.value.trim() || null;
-    const status = el.inputAgentStatus.value;
-    const autonomyLevel = el.inputAgentAutonomy.value;
-    const inputDescription = el.inputAgentInputDesc.value.trim() || null;
-    const outputDescription = el.inputAgentOutputDesc.value.trim() || null;
-    const favorite = el.inputAgentFavorite.checked;
-    const notes = el.inputAgentNotes.value.trim() || null;
-    const tags = el.inputAgentTags.value
-      .split(',')
-      .map((t) => t.trim())
-      .filter((t) => t.length > 0);
+  el.filterPlatform?.addEventListener('change', (e) => {
+    state.filters.platform = e.target.value;
+    applyFilters();
+  });
 
-    if (!title) {
-      showToast(t('err_title_required'), 'error');
-      el.inputAgentTitle.focus();
-      return;
+  el.filterOpenSource?.addEventListener('change', (e) => {
+    state.filters.openSource = e.target.checked;
+    applyFilters();
+  });
+
+  // 7. Reset Button
+  el.filterResetBtn?.addEventListener('click', () => {
+    resetAllFilters();
+  });
+
+  // 8. "SEE ALL TOP PICKS" CTA
+  el.btnSeeTopPicks?.addEventListener('click', () => {
+    state.searchQuery = '';
+    state.activeCategory = 'all';
+    state.filters.pricing = 'all';
+    state.filters.platform = 'all';
+    state.filters.openSource = false;
+    state.activeSort = 'popular';
+    applyFilters();
+    window.scrollTo({ top: el.topPicksSection.offsetTop - 20, behavior: 'smooth' });
+  });
+
+  // 9. Tool Clicks -> Open Detail Modal
+  document.addEventListener('click', (e) => {
+    const row = e.target.closest('[data-tool-id]');
+    if (!row) return;
+    const toolId = row.dataset.toolId;
+    const slug = row.dataset.slug;
+    const tool = state.allDirectoryTools.find(t => t.id === toolId || t.slug === slug);
+    if (tool) {
+      openToolModal(tool);
     }
+  });
 
-    if (!role) {
-      showToast('Role is required', 'error');
-      el.inputAgentRole.focus();
-      return;
-    }
+  // 10. Dialog Close Button
+  el.modalCloseBtn?.addEventListener('click', () => {
+    el.toolDetailDialog?.close();
+  });
 
-    if (!instructions || !instructions.trim()) {
-      showToast('Instructions are required', 'error');
-      el.inputAgentInstructions.focus();
-      return;
-    }
+  // 11. Copy Link Button in Modal
+  el.modalCopyLinkBtn?.addEventListener('click', () => {
+    if (!state.selectedTool) return;
+    const url = state.selectedTool.website || window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      el.modalCopyLinkBtn.textContent = 'COPIED!';
+      setTimeout(() => el.modalCopyLinkBtn.textContent = 'COPY LINK', 1500);
+    });
+  });
 
-    const agentId = el.inputAgentId.value;
-    const isEdit = Boolean(agentId);
-
-    el.agentFormSubmitBtn.disabled = true;
-
-    try {
-      const payload = {
-        title,
-        role,
-        instructions,
-        goal,
-        description,
-        runtime,
-        model,
-        status,
-        autonomyLevel,
-        inputDescription,
-        outputDescription,
-        favorite,
-        notes,
-        tags,
-        linkedResources: state.currentEditingAgentResources.map((r) => ({
-          targetResourceId: r.targetResourceId,
-          relationshipType: r.relationshipType || 'USES',
-        })),
-      };
-
-      let saved;
-      if (isEdit) {
-        const res = await apiFetch(`/api/agents/${agentId}`, {
-          method: 'PUT',
-          body: JSON.stringify(payload),
-        });
-        saved = res.data;
-        showToast('Agent updated successfully');
-      } else {
-        const res = await apiFetch('/api/agents', {
-          method: 'POST',
-          body: JSON.stringify(payload),
-        });
-        saved = res.data;
-        showToast('Agent saved successfully');
-      }
-
-      closeAgentFormDialog();
-      await loadData();
-      await loadTags();
-      await loadAgentMetadataOptions();
-
-      if (isEdit && state.activeDetailAgent?.id === agentId) {
-        openAgentDetailDialog(saved);
-      }
-    } catch (err) {
-      showToast(err.message, 'error');
-    } finally {
-      el.agentFormSubmitBtn.disabled = false;
-    }
-  }
-
-  async function duplicateAgent(agent) {
-    try {
-      const res = await apiFetch(`/api/agents/${agent.id}/duplicate`, { method: 'POST' });
-      showToast(t('toast_duplicated', agent.title));
-      await loadData();
-      await loadTags();
-      await loadAgentMetadataOptions();
-      if (res.data) {
-        openAgentDetailDialog(res.data);
-      }
-    } catch (err) {
-      showToast(err.message, 'error');
-    }
-  }
-
-  async function copyFullAgent(agent, btn) {
-    try {
-      const res = await apiFetch(`/api/agents/${agent.id}/full-text`);
-      const fullText = res.data?.fullText;
-      if (fullText) {
-        copyToClipboard(fullText, btn);
-      } else {
-        throw new Error('Full text unavailable');
-      }
-    } catch (err) {
-      showToast(err.message, 'error');
-    }
-  }
-
-  // --- Resource Picker Dialog ---
-
-  async function openResourcePicker(modeOrIndex, stepIndex = null) {
-    if (typeof modeOrIndex === 'number') {
-      state.pickerMode = 'workflow_step';
-      state.activeStepIndexForPicker = modeOrIndex;
-    } else if (modeOrIndex === 'agent_resource') {
-      state.pickerMode = 'agent_resource';
-      state.activeStepIndexForPicker = null;
+  // 12. Bookmark / Favorite Button in Modal
+  el.modalFavoriteBtn?.addEventListener('click', () => {
+    if (!state.selectedTool) return;
+    const id = state.selectedTool.id;
+    if (state.visitorFavorites.has(id)) {
+      state.visitorFavorites.delete(id);
+      el.modalFavoriteBtn.textContent = '★ BOOKMARK';
     } else {
-      state.pickerMode = 'workflow_step';
-      state.activeStepIndexForPicker = stepIndex;
+      state.visitorFavorites.add(id);
+      el.modalFavoriteBtn.textContent = '★ BOOKMARKED';
     }
+    localStorage.setItem('pilot_visitor_favorites', JSON.stringify(Array.from(state.visitorFavorites)));
+  });
 
-    el.resourcePickerSearch.value = '';
-    el.resourcePickerDialog.showModal();
-    setTimeout(() => el.resourcePickerSearch.focus(), 50);
-    await searchResourcesForPicker('');
-  }
+  // 13. Curator Auth Dialog Handlers
+  el.footerCuratorBtn?.addEventListener('click', () => {
+    el.curatorAuthDialog?.showModal();
+  });
 
-  function closeResourcePicker() {
-    state.activeStepIndexForPicker = null;
-    el.resourcePickerDialog.close();
-  }
+  el.openCuratorLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    el.curatorAuthDialog?.showModal();
+  });
 
-  async function searchResourcesForPicker(query) {
-    el.resourcePickerResults.innerHTML = `<div class="picker-loading">${t('loading_resources')}</div>`;
+  el.curatorModalClose?.addEventListener('click', () => {
+    el.curatorAuthDialog?.close();
+  });
+
+  el.curatorCancelBtn?.addEventListener('click', () => {
+    el.curatorAuthDialog?.close();
+  });
+
+  el.curatorAuthForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const key = el.curatorKeyInput?.value.trim();
+    if (!key) return;
+
     try {
-      const params = new URLSearchParams();
-      if (query) params.set('q', query);
-      params.set('limit', '40');
-
-      const res = await apiFetch(`/api/resources?${params.toString()}`);
-      let items = res.data || [];
-
-      if (state.pickerMode === 'agent_resource') {
-        const currentAgentId = el.inputAgentId?.value;
-        if (currentAgentId) {
-          items = items.filter((item) => item.id !== currentAgentId);
-        }
+      const res = await fetch('/api/curator/status', {
+        headers: { 'X-Curator-Key': key }
+      });
+      const data = await res.json();
+      if (data.isCurator) {
+        localStorage.setItem('pilot_curator_key', key);
+        state.isCurator = true;
+        updateCuratorUI();
+        el.curatorAuthDialog?.close();
+        alert('Curator mode unlocked!');
       } else {
-        items = items.filter((item) => item.type !== 'workflow');
-      }
-
-      el.resourcePickerResults.innerHTML = '';
-      if (items.length === 0) {
-        el.resourcePickerResults.innerHTML = `<div class="picker-empty">${t('picker_no_results')}</div>`;
-        return;
-      }
-
-      let linkedIds = new Set();
-      if (state.pickerMode === 'agent_resource') {
-        linkedIds = new Set((state.currentEditingAgentResources || []).map((r) => r.targetResourceId));
-      } else {
-        const activeStep = state.currentEditingWorkflowSteps[state.activeStepIndexForPicker];
-        linkedIds = new Set((activeStep?.linkedResources || []).map((lr) => lr.targetResourceId));
-      }
-
-      items.forEach((item) => {
-        const row = document.createElement('div');
-        row.className = 'picker-resource-row';
-
-        const left = document.createElement('div');
-        left.className = 'picker-row-left';
-
-        const kindBadge = document.createElement('span');
-        const type = item.type || 'tool';
-        kindBadge.className = `badge badge-kind kind-${type}`;
-        kindBadge.textContent = type === 'prompt' ? t('badge_prompt') : (type === 'workflow' ? t('badge_workflow') : (type === 'agent' ? t('badge_agent') : (type === 'website' ? t('badge_website') : t('badge_tool'))));
-
-        const titleSpan = document.createElement('span');
-        titleSpan.className = 'picker-resource-title';
-        titleSpan.textContent = item.title;
-
-        left.appendChild(kindBadge);
-        left.appendChild(titleSpan);
-
-        const isAlreadyLinked = linkedIds.has(item.id);
-        const actionBtn = document.createElement('button');
-        actionBtn.type = 'button';
-        actionBtn.className = `btn btn-sm ${isAlreadyLinked ? 'btn-secondary' : 'btn-primary'}`;
-        actionBtn.textContent = isAlreadyLinked ? t('btn_linked') : t('btn_link');
-        actionBtn.disabled = isAlreadyLinked;
-
-        actionBtn.addEventListener('click', () => {
-          if (state.pickerMode === 'agent_resource') {
-            if (!state.currentEditingAgentResources) state.currentEditingAgentResources = [];
-            state.currentEditingAgentResources.push({
-              targetResourceId: item.id,
-              targetResourceType: item.type,
-              targetResourceTitle: item.title,
-              relationshipType: 'USES',
-            });
-            closeResourcePicker();
-            renderAgentFormResources();
-          } else {
-            const activeStep = state.currentEditingWorkflowSteps[state.activeStepIndexForPicker];
-            if (activeStep) {
-              if (!activeStep.linkedResources) activeStep.linkedResources = [];
-              activeStep.linkedResources.push({
-                targetResourceId: item.id,
-                targetResourceType: item.type,
-                targetResourceTitle: item.title,
-              });
-            }
-            closeResourcePicker();
-            renderWorkflowFormSteps();
-          }
-        });
-
-        row.appendChild(left);
-        row.appendChild(actionBtn);
-        el.resourcePickerResults.appendChild(row);
-      });
-    } catch (err) {
-      el.resourcePickerResults.innerHTML = `<div class="picker-error">${err.message}</div>`;
-    }
-  }
-
-  // --- Duplicate Actions ---
-
-  async function duplicateWorkflow(workflow) {
-    try {
-      const res = await apiFetch(`/api/workflows/${workflow.id}/duplicate`, { method: 'POST' });
-      showToast(t('toast_duplicated', workflow.title));
-      await loadData();
-      await loadTags();
-      if (res.data) {
-        openWorkflowDetailDialog(res.data);
+        alert('Invalid curator key. Please check your key.');
       }
     } catch (err) {
-      showToast(err.message, 'error');
+      alert('Authentication request failed: ' + err.message);
     }
+  });
+
+  el.curatorExitBtn?.addEventListener('click', () => {
+    localStorage.removeItem('pilot_curator_key');
+    state.isCurator = false;
+    updateCuratorUI();
+  });
+}
+
+function resetAllFilters() {
+  state.searchQuery = '';
+  state.activeCategory = 'all';
+  state.activeLetter = null;
+  state.activeSort = 'popular';
+  state.filters = { category: 'all', pricing: 'all', platform: 'all', openSource: false };
+
+  if (el.searchInput) el.searchInput.value = '';
+  if (el.filterCategory) el.filterCategory.value = 'all';
+  if (el.filterPricing) el.filterPricing.value = 'all';
+  if (el.filterPlatform) el.filterPlatform.value = 'all';
+  if (el.filterOpenSource) el.filterOpenSource.checked = false;
+
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.toggle('active', b.dataset.category === 'all'));
+  document.querySelectorAll('.az-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.toggle('active', b.dataset.sort === 'popular'));
+
+  applyFilters();
+}
+
+function openToolModal(tool) {
+  state.selectedTool = tool;
+  if (!el.toolDetailDialog) return;
+
+  if (el.modalToolName) el.modalToolName.textContent = tool.name;
+  if (el.modalToolDesc) el.modalToolDesc.textContent = tool.description;
+  if (el.modalToolHostname) el.modalToolHostname.textContent = tool.displayUrl || (tool.website ? new URL(tool.website).hostname : '');
+  if (el.modalToolCategory) el.modalToolCategory.textContent = (tool.category || 'TOOL').toUpperCase();
+  if (el.modalToolPricing) el.modalToolPricing.textContent = tool.pricingLabel || 'Freemium';
+  if (el.modalToolPlatforms) el.modalToolPlatforms.textContent = Array.isArray(tool.platforms) ? tool.platforms.join(', ') : 'Web';
+  if (el.modalToolVerified) el.modalToolVerified.textContent = 'Verified Active (2026)';
+
+  if (el.modalToolFeatured) {
+    el.modalToolFeatured.classList.toggle('hidden', !tool.featured);
+  }
+  if (el.modalToolOpenSource) {
+    el.modalToolOpenSource.classList.toggle('hidden', !tool.openSource);
   }
 
-  async function duplicatePrompt(prompt) {
-    try {
-      const res = await apiFetch(`/api/prompts/${prompt.id}/duplicate`, { method: 'POST' });
-      showToast(t('toast_duplicated', prompt.title));
-      await loadData();
-      await loadTags();
-      if (res.data) {
-        openPromptDetailDialog(res.data);
-      }
-    } catch (err) {
-      showToast(err.message, 'error');
-    }
+  if (el.modalToolLogo) {
+    el.modalToolLogo.innerHTML = createBrandLogoHtml(tool, 44);
   }
 
-  async function duplicateTool(tool) {
-    try {
-      const res = await apiFetch(`/api/tools/${tool.id}/duplicate`, { method: 'POST' });
-      showToast(t('toast_duplicated', tool.title));
-      await loadData();
-      await loadTags();
-      if (res.data) {
-        openToolDetailDialog(res.data);
-      }
-    } catch (err) {
-      showToast(err.message, 'error');
-    }
+  if (el.modalVisitLink) {
+    el.modalVisitLink.href = tool.website || '#';
   }
 
-  // --- Delete Dialog ---
-
-  function openDeleteDialog(item, type) {
-    state.itemToDelete = { id: item.id, title: item.title, type };
-    el.deletePromptName.textContent = `"${item.title}"`;
-    el.deleteDialogTitle.textContent =
-      type === 'prompt' ? t('delete_prompt_title') : (type === 'workflow' ? t('delete_workflow_title') : (type === 'agent' ? 'Delete Agent' : t('delete_resource_title')));
-    el.deleteConfirmPromptMsg.textContent =
-      state.lang === 'vi' ? 'Bạn có chắc chắn muốn xóa vĩnh viễn' : 'Are you sure you want to permanently delete';
-    el.deleteDialog.showModal();
+  if (el.modalFavoriteBtn) {
+    const isFav = state.visitorFavorites.has(tool.id);
+    el.modalFavoriteBtn.textContent = isFav ? '★ BOOKMARKED' : '★ BOOKMARK';
   }
 
-  async function confirmDelete() {
-    const item = state.itemToDelete;
-    if (!item) return;
+  el.toolDetailDialog.showModal();
+}
 
-    el.deleteConfirmBtn.disabled = true;
+// ==========================================================================
+// CURATOR STATUS & CONTROLS
+// ==========================================================================
 
-    try {
-      let endpoint = `/api/tools/${item.id}`;
-      if (item.type === 'prompt') endpoint = `/api/prompts/${item.id}`;
-      else if (item.type === 'workflow') endpoint = `/api/workflows/${item.id}`;
-      else if (item.type === 'agent') endpoint = `/api/agents/${item.id}`;
+async function checkCuratorStatus() {
+  const storedKey = localStorage.getItem('pilot_curator_key');
+  const headers = {};
+  if (storedKey) headers['X-Curator-Key'] = storedKey;
 
-      await apiFetch(endpoint, { method: 'DELETE' });
-      showToast(t('toast_deleted', item.title));
-      el.deleteDialog.close();
-
-      if (state.activeDetailPrompt?.id === item.id) {
-        closePromptDetailDialog();
-      }
-      if (state.activeDetailTool?.id === item.id) {
-        closeToolDetailDialog();
-      }
-      if (state.activeDetailWorkflow?.id === item.id) {
-        closeWorkflowDetailDialog();
-      }
-      if (state.activeDetailAgent?.id === item.id) {
-        closeAgentDetailDialog();
-      }
-
-      await loadData();
-      await loadTags();
-      if (item.type === 'prompt') await loadModels();
-      else if (item.type === 'agent') await loadAgentMetadataOptions();
-      else if (item.type !== 'workflow') await loadToolMetadataOptions();
-    } catch (err) {
-      showToast(err.message, 'error');
-    } finally {
-      el.deleteConfirmBtn.disabled = false;
-      state.itemToDelete = null;
+  try {
+    const res = await fetch('/api/curator/status', { headers });
+    if (res.ok) {
+      const data = await res.json();
+      state.isCurator = Boolean(data.isCurator);
+      updateCuratorUI();
     }
+  } catch (err) {
+    console.warn('Curator status check failed:', err);
   }
+}
 
-  // --- Layout & View Mode ---
-
-  function setViewMode(mode) {
-    state.viewMode = mode;
-    localStorage.setItem('pilot_view_mode', mode);
-
-    el.viewListBtn.classList.toggle('active', mode === 'list');
-    el.viewGridBtn.classList.toggle('active', mode === 'grid');
-
-    el.resourcesList.classList.toggle('view-list', mode === 'list');
-    el.resourcesList.classList.toggle('view-grid', mode === 'grid');
+function updateCuratorUI() {
+  if (el.curatorPill) {
+    el.curatorPill.classList.toggle('hidden', !state.isCurator);
   }
-
-  // --- Event Listeners Setup ---
-
-  function initEventListeners() {
-    // Language Toggle Button
-    if (el.langToggleBtn) {
-      el.langToggleBtn.addEventListener('click', () => {
-        toggleLanguage();
-      });
-    }
-
-    // Add dropdown toggle
-    el.addBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const parent = el.addBtn.closest('.dropdown-wrapper');
-      const isExpanded = parent.classList.toggle('open');
-      el.addDropdownMenu.classList.toggle('hidden', !isExpanded);
-      el.addBtn.setAttribute('aria-expanded', String(isExpanded));
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.dropdown-wrapper')) {
-        document.querySelectorAll('.dropdown-wrapper').forEach((d) => {
-          d.classList.remove('open');
-          const menu = d.querySelector('.dropdown-menu');
-          if (menu) menu.classList.add('hidden');
-        });
-      }
-    });
-
-    if (el.menuAddAgentBtn) {
-      el.menuAddAgentBtn.addEventListener('click', () => {
-        el.addDropdownMenu.classList.add('hidden');
-        el.addBtn.closest('.dropdown-wrapper')?.classList.remove('open');
-        openAgentFormDialog();
-      });
-    }
-
-    if (el.menuAddWorkflowBtn) {
-      el.menuAddWorkflowBtn.addEventListener('click', () => {
-        el.addDropdownMenu.classList.add('hidden');
-        el.addBtn.closest('.dropdown-wrapper')?.classList.remove('open');
-        openWorkflowFormDialog();
-      });
-    }
-
-    el.menuAddToolBtn.addEventListener('click', () => {
-      el.addDropdownMenu.classList.add('hidden');
-      el.addBtn.closest('.dropdown-wrapper')?.classList.remove('open');
-      openToolFormDialog();
-    });
-
-    el.menuAddPromptBtn.addEventListener('click', () => {
-      el.addDropdownMenu.classList.add('hidden');
-      el.addBtn.closest('.dropdown-wrapper')?.classList.remove('open');
-      openPromptFormDialog();
-    });
-
-    // Empty state buttons
-    if (el.emptyAddAgentBtn) el.emptyAddAgentBtn.addEventListener('click', () => openAgentFormDialog());
-    if (el.emptyAddWorkflowBtn) el.emptyAddWorkflowBtn.addEventListener('click', () => openWorkflowFormDialog());
-    el.emptyAddToolBtn.addEventListener('click', () => openToolFormDialog());
-    el.emptyAddPromptBtn.addEventListener('click', () => openPromptFormDialog());
-
-    // Search input with debounce
-    const handleSearchDebounced = debounce((val) => {
-      state.q = val.trim();
-      el.searchClear.classList.toggle('hidden', state.q === '');
-      loadData();
-    }, 250);
-
-    el.search.addEventListener('input', (e) => {
-      handleSearchDebounced(e.target.value);
-    });
-
-    el.searchClear.addEventListener('click', () => {
-      el.search.value = '';
-      state.q = '';
-      el.searchClear.classList.add('hidden');
-      el.search.focus();
-      loadData();
-    });
-
-    // View layout toggles
-    el.viewListBtn.addEventListener('click', () => setViewMode('list'));
-    el.viewGridBtn.addEventListener('click', () => setViewMode('grid'));
-
-    // Navigation buttons (All Resources, Agents, Workflows, Tools, Prompts, Favorites)
-    document.querySelectorAll('[data-filter-view]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('[data-filter-view]').forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const view = btn.getAttribute('data-filter-view');
-        state.currentNav = view;
-
-        if (view === 'favorites') {
-          state.favorite = true;
-        } else {
-          state.favorite = null;
-        }
-
-        // Sidebar filters visibility toggle
-        if (view === 'agents') {
-          if (el.sidebarAgentsFilters) el.sidebarAgentsFilters.style.display = 'block';
-          if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'none';
-          el.sidebarToolsFilters.style.display = 'none';
-          el.sidebarPromptsFilters.style.display = 'none';
-        } else if (view === 'workflows') {
-          if (el.sidebarAgentsFilters) el.sidebarAgentsFilters.style.display = 'none';
-          if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'block';
-          el.sidebarToolsFilters.style.display = 'none';
-          el.sidebarPromptsFilters.style.display = 'none';
-        } else if (view === 'tools') {
-          if (el.sidebarAgentsFilters) el.sidebarAgentsFilters.style.display = 'none';
-          if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'none';
-          el.sidebarToolsFilters.style.display = 'block';
-          el.sidebarPromptsFilters.style.display = 'none';
-        } else if (view === 'prompts') {
-          if (el.sidebarAgentsFilters) el.sidebarAgentsFilters.style.display = 'none';
-          if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'none';
-          el.sidebarToolsFilters.style.display = 'none';
-          el.sidebarPromptsFilters.style.display = 'block';
-        } else {
-          if (el.sidebarAgentsFilters) el.sidebarAgentsFilters.style.display = 'block';
-          if (el.sidebarWorkflowsFilters) el.sidebarWorkflowsFilters.style.display = 'block';
-          el.sidebarToolsFilters.style.display = 'block';
-          el.sidebarPromptsFilters.style.display = 'block';
-        }
-
-        loadData();
-      });
-    });
-
-    // Agent filters in sidebar
-    if (el.agentStatusFilterSelect) {
-      el.agentStatusFilterSelect.addEventListener('change', (e) => {
-        state.agentStatus = e.target.value || null;
-        loadData();
-      });
-    }
-
-    if (el.agentAutonomyFilterSelect) {
-      el.agentAutonomyFilterSelect.addEventListener('change', (e) => {
-        state.agentAutonomy = e.target.value || null;
-        loadData();
-      });
-    }
-
-    if (el.agentRuntimeFilterSelect) {
-      el.agentRuntimeFilterSelect.addEventListener('change', (e) => {
-        state.agentRuntime = e.target.value || null;
-        loadData();
-      });
-    }
-
-    if (el.agentModelFilterSelect) {
-      el.agentModelFilterSelect.addEventListener('change', (e) => {
-        state.agentModel = e.target.value || null;
-        loadData();
-      });
-    }
-
-    // Workflow filters in sidebar
-    if (el.workflowStatusFilterSelect) {
-      el.workflowStatusFilterSelect.addEventListener('change', (e) => {
-        state.workflowStatus = e.target.value || null;
-        loadData();
-      });
-    }
-
-    if (el.workflowDiffFilterSelect) {
-      el.workflowDiffFilterSelect.addEventListener('change', (e) => {
-        state.workflowDifficulty = e.target.value || null;
-        loadData();
-      });
-    }
-
-    // Tool filters in sidebar
-    el.toolKindFilterSelect.addEventListener('change', (e) => {
-      state.toolKind = e.target.value || null;
-      loadData();
-    });
-
-    el.toolCategoryFilterSelect.addEventListener('change', (e) => {
-      state.toolCategory = e.target.value || null;
-      loadData();
-    });
-
-    el.toolPricingFilterSelect.addEventListener('change', (e) => {
-      state.toolPricing = e.target.value || null;
-      loadData();
-    });
-
-    // Prompt model filter
-    el.modelFilterSelect.addEventListener('change', (e) => {
-      state.model = e.target.value || null;
-      loadData();
-    });
-
-    // Sort select
-    el.sortSelect.addEventListener('change', (e) => {
-      const [field, dir] = e.target.value.split(':');
-      state.sort = field;
-      state.order = dir;
-      loadData();
-    });
-
-    // Clear tag button
-    el.clearTagBtn.addEventListener('click', () => {
-      state.tag = null;
-      loadData();
-      renderTagsList();
-    });
-
-    // Load More button
-    el.loadMoreBtn.addEventListener('click', () => {
-      state.offset += state.limit;
-      loadData(true);
-    });
-
-    // Workflow Form Dialog events
-    if (el.workflowForm) el.workflowForm.addEventListener('submit', handleWorkflowFormSubmit);
-    if (el.workflowFormCloseBtn) el.workflowFormCloseBtn.addEventListener('click', closeWorkflowFormDialog);
-    if (el.workflowFormCancelBtn) el.workflowFormCancelBtn.addEventListener('click', closeWorkflowFormDialog);
-    if (el.workflowAddStepBtn) {
-      el.workflowAddStepBtn.addEventListener('click', () => {
-        state.currentEditingWorkflowSteps.push({
-          title: '',
-          instructions: '',
-          linkedResources: [],
-        });
-        renderWorkflowFormSteps();
-      });
-    }
-
-    // Resource Picker Dialog events
-    if (el.resourcePickerCloseBtn) el.resourcePickerCloseBtn.addEventListener('click', closeResourcePicker);
-    if (el.resourcePickerCancelBtn) el.resourcePickerCancelBtn.addEventListener('click', closeResourcePicker);
-    if (el.resourcePickerSearch) {
-      const handlePickerSearchDebounced = debounce((val) => {
-        searchResourcesForPicker(val.trim());
-      }, 200);
-      el.resourcePickerSearch.addEventListener('input', (e) => {
-        handlePickerSearchDebounced(e.target.value);
-      });
-    }
-
-    // Agent Form Dialog events
-    if (el.agentForm) el.agentForm.addEventListener('submit', handleAgentFormSubmit);
-    if (el.agentFormCloseBtn) el.agentFormCloseBtn.addEventListener('click', closeAgentFormDialog);
-    if (el.agentFormCancelBtn) el.agentFormCancelBtn.addEventListener('click', closeAgentFormDialog);
-    if (el.inputAgentInstructions) el.inputAgentInstructions.addEventListener('input', updateAgentInstructionsCounter);
-    if (el.agentAddResourceBtn) el.agentAddResourceBtn.addEventListener('click', () => openResourcePicker('agent_resource'));
-
-    // Agent Detail Dialog events
-    if (el.agentDetailCloseBtn) el.agentDetailCloseBtn.addEventListener('click', closeAgentDetailDialog);
-    if (el.agentDetailFavBtn) {
-      el.agentDetailFavBtn.addEventListener('click', () => {
-        if (state.activeDetailAgent) {
-          toggleAgentFavorite(state.activeDetailAgent, el.agentDetailFavBtn);
-        }
-      });
-    }
-    if (el.agentDetailCopyInstructionsBtn) {
-      el.agentDetailCopyInstructionsBtn.addEventListener('click', () => {
-        if (state.activeDetailAgent) {
-          copyToClipboard(state.activeDetailAgent.instructions || '', el.agentDetailCopyInstructionsBtn);
-        }
-      });
-    }
-    if (el.agentDetailCopyFullBtn) {
-      el.agentDetailCopyFullBtn.addEventListener('click', () => {
-        if (state.activeDetailAgent) {
-          copyFullAgent(state.activeDetailAgent, el.agentDetailCopyFullBtn);
-        }
-      });
-    }
-    if (el.agentDetailEditBtn) {
-      el.agentDetailEditBtn.addEventListener('click', () => {
-        if (state.activeDetailAgent) {
-          const a = state.activeDetailAgent;
-          closeAgentDetailDialog();
-          openAgentFormDialog(a);
-        }
-      });
-    }
-    if (el.agentDetailDuplicateBtn) {
-      el.agentDetailDuplicateBtn.addEventListener('click', () => {
-        if (state.activeDetailAgent) {
-          duplicateAgent(state.activeDetailAgent);
-        }
-      });
-    }
-    if (el.agentDetailDeleteBtn) {
-      el.agentDetailDeleteBtn.addEventListener('click', () => {
-        if (state.activeDetailAgent) {
-          openDeleteDialog(state.activeDetailAgent, 'agent');
-        }
-      });
-    }
-
-    // Tool Form Dialog events
-    el.toolForm.addEventListener('submit', handleToolFormSubmit);
-    el.toolFormCloseBtn.addEventListener('click', closeToolFormDialog);
-    el.toolFormCancelBtn.addEventListener('click', closeToolFormDialog);
-    el.toolFetchMetaBtn.addEventListener('click', handleFetchMetadata);
-
-    // Prompt Form Dialog events
-    el.promptForm.addEventListener('submit', handlePromptFormSubmit);
-    el.promptFormCloseBtn.addEventListener('click', closePromptFormDialog);
-    el.promptFormCancelBtn.addEventListener('click', closePromptFormDialog);
-
-    // Workflow Detail Dialog events
-    if (el.workflowDetailCloseBtn) el.workflowDetailCloseBtn.addEventListener('click', closeWorkflowDetailDialog);
-    if (el.workflowDetailFavBtn) {
-      el.workflowDetailFavBtn.addEventListener('click', () => {
-        if (state.activeDetailWorkflow) {
-          toggleWorkflowFavorite(state.activeDetailWorkflow, el.workflowDetailFavBtn);
-        }
-      });
-    }
-    if (el.workflowDetailCopyMdBtn) {
-      el.workflowDetailCopyMdBtn.addEventListener('click', async () => {
-        if (state.activeDetailWorkflow) {
-          const md = await getWorkflowMarkdown(state.activeDetailWorkflow);
-          copyToClipboard(md, el.workflowDetailCopyMdBtn);
-        }
-      });
-    }
-    if (el.workflowDetailEditBtn) {
-      el.workflowDetailEditBtn.addEventListener('click', () => {
-        if (state.activeDetailWorkflow) {
-          const wf = state.activeDetailWorkflow;
-          closeWorkflowDetailDialog();
-          openWorkflowFormDialog(wf);
-        }
-      });
-    }
-    if (el.workflowDetailDuplicateBtn) {
-      el.workflowDetailDuplicateBtn.addEventListener('click', () => {
-        if (state.activeDetailWorkflow) {
-          duplicateWorkflow(state.activeDetailWorkflow);
-        }
-      });
-    }
-    if (el.workflowDetailDeleteBtn) {
-      el.workflowDetailDeleteBtn.addEventListener('click', () => {
-        if (state.activeDetailWorkflow) {
-          openDeleteDialog(state.activeDetailWorkflow, 'workflow');
-        }
-      });
-    }
-
-    // Tool Detail Dialog events
-    el.toolDetailCloseBtn.addEventListener('click', closeToolDetailDialog);
-    el.toolDetailFavBtn.addEventListener('click', () => {
-      if (state.activeDetailTool) {
-        toggleToolFavorite(state.activeDetailTool, el.toolDetailFavBtn);
-      }
-    });
-
-    el.toolDetailCopyUrlBtn.addEventListener('click', () => {
-      if (state.activeDetailTool) {
-        copyToClipboard(state.activeDetailTool.url, el.toolDetailCopyUrlBtn);
-      }
-    });
-
-    el.toolDetailEditBtn.addEventListener('click', () => {
-      if (state.activeDetailTool) {
-        const t = state.activeDetailTool;
-        closeToolDetailDialog();
-        openToolFormDialog(t);
-      }
-    });
-
-    el.toolDetailDuplicateBtn.addEventListener('click', () => {
-      if (state.activeDetailTool) {
-        duplicateTool(state.activeDetailTool);
-      }
-    });
-
-    el.toolDetailDeleteBtn.addEventListener('click', () => {
-      if (state.activeDetailTool) {
-        openDeleteDialog(state.activeDetailTool, state.activeDetailTool.kind || 'tool');
-      }
-    });
-
-    // Prompt Detail Dialog events
-    el.promptDetailCloseBtn.addEventListener('click', closePromptDetailDialog);
-    el.promptDetailFavBtn.addEventListener('click', () => {
-      if (state.activeDetailPrompt) {
-        togglePromptFavorite(state.activeDetailPrompt, el.promptDetailFavBtn);
-      }
-    });
-
-    el.promptDetailCopyBtn.addEventListener('click', () => {
-      if (state.activeDetailPrompt) {
-        const content = state.activeDetailPrompt.content || state.activeDetailPrompt.extra?.content || '';
-        copyToClipboard(content, el.promptDetailCopyBtn);
-      }
-    });
-
-    el.promptDetailEditBtn.addEventListener('click', () => {
-      if (state.activeDetailPrompt) {
-        const p = state.activeDetailPrompt;
-        closePromptDetailDialog();
-        openPromptFormDialog(p);
-      }
-    });
-
-    el.promptDetailDuplicateBtn.addEventListener('click', () => {
-      if (state.activeDetailPrompt) {
-        duplicatePrompt(state.activeDetailPrompt);
-      }
-    });
-
-    el.promptDetailDeleteBtn.addEventListener('click', () => {
-      if (state.activeDetailPrompt) {
-        openDeleteDialog(state.activeDetailPrompt, 'prompt');
-      }
-    });
-
-    // Delete Confirmation events
-    el.deleteCancelBtn.addEventListener('click', () => el.deleteDialog.close());
-    el.deleteConfirmBtn.addEventListener('click', confirmDelete);
-
-    // Mobile menu toggle
-    el.mobileMenuToggle.addEventListener('click', () => {
-      el.sidebar.classList.toggle('open');
-    });
-
-    // Close dialogs on outside click
-    [
-      el.agentFormDialog,
-      el.agentDetailDialog,
-      el.workflowFormDialog,
-      el.workflowDetailDialog,
-      el.resourcePickerDialog,
-      el.toolFormDialog,
-      el.toolDetailDialog,
-      el.promptFormDialog,
-      el.promptDetailDialog,
-      el.deleteDialog,
-    ].filter(Boolean).forEach((dialog) => {
-      dialog.addEventListener('click', (e) => {
-        const rect = dialog.getBoundingClientRect();
-        const isInDialog =
-          rect.top <= e.clientY &&
-          e.clientY <= rect.top + rect.height &&
-          rect.left <= e.clientX &&
-          e.clientX <= rect.left + rect.width;
-        if (!isInDialog) {
-          dialog.close();
-          if (dialog === el.agentDetailDialog) closeAgentDetailDialog();
-          if (dialog === el.workflowDetailDialog) closeWorkflowDetailDialog();
-          if (dialog === el.promptDetailDialog) closePromptDetailDialog();
-          if (dialog === el.toolDetailDialog) closeToolDetailDialog();
-        }
-      });
-    });
-
-    // Keyboard Shortcuts
-    window.addEventListener('keydown', (e) => {
-      // Cmd/Ctrl + K -> Focus Search
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        el.search.focus();
-        el.search.select();
-        return;
-      }
-
-      // Escape -> Close dialogs
-      if (e.key === 'Escape') {
-        if (el.deleteDialog?.open) {
-          el.deleteDialog.close();
-          return;
-        }
-        if (el.resourcePickerDialog?.open) {
-          closeResourcePicker();
-          return;
-        }
-        if (el.agentFormDialog?.open) {
-          closeAgentFormDialog();
-          return;
-        }
-        if (el.agentDetailDialog?.open) {
-          closeAgentDetailDialog();
-          return;
-        }
-        if (el.workflowFormDialog?.open) {
-          closeWorkflowFormDialog();
-          return;
-        }
-        if (el.workflowDetailDialog?.open) {
-          closeWorkflowDetailDialog();
-          return;
-        }
-        if (el.toolFormDialog?.open) {
-          closeToolFormDialog();
-          return;
-        }
-        if (el.promptFormDialog?.open) {
-          closePromptFormDialog();
-          return;
-        }
-        if (el.toolDetailDialog?.open) {
-          closeToolDetailDialog();
-          return;
-        }
-        if (el.promptDetailDialog?.open) {
-          closePromptDetailDialog();
-          return;
-        }
-        if (document.activeElement === el.search && el.search.value) {
-          el.search.value = '';
-          state.q = '';
-          el.searchClear.classList.add('hidden');
-          loadData();
-        }
-        return;
-      }
-
-      // Cmd/Ctrl + Enter in Form Dialog -> Save
-      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-        if (el.agentFormDialog?.open) {
-          e.preventDefault();
-          handleAgentFormSubmit();
-          return;
-        }
-        if (el.workflowFormDialog?.open) {
-          e.preventDefault();
-          handleWorkflowFormSubmit();
-          return;
-        }
-        if (el.toolFormDialog?.open) {
-          e.preventDefault();
-          handleToolFormSubmit();
-          return;
-        }
-        if (el.promptFormDialog?.open) {
-          e.preventDefault();
-          handlePromptFormSubmit();
-          return;
-        }
-      }
-    });
-
-    // Handle browser popstate / back button
-    window.addEventListener('popstate', checkUrlNavigation);
-  }
-
-  // --- Initial URL Navigation Check ---
-
-  async function checkUrlNavigation() {
-    const urlParams = new URLSearchParams(window.location.search);
-
-    const agentId = urlParams.get('agent');
-    const agentMatch = window.location.pathname.match(/^\/agent\/([^/]+)$/);
-    const targetAgentId = agentId || (agentMatch ? agentMatch[1] : null);
-
-    if (targetAgentId) {
-      await openAgentDetailDialog(targetAgentId);
-      return;
-    }
-
-    const workflowId = urlParams.get('workflow');
-    const workflowMatch = window.location.pathname.match(/^\/workflow\/([^/]+)$/);
-    const targetWorkflowId = workflowId || (workflowMatch ? workflowMatch[1] : null);
-
-    if (targetWorkflowId) {
-      await openWorkflowDetailDialog(targetWorkflowId);
-      return;
-    }
-
-    const toolId = urlParams.get('tool');
-    const toolMatch = window.location.pathname.match(/^\/tool\/([^/]+)$/);
-    const targetToolId = toolId || (toolMatch ? toolMatch[1] : null);
-
-    if (targetToolId) {
-      await openToolDetailDialog(targetToolId);
-      return;
-    }
-
-    const promptId = urlParams.get('prompt');
-    const promptMatch = window.location.pathname.match(/^\/prompt\/([^/]+)$/);
-    const targetPromptId = promptId || (promptMatch ? promptMatch[1] : null);
-
-    if (targetPromptId) {
-      await openPromptDetailDialog(targetPromptId);
-    }
-  }
-
-  // --- Application Initialization ---
-
-  async function init() {
-    setViewMode(state.viewMode);
-    setLanguage(state.lang); // Defaults to English unless Vietnamese was saved
-    initEventListeners();
-
-    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-    if (isMac && el.searchKbd) {
-      el.searchKbd.textContent = '⌘K';
-    }
-
-    await Promise.all([
-      loadData(),
-      loadTags(),
-      loadModels(),
-      loadToolMetadataOptions(),
-      loadAgentMetadataOptions(),
-    ]);
-    await checkUrlNavigation();
-  }
-
-  // Run on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
+  document.querySelectorAll('.curator-only').forEach(elem => {
+    elem.classList.toggle('hidden', !state.isCurator);
+  });
+}
+
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Boot application when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}

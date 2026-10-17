@@ -4,11 +4,17 @@
  * Represents universally shared metadata for any AI-related resource in Pilot.
  * Domain code is strictly decoupled from Cloudflare APIs and persistence details.
  */
+
+export type ResourceOrigin = 'curated' | 'user' | 'discovered';
+
 export interface Resource {
   readonly id: string;
   readonly type: string;
   readonly title: string;
   readonly description: string | null;
+  readonly slug?: string | null;
+  readonly featured: boolean;
+  readonly origin: ResourceOrigin;
   readonly favorite: boolean;
   readonly createdAt: string;
   readonly updatedAt: string;
@@ -19,6 +25,9 @@ export interface CreateResourceInput {
   readonly type: string;
   readonly title: string;
   readonly description?: string | null;
+  readonly slug?: string | null;
+  readonly featured?: boolean;
+  readonly origin?: ResourceOrigin;
   readonly favorite?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
@@ -41,6 +50,9 @@ export function createResource(input: CreateResourceInput): Resource {
     type: input.type.trim().toLowerCase(),
     title: input.title.trim(),
     description: input.description?.trim() ?? null,
+    slug: input.slug && input.slug.trim() !== '' ? input.slug.trim().toLowerCase() : null,
+    featured: Boolean(input.featured),
+    origin: (input.origin ?? 'curated') as ResourceOrigin,
     favorite: Boolean(input.favorite),
     createdAt: input.createdAt ?? now,
     updatedAt: input.updatedAt ?? now,

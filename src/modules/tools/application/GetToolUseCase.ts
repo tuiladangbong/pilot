@@ -4,8 +4,8 @@ import { ToolDto, toToolDto } from './ToolDto';
 export class GetToolUseCase {
   constructor(private readonly toolRepo: ToolRepository) {}
 
-  async execute(id: string): Promise<ToolDto | null> {
-    const tool = await this.toolRepo.findById(id);
+  async execute(idOrSlug: string): Promise<ToolDto | null> {
+    const tool = await this.toolRepo.findByIdOrSlug(idOrSlug);
     return tool ? toToolDto(tool) : null;
   }
 }
