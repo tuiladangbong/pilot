@@ -11,8 +11,23 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#39;');
 }
 
+function withNoRobotHeaders(response: Response): Response {
+  const newHeaders = new Headers(response.headers);
+  newHeaders.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: newHeaders,
+  });
+}
+
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    const res = await this.handleFetch(request, env, ctx);
+    return withNoRobotHeaders(res);
+  },
+
+  async handleFetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const deps = createCloudflareDependencies(env);
 
