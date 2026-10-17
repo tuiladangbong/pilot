@@ -12,7 +12,7 @@ export class ListToolsUseCase {
   constructor(private readonly toolRepo: ToolRepository) {}
 
   async execute(filter?: ListToolsFilter): Promise<ListToolsResult> {
-    const limit = Math.min(Math.max(filter?.limit ?? 50, 1), 100);
+    const limit = Math.min(Math.max(filter?.limit ?? 50, 1), 500);
     const offset = Math.max(filter?.offset ?? 0, 0);
 
     const { tools, total } = await this.toolRepo.list({

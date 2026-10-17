@@ -117,7 +117,7 @@ export class D1ResourceRepository implements ResourceRepository {
   }
 
   async list(filter?: ListResourcesFilter): Promise<{ resources: ResourceWithDetails[]; total: number }> {
-    const limit = Math.min(Math.max(filter?.limit ?? 50, 1), 100);
+    const limit = Math.min(Math.max(filter?.limit ?? 50, 1), 500);
     const offset = Math.max(filter?.offset ?? 0, 0);
 
     const conditions: string[] = [];

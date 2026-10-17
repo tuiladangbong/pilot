@@ -1125,9 +1125,27 @@ body.newspaper-body {
   color: var(--ink);
   text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
+  padding: 1px 4px;
+  border-radius: 2px;
+  transition: all 120ms ease;
 }
 
 .cat-view-all:hover {
+  background-color: var(--ink);
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.tool-url-link {
+  color: var(--ink-secondary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 120ms ease;
+}
+
+.tool-url-link:hover {
+  color: var(--accent-red);
   text-decoration: underline;
 }
 
@@ -1370,6 +1388,7 @@ body.newspaper-body {
   padding: 14px 16px;
   border-bottom: 2px solid var(--border-dark);
   background-color: var(--paper-light);
+  min-height: 65vh;
 }
 
 .category-header-row {

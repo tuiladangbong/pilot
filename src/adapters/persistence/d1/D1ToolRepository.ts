@@ -153,7 +153,7 @@ export class D1ToolRepository implements ToolRepository {
   }
 
   async list(filter?: ListToolsFilter): Promise<{ tools: Tool[]; total: number }> {
-    const limit = Math.min(Math.max(filter?.limit ?? 50, 1), 100);
+    const limit = Math.min(Math.max(filter?.limit ?? 50, 1), 500);
     const offset = Math.max(filter?.offset ?? 0, 0);
 
     const conditions: string[] = [];
