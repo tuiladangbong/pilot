@@ -11,6 +11,7 @@ import {
 
 // Application State
 const state = {
+  activeHubTab: 'tools', // 'tools' | 'prompts' | 'workflows' | 'agents'
   searchQuery: '',
   activeCategory: 'all',
   activeLetter: null,
@@ -21,8 +22,23 @@ const state = {
     platform: 'all',
     openSource: false,
   },
+  promptsFilter: {
+    search: '',
+    model: 'all',
+  },
+  workflowsFilter: {
+    search: '',
+    difficulty: 'all',
+  },
+  agentsFilter: {
+    search: '',
+    autonomy: 'all',
+  },
   isCurator: false,
   allDirectoryTools: [],
+  allPrompts: [],
+  allWorkflows: [],
+  allAgents: [],
   categoryCounts: {
     ai: 0,
     code: 0,
@@ -35,10 +51,24 @@ const state = {
   },
   visitorFavorites: new Set(),
   selectedTool: null,
+  selectedPrompt: null,
+  selectedWorkflow: null,
+  selectedAgent: null,
 };
 
 // DOM Elements
 const el = {
+  // Hub Navigation & Views
+  resourceHubTabs: document.getElementById('resource-hub-tabs'),
+  toolsView: document.getElementById('tools-view'),
+  promptsView: document.getElementById('prompts-view'),
+  workflowsView: document.getElementById('workflows-view'),
+  agentsView: document.getElementById('agents-view'),
+  countTools: document.getElementById('count-tools'),
+  countPrompts: document.getElementById('count-prompts'),
+  countWorkflows: document.getElementById('count-workflows'),
+  countAgents: document.getElementById('count-agents'),
+
   // Search & Navigation
   searchInput: document.getElementById('search-input'),
   categoryTabs: document.getElementById('category-tabs'),
@@ -56,6 +86,21 @@ const el = {
   filterActiveIndicator: document.getElementById('filter-active-indicator'),
   filterActiveText: document.getElementById('filter-active-text'),
   clearSearchBtn: document.getElementById('clear-search-btn'),
+
+  // Prompts Controls & Grid
+  promptsSearchInput: document.getElementById('prompts-search-input'),
+  promptModelTabs: document.getElementById('prompt-model-tabs'),
+  promptsGrid: document.getElementById('prompts-grid'),
+
+  // Workflows Controls & List
+  workflowsSearchInput: document.getElementById('workflows-search-input'),
+  workflowDiffTabs: document.getElementById('workflow-diff-tabs'),
+  workflowsList: document.getElementById('workflows-list'),
+
+  // Agents Controls & Grid
+  agentsSearchInput: document.getElementById('agents-search-input'),
+  agentAutonomyTabs: document.getElementById('agent-autonomy-tabs'),
+  agentsGrid: document.getElementById('agents-grid'),
 
   // Containers
   topPicksSection: document.getElementById('top-picks-section'),
@@ -87,6 +132,49 @@ const el = {
   modalCuratorFeatureBtn: document.getElementById('modal-curator-feature-btn'),
   modalCuratorEditBtn: document.getElementById('modal-curator-edit-btn'),
   modalCuratorDeleteBtn: document.getElementById('modal-curator-delete-btn'),
+
+  // Prompt Detail Dialog
+  promptDetailDialog: document.getElementById('prompt-detail-dialog'),
+  modalPromptCloseBtn: document.getElementById('modal-prompt-close-btn'),
+  modalPromptTitle: document.getElementById('modal-prompt-title'),
+  modalPromptModel: document.getElementById('modal-prompt-model'),
+  modalPromptDesc: document.getElementById('modal-prompt-desc'),
+  modalPromptTags: document.getElementById('modal-prompt-tags'),
+  modalPromptContent: document.getElementById('modal-prompt-content'),
+  modalPromptCopyBtn: document.getElementById('modal-prompt-copy-btn'),
+  modalPromptCopyBottomBtn: document.getElementById('modal-prompt-copy-bottom-btn'),
+  modalPromptCloseBottomBtn: document.getElementById('modal-prompt-close-bottom-btn'),
+
+  // Workflow Detail Dialog
+  workflowDetailDialog: document.getElementById('workflow-detail-dialog'),
+  modalWorkflowCloseBtn: document.getElementById('modal-workflow-close-btn'),
+  modalWorkflowTitle: document.getElementById('modal-workflow-title'),
+  modalWorkflowPurpose: document.getElementById('modal-workflow-purpose'),
+  modalWorkflowDiff: document.getElementById('modal-workflow-diff'),
+  modalWorkflowTime: document.getElementById('modal-workflow-time'),
+  modalWorkflowSteps: document.getElementById('modal-workflow-steps'),
+  modalWorkflowCopyBtn: document.getElementById('modal-workflow-copy-btn'),
+  modalWorkflowCloseBottomBtn: document.getElementById('modal-workflow-close-bottom-btn'),
+
+  // Agent Detail Dialog
+  agentDetailDialog: document.getElementById('agent-detail-dialog'),
+  modalAgentCloseBtn: document.getElementById('modal-agent-close-btn'),
+  modalAgentTitle: document.getElementById('modal-agent-title'),
+  modalAgentRole: document.getElementById('modal-agent-role'),
+  modalAgentGoal: document.getElementById('modal-agent-goal'),
+  modalAgentAutonomy: document.getElementById('modal-agent-autonomy'),
+  modalAgentRuntime: document.getElementById('modal-agent-runtime'),
+  modalAgentInput: document.getElementById('modal-agent-input'),
+  modalAgentOutput: document.getElementById('modal-agent-output'),
+  modalAgentInstructions: document.getElementById('modal-agent-instructions'),
+  modalAgentTools: document.getElementById('modal-agent-tools'),
+  modalAgentCopyBtn: document.getElementById('modal-agent-copy-btn'),
+  modalAgentCopyBottomBtn: document.getElementById('modal-agent-copy-bottom-btn'),
+  modalAgentCloseBottomBtn: document.getElementById('modal-agent-close-bottom-btn'),
+
+  // Retro Toast
+  retroToast: document.getElementById('retro-toast'),
+  toastMessage: document.getElementById('toast-message'),
 
   // Curator Elements
   curatorPill: document.getElementById('curator-pill'),
@@ -129,10 +217,16 @@ async function init() {
   // 4. Attach all event listeners
   attachEventListeners();
 
-  // 5. Fetch full live API catalog to populate all 213+ verified tools & websites
-  await fetchLiveCatalog();
+  // 5. Fetch full live API catalog and resources across all modules
+  await fetchAllHubResources();
 
-  // 6. Check curator status and route
+  // 6. Check initial hash for direct tab linking (#tools, #prompts, #workflows, #agents)
+  const initialHash = window.location.hash.replace('#', '').toLowerCase();
+  if (['tools', 'prompts', 'workflows', 'agents'].includes(initialHash)) {
+    switchHubTab(initialHash, false);
+  }
+
+  // 7. Check curator status and route
   checkCuratorStatus();
   if (window.location.pathname.startsWith('/admin') || window.location.hash === '#admin') {
     if (!state.isCurator) {
@@ -232,6 +326,7 @@ async function fetchLiveCatalog() {
       renderAllCategories();
       updateCategoryCounts();
       updateTickerCount();
+      updateAllCounts();
 
       // If user had already applied a search or filter, re-run with live data
       if (
@@ -248,6 +343,133 @@ async function fetchLiveCatalog() {
   } catch (err) {
     console.warn('API catalog fetch fallback to static dataset:', err.message);
   }
+}
+
+// ==========================================================================
+// MULTI-MODULE HUB RESOURCE FETCHING & COORDINATION
+// ==========================================================================
+
+async function fetchAllHubResources() {
+  await Promise.allSettled([
+    fetchLiveCatalog(),
+    fetchPrompts(),
+    fetchWorkflows(),
+    fetchAgents()
+  ]);
+  updateAllCounts();
+}
+
+async function fetchPrompts() {
+  try {
+    const res = await fetch('/api/prompts?limit=100');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    if (Array.isArray(json.data)) {
+      state.allPrompts = json.data;
+      if (el.countPrompts) el.countPrompts.textContent = state.allPrompts.length;
+      if (state.activeHubTab === 'prompts') renderPrompts();
+    }
+  } catch (err) {
+    console.warn('Error fetching prompts:', err);
+  }
+}
+
+async function fetchWorkflows() {
+  try {
+    const res = await fetch('/api/workflows?limit=100');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    if (Array.isArray(json.data)) {
+      state.allWorkflows = json.data;
+      if (el.countWorkflows) el.countWorkflows.textContent = state.allWorkflows.length;
+      if (state.activeHubTab === 'workflows') renderWorkflows();
+    }
+  } catch (err) {
+    console.warn('Error fetching workflows:', err);
+  }
+}
+
+async function fetchAgents() {
+  try {
+    const res = await fetch('/api/agents?limit=100');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    if (Array.isArray(json.data)) {
+      state.allAgents = json.data;
+      if (el.countAgents) el.countAgents.textContent = state.allAgents.length;
+      if (state.activeHubTab === 'agents') renderAgents();
+    }
+  } catch (err) {
+    console.warn('Error fetching agents:', err);
+  }
+}
+
+function updateAllCounts() {
+  if (el.countTools) el.countTools.textContent = state.allDirectoryTools.length || '248';
+  if (el.countPrompts) el.countPrompts.textContent = state.allPrompts.length || '11';
+  if (el.countWorkflows) el.countWorkflows.textContent = state.allWorkflows.length || '7';
+  if (el.countAgents) el.countAgents.textContent = state.allAgents.length || '5';
+}
+
+function switchHubTab(tabName, updateHash = true) {
+  state.activeHubTab = tabName;
+
+  // Update hub tab buttons
+  document.querySelectorAll('.hub-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabName);
+  });
+
+  // Toggle views
+  el.toolsView?.classList.toggle('hidden', tabName !== 'tools');
+  el.promptsView?.classList.toggle('hidden', tabName !== 'prompts');
+  el.workflowsView?.classList.toggle('hidden', tabName !== 'workflows');
+  el.agentsView?.classList.toggle('hidden', tabName !== 'agents');
+
+  if (updateHash) {
+    history.replaceState(null, '', '#' + tabName);
+  }
+
+  // Scroll to top of directory smoothly
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Render view-specific data
+  if (tabName === 'prompts') renderPrompts();
+  if (tabName === 'workflows') renderWorkflows();
+  if (tabName === 'agents') renderAgents();
+}
+
+async function copyToClipboard(text, label = 'Copied to clipboard!') {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
+    showToast(label);
+    return true;
+  } catch (err) {
+    console.error('Copy failed:', err);
+    showToast('Failed to copy to clipboard');
+    return false;
+  }
+}
+
+let toastTimer;
+function showToast(msg) {
+  if (!el.retroToast || !el.toastMessage) return;
+  el.toastMessage.textContent = msg;
+  el.retroToast.classList.remove('hidden');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    el.retroToast?.classList.add('hidden');
+  }, 2200);
 }
 
 function mapToDirectoryCategory(catStr, type = '', tags = []) {
@@ -794,10 +1016,639 @@ function sortTools(tools, sortMode) {
 }
 
 // ==========================================================================
+// PROMPTS RENDERING & INTERACTIONS
+// ==========================================================================
+
+function renderPrompts() {
+  if (!el.promptsGrid) return;
+
+  let filtered = [...state.allPrompts];
+
+  // Model filter
+  if (state.promptsFilter.model !== 'all') {
+    const targetModel = state.promptsFilter.model.toLowerCase();
+    filtered = filtered.filter(p => {
+      const m = (p.model || '').toLowerCase();
+      const tags = (p.tags || []).map(t => String(t).toLowerCase());
+      return m.includes(targetModel) || tags.some(t => t.includes(targetModel));
+    });
+  }
+
+  // Search filter
+  if (state.promptsFilter.search.trim()) {
+    const q = state.promptsFilter.search.toLowerCase().trim();
+    filtered = filtered.filter(p => {
+      const titleMatch = (p.title || '').toLowerCase().includes(q);
+      const descMatch = (p.description || '').toLowerCase().includes(q);
+      const contentMatch = (p.content || '').toLowerCase().includes(q);
+      const tagsMatch = (p.tags || []).some(t => String(t).toLowerCase().includes(q));
+      return titleMatch || descMatch || contentMatch || tagsMatch;
+    });
+  }
+
+  if (filtered.length === 0) {
+    el.promptsGrid.innerHTML = `
+      <div class="no-results-box" style="grid-column: 1 / -1; padding: 24px; text-align: center; background: var(--paper-light); border: 1.5px solid var(--border-dark);">
+        <p style="font-family: var(--font-headline); font-size: 16px; margin-bottom: 6px;">No system prompts matched your filter.</p>
+        <p style="color: var(--ink-secondary); font-size: 12px;">Try selecting "ALL MODELS" or clearing search keywords.</p>
+      </div>
+    `;
+    return;
+  }
+
+  el.promptsGrid.innerHTML = filtered.map(p => {
+    const modelLabel = p.model || 'Universal / LLM';
+    const tagsHtml = (p.tags || [])
+      .map(t => `<span class="prompt-tag-pill">#${escapeHtml(t)}</span>`)
+      .join('');
+    
+    const previewContent = p.content || '';
+
+    return `
+      <article class="prompt-card" data-id="${p.id}">
+        <div class="prompt-card-head">
+          <span class="prompt-model-badge">${escapeHtml(modelLabel)}</span>
+          <button type="button" class="tool-bookmark-btn ${state.visitorFavorites.has(p.id) ? 'bookmarked' : ''}" data-id="${p.id}" title="Bookmark prompt">
+            ${state.visitorFavorites.has(p.id) ? '★' : '☆'}
+          </button>
+        </div>
+
+        <h3 class="prompt-card-title">${escapeHtml(p.title)}</h3>
+        <p class="prompt-card-desc">${escapeHtml(p.description || '')}</p>
+
+        <div class="prompt-tags-row">
+          ${tagsHtml}
+        </div>
+
+        <div class="prompt-code-wrap">
+          <div class="prompt-code-header">
+            <span>PROMPT PREVIEW</span>
+            <button type="button" class="copy-code-btn" data-copy-id="${p.id}" title="Copy full prompt text">📋 COPY PROMPT</button>
+          </div>
+          <pre class="prompt-code-block">${escapeHtml(previewContent)}</pre>
+        </div>
+
+        <div class="prompt-card-actions">
+          <button type="button" class="btn-copy-prompt" data-copy-id="${p.id}">📋 COPY PROMPT</button>
+          <button type="button" class="btn-view-prompt" data-view-id="${p.id}">EXPAND →</button>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function openPromptModal(prompt) {
+  state.selectedPrompt = prompt;
+  if (!el.promptDetailDialog) return;
+
+  if (el.modalPromptTitle) el.modalPromptTitle.textContent = prompt.title;
+  if (el.modalPromptModel) el.modalPromptModel.textContent = prompt.model || 'Universal LLM';
+  if (el.modalPromptDesc) el.modalPromptDesc.textContent = prompt.description || '';
+  if (el.modalPromptContent) el.modalPromptContent.textContent = prompt.content || '';
+  if (el.modalPromptTags) {
+    el.modalPromptTags.textContent = (prompt.tags || []).map(t => `#${t}`).join('  ');
+  }
+
+  el.promptDetailDialog.showModal();
+}
+
+// ==========================================================================
+// WORKFLOWS RENDERING & INTERACTIONS
+// ==========================================================================
+
+function renderWorkflows() {
+  if (!el.workflowsList) return;
+
+  let filtered = [...state.allWorkflows];
+
+  // Difficulty filter
+  if (state.workflowsFilter.difficulty !== 'all') {
+    filtered = filtered.filter(w => (w.difficulty || '').toLowerCase() === state.workflowsFilter.difficulty.toLowerCase());
+  }
+
+  // Search filter
+  if (state.workflowsFilter.search.trim()) {
+    const q = state.workflowsFilter.search.toLowerCase().trim();
+    filtered = filtered.filter(w => {
+      const titleMatch = (w.title || '').toLowerCase().includes(q);
+      const descMatch = (w.description || '').toLowerCase().includes(q);
+      const purposeMatch = (w.purpose || '').toLowerCase().includes(q);
+      const stepsMatch = (w.steps || []).some(s => 
+        (s.title || '').toLowerCase().includes(q) || (s.instruction || '').toLowerCase().includes(q)
+      );
+      return titleMatch || descMatch || purposeMatch || stepsMatch;
+    });
+  }
+
+  if (filtered.length === 0) {
+    el.workflowsList.innerHTML = `
+      <div class="no-results-box" style="padding: 24px; text-align: center; background: var(--paper-light); border: 1.5px solid var(--border-dark);">
+        <p style="font-family: var(--font-headline); font-size: 16px; margin-bottom: 6px;">No workflows found matching your criteria.</p>
+        <p style="color: var(--ink-secondary); font-size: 12px;">Try clearing filters to see all available workflows.</p>
+      </div>
+    `;
+    return;
+  }
+
+  el.workflowsList.innerHTML = filtered.map(w => {
+    const diffClass = `diff-${(w.difficulty || 'medium').toLowerCase()}`;
+    const steps = w.steps || [];
+
+    const stepsHtml = steps.map((s, idx) => {
+      const stepNum = String(idx + 1).padStart(2, '0');
+      const linkedTools = s.linkedResources || [];
+      const toolPills = linkedTools.map(lr => `
+        <span class="tool-link-pill" data-tool-slug="${escapeHtml(lr.slug || lr.resourceId)}" data-tool-title="${escapeHtml(lr.title)}" title="View ${escapeHtml(lr.title)} in directory">
+          <span>🔗</span>
+          <span>${escapeHtml(lr.title)}</span>
+        </span>
+      `).join('');
+
+      return `
+        <div class="step-item">
+          <div class="step-num">${stepNum}</div>
+          <div class="step-content">
+            <h4 class="step-title">${escapeHtml(s.title)}</h4>
+            <p class="step-instruction">${escapeHtml(s.instruction)}</p>
+            ${s.notes ? `<p style="font-size: 11px; font-style: italic; color: var(--ink-muted); margin-bottom: 4px;">💡 Note: ${escapeHtml(s.notes)}</p>` : ''}
+            ${linkedTools.length > 0 ? `
+              <div class="step-tools-row">
+                <span class="step-tools-label">USES:</span>
+                ${toolPills}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <article class="workflow-card" data-id="${w.id}">
+        <div class="workflow-card-head">
+          <div class="workflow-badges-left">
+            <span class="diff-badge ${diffClass}">${(w.difficulty || 'MEDIUM').toUpperCase()}</span>
+            <span class="workflow-time-badge">⏱️ ${escapeHtml(w.estimatedTime || 'Varies')}</span>
+            <span class="workflow-step-count">${steps.length} STEPS</span>
+          </div>
+          <button type="button" class="tool-bookmark-btn ${state.visitorFavorites.has(w.id) ? 'bookmarked' : ''}" data-id="${w.id}" title="Bookmark workflow">
+            ${state.visitorFavorites.has(w.id) ? '★' : '☆'}
+          </button>
+        </div>
+
+        <h3 class="workflow-title">${escapeHtml(w.title)}</h3>
+        <p style="font-size: 13px; color: var(--ink-secondary); margin-bottom: 8px;">${escapeHtml(w.description || '')}</p>
+
+        ${w.purpose ? `
+          <div class="workflow-purpose-box">
+            <strong>OUTCOME:</strong> ${escapeHtml(w.purpose)}
+          </div>
+        ` : ''}
+
+        <div class="workflow-steps-timeline">
+          ${stepsHtml}
+        </div>
+
+        <div class="workflow-card-footer">
+          <div class="prompt-tags-row" style="margin: 0;">
+            ${(w.tags || []).map(t => `<span class="prompt-tag-pill">#${escapeHtml(t)}</span>`).join('')}
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn-copy-prompt" data-copy-workflow-id="${w.id}">📋 COPY WORKFLOW GUIDE</button>
+            <button type="button" class="btn-view-prompt" data-view-workflow-id="${w.id}">FULL VIEW →</button>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function openWorkflowModal(workflow) {
+  state.selectedWorkflow = workflow;
+  if (!el.workflowDetailDialog) return;
+
+  if (el.modalWorkflowTitle) el.modalWorkflowTitle.textContent = workflow.title;
+  if (el.modalWorkflowDiff) el.modalWorkflowDiff.textContent = (workflow.difficulty || 'MEDIUM').toUpperCase();
+  if (el.modalWorkflowTime) el.modalWorkflowTime.textContent = `⏱️ ${workflow.estimatedTime || 'Varies'}`;
+  if (el.modalWorkflowPurpose) el.modalWorkflowPurpose.textContent = workflow.purpose || workflow.description || '';
+
+  if (el.modalWorkflowSteps) {
+    const steps = workflow.steps || [];
+    el.modalWorkflowSteps.innerHTML = steps.map((s, idx) => {
+      const stepNum = String(idx + 1).padStart(2, '0');
+      const linkedTools = s.linkedResources || [];
+      const toolPills = linkedTools.map(lr => `
+        <span class="tool-link-pill" data-tool-slug="${escapeHtml(lr.slug || lr.resourceId)}" data-tool-title="${escapeHtml(lr.title)}">
+          <span>🔗</span>
+          <span>${escapeHtml(lr.title)}</span>
+        </span>
+      `).join('');
+
+      return `
+        <div class="step-item">
+          <div class="step-num">${stepNum}</div>
+          <div class="step-content">
+            <h4 class="step-title">${escapeHtml(s.title)}</h4>
+            <p class="step-instruction">${escapeHtml(s.instruction)}</p>
+            ${s.notes ? `<p style="font-size: 11px; font-style: italic; color: var(--ink-muted); margin-bottom: 4px;">💡 ${escapeHtml(s.notes)}</p>` : ''}
+            ${linkedTools.length > 0 ? `
+              <div class="step-tools-row">
+                <span class="step-tools-label">USES:</span>
+                ${toolPills}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  el.workflowDetailDialog.showModal();
+}
+
+function formatWorkflowMarkdown(w) {
+  const lines = [
+    `# Workflow: ${w.title}`,
+    ``,
+    `**Difficulty:** ${w.difficulty || 'Medium'} | **Estimated Time:** ${w.estimatedTime || 'Varies'}`,
+    `**Purpose:** ${w.purpose || w.description || ''}`,
+    ``,
+    `## Operational Steps:`
+  ];
+
+  (w.steps || []).forEach((s, idx) => {
+    lines.push(`### Step ${idx + 1}: ${s.title}`);
+    lines.push(s.instruction);
+    if (s.notes) lines.push(`*Tip: ${s.notes}*`);
+    if (s.linkedResources && s.linkedResources.length > 0) {
+      lines.push(`**Recommended Tools:** ${s.linkedResources.map(r => `${r.title} (${r.url || ''})`).join(', ')}`);
+    }
+    lines.push('');
+  });
+
+  return lines.join('\n');
+}
+
+// ==========================================================================
+// AGENTS RENDERING & INTERACTIONS
+// ==========================================================================
+
+async function renderAgents() {
+  if (!el.agentsGrid) return;
+
+  let filtered = [...state.allAgents];
+
+  // Autonomy filter
+  if (state.agentsFilter.autonomy !== 'all') {
+    filtered = filtered.filter(a => (a.autonomyLevel || '').toLowerCase() === state.agentsFilter.autonomy.toLowerCase());
+  }
+
+  // Search filter
+  if (state.agentsFilter.search.trim()) {
+    const q = state.agentsFilter.search.toLowerCase().trim();
+    filtered = filtered.filter(a => {
+      const titleMatch = (a.title || '').toLowerCase().includes(q);
+      const roleMatch = (a.role || '').toLowerCase().includes(q);
+      const goalMatch = (a.goal || '').toLowerCase().includes(q);
+      const runtimeMatch = (a.runtime || '').toLowerCase().includes(q);
+      return titleMatch || roleMatch || goalMatch || runtimeMatch;
+    });
+  }
+
+  if (filtered.length === 0) {
+    el.agentsGrid.innerHTML = `
+      <div class="no-results-box" style="grid-column: 1 / -1; padding: 24px; text-align: center; background: var(--paper-light); border: 1.5px solid var(--border-dark);">
+        <p style="font-family: var(--font-headline); font-size: 16px; margin-bottom: 6px;">No agent blueprints matched your search.</p>
+        <p style="color: var(--ink-secondary); font-size: 12px;">Try clearing search or autonomy filters.</p>
+      </div>
+    `;
+    return;
+  }
+
+  el.agentsGrid.innerHTML = filtered.map(a => {
+    const autonomy = a.autonomyLevel || 'Assisted';
+    const isAuto = autonomy.toLowerCase() === 'autonomous';
+
+    return `
+      <article class="agent-card" data-id="${a.id}">
+        <div class="agent-card-head">
+          <span class="agent-role-pill">${escapeHtml((a.role || 'AGENT').toUpperCase())}</span>
+          <span class="agent-autonomy-badge ${isAuto ? 'autonomous' : ''}">● ${escapeHtml(autonomy.toUpperCase())}</span>
+        </div>
+
+        <h3 class="agent-card-title">${escapeHtml(a.title)}</h3>
+        <p class="agent-goal-text">"${escapeHtml(a.goal || a.description || '')}"</p>
+
+        <div class="agent-contracts-box">
+          <div class="contract-col">
+            <span class="contract-label">RUNTIME &amp; MODEL</span>
+            <p>${escapeHtml(a.runtime || 'Universal')} • ${escapeHtml(a.model || 'Claude 3.7 / GPT-4o')}</p>
+          </div>
+          <div class="contract-col">
+            <span class="contract-label">SPECIALIZED TOOLS</span>
+            <p>${a.linkedResourceCount ? `${a.linkedResourceCount} Linked Catalog Tools` : 'General CLI / Code'}</p>
+          </div>
+        </div>
+
+        <div class="prompt-tags-row">
+          ${(a.tags || []).map(t => `<span class="prompt-tag-pill">#${escapeHtml(t)}</span>`).join('')}
+        </div>
+
+        <div class="agent-card-actions">
+          <button type="button" class="btn-copy-prompt" data-copy-agent-id="${a.id}">📋 COPY AGENT SPEC</button>
+          <button type="button" class="btn-view-prompt" data-view-agent-id="${a.id}">FULL SPEC →</button>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+async function openAgentModal(agentSummary) {
+  try {
+    const res = await fetch(`/api/agents/${agentSummary.id}`);
+    const json = res.ok ? await res.json() : null;
+    const agent = json?.data || agentSummary;
+    state.selectedAgent = agent;
+
+    if (!el.agentDetailDialog) return;
+
+    if (el.modalAgentTitle) el.modalAgentTitle.textContent = agent.title;
+    if (el.modalAgentRole) el.modalAgentRole.textContent = agent.role || 'Agent';
+    if (el.modalAgentGoal) el.modalAgentGoal.textContent = agent.goal || '';
+    if (el.modalAgentAutonomy) el.modalAgentAutonomy.textContent = (agent.autonomyLevel || 'Assisted').toUpperCase();
+    if (el.modalAgentRuntime) el.modalAgentRuntime.textContent = agent.runtime || 'Claude Code';
+    if (el.modalAgentInput) el.modalAgentInput.textContent = agent.inputDescription || 'User prompts and codebase repository context.';
+    if (el.modalAgentOutput) el.modalAgentOutput.textContent = agent.outputDescription || 'Deterministic code diffs and architectural plans.';
+    if (el.modalAgentInstructions) el.modalAgentInstructions.textContent = agent.instructions || '';
+
+    if (el.modalAgentTools) {
+      const tools = agent.linkedResources || [];
+      if (tools.length > 0) {
+        el.modalAgentTools.innerHTML = `
+          <span class="step-tools-label">SPECIALIZED TOOLS:</span>
+          ${tools.map(t => `
+            <span class="tool-link-pill" data-tool-slug="${escapeHtml(t.slug || t.resourceId)}" data-tool-title="${escapeHtml(t.title)}">
+              <span>🔗</span>
+              <span>${escapeHtml(t.title)}</span>
+            </span>
+          `).join('')}
+        `;
+      } else {
+        el.modalAgentTools.innerHTML = '';
+      }
+    }
+
+    el.agentDetailDialog.showModal();
+  } catch (err) {
+    console.error('Failed to load full agent details:', err);
+  }
+}
+
+async function getFullAgentMarkdown(agentId) {
+  try {
+    const res = await fetch(`/api/agents/${agentId}/full-text`);
+    if (res.ok) {
+      return await res.text();
+    }
+  } catch (e) {}
+
+  const a = state.allAgents.find(x => x.id === agentId);
+  if (!a) return '';
+  return `# Agent Blueprint: ${a.title}\nRole: ${a.role}\nGoal: ${a.goal}\nRuntime: ${a.runtime}\n\n## Instructions:\n${a.instructions || ''}`;
+}
+
+// ==========================================================================
 // EVENT LISTENERS & INTERACTIONS
 // ==========================================================================
 
 function attachEventListeners() {
+  // Hub Navigation Tabs
+  el.resourceHubTabs?.addEventListener('click', e => {
+    const btn = e.target.closest('.hub-tab');
+    if (!btn) return;
+    const tab = btn.dataset.tab;
+    if (tab) switchHubTab(tab);
+  });
+
+  // Footer Hub navigation links
+  document.querySelectorAll('.footer-hub-link').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const tab = link.dataset.tab;
+      if (tab) switchHubTab(tab);
+    });
+  });
+
+  // Hash Change Listener
+  window.addEventListener('hashchange', () => {
+    const hash = window.location.hash.replace('#', '').toLowerCase();
+    if (['tools', 'prompts', 'workflows', 'agents'].includes(hash)) {
+      switchHubTab(hash, false);
+    }
+  });
+
+  // Prompts Search & Filter
+  el.promptsSearchInput?.addEventListener('input', e => {
+    state.promptsFilter.search = e.target.value;
+    renderPrompts();
+  });
+
+  el.promptModelTabs?.addEventListener('click', e => {
+    const btn = e.target.closest('.hub-filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('#prompt-model-tabs .hub-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.promptsFilter.model = btn.dataset.model || 'all';
+    renderPrompts();
+  });
+
+  // Workflows Search & Filter
+  el.workflowsSearchInput?.addEventListener('input', e => {
+    state.workflowsFilter.search = e.target.value;
+    renderWorkflows();
+  });
+
+  el.workflowDiffTabs?.addEventListener('click', e => {
+    const btn = e.target.closest('.hub-filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('#workflow-diff-tabs .hub-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.workflowsFilter.difficulty = btn.dataset.diff || 'all';
+    renderWorkflows();
+  });
+
+  // Agents Search & Filter
+  el.agentsSearchInput?.addEventListener('input', e => {
+    state.agentsFilter.search = e.target.value;
+    renderAgents();
+  });
+
+  el.agentAutonomyTabs?.addEventListener('click', e => {
+    const btn = e.target.closest('.hub-filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('#agent-autonomy-tabs .hub-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.agentsFilter.autonomy = btn.dataset.autonomy || 'all';
+    renderAgents();
+  });
+
+  // Dialog Close Buttons
+  el.modalPromptCloseBtn?.addEventListener('click', () => el.promptDetailDialog?.close());
+  el.modalPromptCloseBottomBtn?.addEventListener('click', () => el.promptDetailDialog?.close());
+  el.modalWorkflowCloseBtn?.addEventListener('click', () => el.workflowDetailDialog?.close());
+  el.modalWorkflowCloseBottomBtn?.addEventListener('click', () => el.workflowDetailDialog?.close());
+  el.modalAgentCloseBtn?.addEventListener('click', () => el.agentDetailDialog?.close());
+  el.modalAgentCloseBottomBtn?.addEventListener('click', () => el.agentDetailDialog?.close());
+
+  // Modal Copy Buttons
+  el.modalPromptCopyBtn?.addEventListener('click', () => {
+    if (state.selectedPrompt) {
+      copyToClipboard(state.selectedPrompt.content, `Copied "${state.selectedPrompt.title}"!`);
+    }
+  });
+  el.modalPromptCopyBottomBtn?.addEventListener('click', () => {
+    if (state.selectedPrompt) {
+      copyToClipboard(state.selectedPrompt.content, `Copied "${state.selectedPrompt.title}"!`);
+    }
+  });
+
+  el.modalWorkflowCopyBtn?.addEventListener('click', () => {
+    if (state.selectedWorkflow) {
+      const md = formatWorkflowMarkdown(state.selectedWorkflow);
+      copyToClipboard(md, `Copied "${state.selectedWorkflow.title}" guide!`);
+    }
+  });
+
+  el.modalAgentCopyBtn?.addEventListener('click', async () => {
+    if (state.selectedAgent) {
+      const md = await getFullAgentMarkdown(state.selectedAgent.id);
+      copyToClipboard(md, `Copied "${state.selectedAgent.title}" specification!`);
+    }
+  });
+  el.modalAgentCopyBottomBtn?.addEventListener('click', async () => {
+    if (state.selectedAgent) {
+      const md = await getFullAgentMarkdown(state.selectedAgent.id);
+      copyToClipboard(md, `Copied "${state.selectedAgent.title}" specification!`);
+    }
+  });
+
+  // Global Delegated Click Handler for Prompt, Workflow, Agent Cards and Linked Tools
+  document.addEventListener('click', async e => {
+    // 1. Copy Prompt
+    const copyPromptBtn = e.target.closest('[data-copy-id]');
+    if (copyPromptBtn) {
+      e.stopPropagation();
+      const id = copyPromptBtn.dataset.copyId;
+      const prompt = state.allPrompts.find(p => p.id === id);
+      if (prompt) {
+        await copyToClipboard(prompt.content, `Copied "${prompt.title}" to clipboard!`);
+        const origText = copyPromptBtn.textContent;
+        copyPromptBtn.textContent = '✓ COPIED!';
+        setTimeout(() => (copyPromptBtn.textContent = origText), 1800);
+      }
+      return;
+    }
+
+    // 2. View Prompt Detail
+    const viewPromptBtn = e.target.closest('[data-view-id]');
+    if (viewPromptBtn) {
+      e.stopPropagation();
+      const id = viewPromptBtn.dataset.viewId;
+      const prompt = state.allPrompts.find(p => p.id === id);
+      if (prompt) openPromptModal(prompt);
+      return;
+    }
+
+    // 3. Copy Workflow Guide
+    const copyWorkflowBtn = e.target.closest('[data-copy-workflow-id]');
+    if (copyWorkflowBtn) {
+      e.stopPropagation();
+      const id = copyWorkflowBtn.dataset.copyWorkflowId;
+      const workflow = state.allWorkflows.find(w => w.id === id);
+      if (workflow) {
+        const md = formatWorkflowMarkdown(workflow);
+        await copyToClipboard(md, `Copied "${workflow.title}" guide!`);
+        const origText = copyWorkflowBtn.textContent;
+        copyWorkflowBtn.textContent = '✓ COPIED GUIDE!';
+        setTimeout(() => (copyWorkflowBtn.textContent = origText), 1800);
+      }
+      return;
+    }
+
+    // 4. View Workflow Detail
+    const viewWorkflowBtn = e.target.closest('[data-view-workflow-id]');
+    if (viewWorkflowBtn) {
+      e.stopPropagation();
+      const id = viewWorkflowBtn.dataset.viewWorkflowId;
+      const workflow = state.allWorkflows.find(w => w.id === id);
+      if (workflow) openWorkflowModal(workflow);
+      return;
+    }
+
+    // 5. Copy Agent Spec
+    const copyAgentBtn = e.target.closest('[data-copy-agent-id]');
+    if (copyAgentBtn) {
+      e.stopPropagation();
+      const id = copyAgentBtn.dataset.copyAgentId;
+      const agent = state.allAgents.find(a => a.id === id);
+      if (agent) {
+        const md = await getFullAgentMarkdown(agent.id);
+        await copyToClipboard(md, `Copied "${agent.title}" specification!`);
+        const origText = copyAgentBtn.textContent;
+        copyAgentBtn.textContent = '✓ COPIED SPEC!';
+        setTimeout(() => (copyAgentBtn.textContent = origText), 1800);
+      }
+      return;
+    }
+
+    // 6. View Agent Detail
+    const viewAgentBtn = e.target.closest('[data-view-agent-id]');
+    if (viewAgentBtn) {
+      e.stopPropagation();
+      const id = viewAgentBtn.dataset.viewAgentId;
+      const agent = state.allAgents.find(a => a.id === id);
+      if (agent) openAgentModal(agent);
+      return;
+    }
+
+    // 7. Click on a Linked Tool Pill (e.g. USES: [ 🔗 Superwhisper ])
+    const toolPill = e.target.closest('.tool-link-pill');
+    if (toolPill) {
+      e.stopPropagation();
+      const slug = toolPill.dataset.toolSlug;
+      const title = toolPill.dataset.toolTitle;
+      const tool = state.allDirectoryTools.find(t => 
+        (slug && (t.slug === slug || t.id === slug)) || 
+        (title && t.name.toLowerCase() === title.toLowerCase())
+      );
+      if (tool) {
+        openToolModal(tool);
+      } else if (slug) {
+        // Fallback fetch resource
+        try {
+          const res = await fetch(`/api/resources/${slug}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.data) {
+              openToolModal({
+                id: data.data.id,
+                name: data.data.title,
+                slug: data.data.slug || slug,
+                description: data.data.description,
+                category: 'AI',
+                pricingLabel: 'Verified',
+                website: data.data.url,
+                displayUrl: data.data.url ? new URL(data.data.url).hostname : '',
+                platforms: ['Web'],
+                featured: Boolean(data.data.featured),
+              });
+            }
+          }
+        } catch (e) {}
+      }
+      return;
+    }
+  });
+
   // 1. Search Input
   let debounceTimer;
   el.searchInput?.addEventListener('input', e => {

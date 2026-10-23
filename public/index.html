@@ -94,8 +94,35 @@
       <div class="ticker-end-stamp blink-90s">● LIVE</div>
     </div>
 
-    <!-- ==================== SEARCH + CATEGORY NAV + A-Z ==================== -->
-    <nav class="nav-row">
+    <!-- ==================== MAIN RESOURCE HUB NAVIGATION TABS ==================== -->
+    <nav class="resource-hub-tabs" id="resource-hub-tabs" aria-label="AI Resource Hub Sections">
+      <button type="button" class="hub-tab active" data-tab="tools">
+        <span class="hub-tab-icon">🗞️</span>
+        <span class="hub-tab-title">DIRECTORY OF TOOLS</span>
+        <span class="hub-tab-count" id="count-tools">248</span>
+      </button>
+      <button type="button" class="hub-tab" data-tab="prompts">
+        <span class="hub-tab-icon">📝</span>
+        <span class="hub-tab-title">SYSTEM PROMPTS</span>
+        <span class="hub-tab-count" id="count-prompts">11</span>
+      </button>
+      <button type="button" class="hub-tab" data-tab="workflows">
+        <span class="hub-tab-icon">⚡</span>
+        <span class="hub-tab-title">AI WORKFLOWS</span>
+        <span class="hub-tab-count" id="count-workflows">7</span>
+      </button>
+      <button type="button" class="hub-tab" data-tab="agents">
+        <span class="hub-tab-icon">🤖</span>
+        <span class="hub-tab-title">AGENT BLUEPRINTS</span>
+        <span class="hub-tab-count" id="count-agents">5</span>
+      </button>
+    </nav>
+
+    <!-- ==================== TAB VIEW 1: TOOLS & WEBSITES DIRECTORY ==================== -->
+    <div id="tools-view" class="hub-view active">
+
+      <!-- ==================== SEARCH + CATEGORY NAV + A-Z ==================== -->
+      <nav class="nav-row">
       <!-- Search Input -->
       <div class="nav-search-zone">
         <label for="search-input" class="sr-only">Search Tools</label>
@@ -523,29 +550,171 @@
       </aside>
 
     </main>
+  </div> <!-- ==================== END OF TAB VIEW 1 (TOOLS) ==================== -->
 
-    <!-- ==================== FOOTER ==================== -->
-    <footer class="directory-footer">
-      <div class="footer-colophon">
-        <span class="footer-title">HUMAN AFTER ALL! DIRECTORY</span>
-        <span class="footer-desc">A directory of useful tools for a brighter internet. Hand-curated, verified &amp; updated weekly.</span>
+  <!-- ==================== TAB VIEW 2: SYSTEM PROMPTS & RULES ==================== -->
+  <section id="prompts-view" class="hub-view hidden" aria-label="System Prompts & Rules">
+    <!-- Section Banner -->
+    <div class="hub-masthead">
+      <div class="hub-masthead-badge">SECTION B • CLASSIFIED DIRECTORY</div>
+      <div class="hub-masthead-title-row">
+        <h2 class="hub-masthead-title">SYSTEM PROMPTS &amp; INSTRUCTION SETS</h2>
+        <span class="hub-masthead-issue">PROD-READY TEMPLATES • TESTED ON CLAUDE 3.7 &amp; GPT-4o</span>
       </div>
-      <div class="footer-links">
-        <a href="#top-picks-section">★ Top Picks</a>
-        <a href="#sec-ai">AI Tools</a>
-        <a href="#sec-code">Code &amp; Dev</a>
-        <a href="#sec-design">Design</a>
-        <a href="#sec-automation">Automation</a>
-        <a href="#sec-video">Video</a>
-        <a href="#sec-audio">Audio</a>
-        <a href="#sec-hosting">Hosting</a>
-        <a href="#sec-productivity">Productivity</a>
-        <button type="button" id="footer-curator-btn" class="footer-curator-btn">Curator Login</button>
+      <p class="hub-masthead-desc">
+        Battle-tested system prompt architectures, strict Cursor rules, penetration-testing code auditors, and anti-hallucination RAG synthesis instructions. Zero fluff, fully executable.
+      </p>
+    </div>
+
+    <!-- Controls: Search & Model Tabs -->
+    <div class="hub-controls-bar">
+      <div class="hub-search-wrap">
+        <input 
+          type="text" 
+          id="prompts-search-input" 
+          class="newspaper-input search-field" 
+          placeholder="Search prompts by title, keyword, or model..." 
+          autocomplete="off"
+        >
+        <span class="search-icon-btn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
       </div>
-      <div class="footer-meta">
-        <span>© 2026 NODBITS PILOT • PUBLIC EDITION • NO TRACKERS • NO SIGNUP</span>
+      <div class="hub-filter-tabs" id="prompt-model-tabs">
+        <span class="control-label">FILTER BY MODEL:</span>
+        <button type="button" class="hub-filter-btn active" data-model="all">ALL MODELS</button>
+        <button type="button" class="hub-filter-btn" data-model="claude">Claude</button>
+        <button type="button" class="hub-filter-btn" data-model="cursor">Cursor</button>
+        <button type="button" class="hub-filter-btn" data-model="gpt">GPT-4o</button>
+        <button type="button" class="hub-filter-btn" data-model="v0">v0 / UI</button>
       </div>
-    </footer>
+    </div>
+
+    <!-- Prompts Grid -->
+    <div class="prompts-grid" id="prompts-grid">
+      <!-- Prompts rendered dynamically -->
+    </div>
+  </section>
+
+  <!-- ==================== TAB VIEW 3: AI WORKFLOWS ==================== -->
+  <section id="workflows-view" class="hub-view hidden" aria-label="AI Workflows & Field Manuals">
+    <!-- Section Banner -->
+    <div class="hub-masthead">
+      <div class="hub-masthead-badge">SECTION C • OPERATIONAL FIELD MANUALS</div>
+      <div class="hub-masthead-title-row">
+        <h2 class="hub-masthead-title">AI WORKFLOWS &amp; PRODUCTION PIPELINES</h2>
+        <span class="hub-masthead-issue">END-TO-END AUTOMATIONS • VERIFIED TOOL INTEGRATIONS</span>
+      </div>
+      <p class="hub-masthead-desc">
+        Step-by-step operational blueprints that connect catalog tools into functional pipelines: from spontaneous voice notes to deployed web apps, autonomous TDD loops, and enterprise hybrid RAG.
+      </p>
+    </div>
+
+    <!-- Controls: Difficulty Filter & Search -->
+    <div class="hub-controls-bar">
+      <div class="hub-search-wrap">
+        <input 
+          type="text" 
+          id="workflows-search-input" 
+          class="newspaper-input search-field" 
+          placeholder="Search workflows by outcome, title, or tools used..." 
+          autocomplete="off"
+        >
+        <span class="search-icon-btn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+      </div>
+      <div class="hub-filter-tabs" id="workflow-diff-tabs">
+        <span class="control-label">DIFFICULTY:</span>
+        <button type="button" class="hub-filter-btn active" data-diff="all">ALL LEVELS</button>
+        <button type="button" class="hub-filter-btn" data-diff="Easy">Easy</button>
+        <button type="button" class="hub-filter-btn" data-diff="Medium">Medium</button>
+        <button type="button" class="hub-filter-btn" data-diff="Advanced">Advanced</button>
+      </div>
+    </div>
+
+    <!-- Workflows List -->
+    <div class="workflows-list" id="workflows-list">
+      <!-- Workflows rendered dynamically -->
+    </div>
+  </section>
+
+  <!-- ==================== TAB VIEW 4: AGENT BLUEPRINTS ==================== -->
+  <section id="agents-view" class="hub-view hidden" aria-label="Agent Blueprints & Specifications">
+    <!-- Section Banner -->
+    <div class="hub-masthead">
+      <div class="hub-masthead-badge">SECTION D • SPECIFICATION BLUEPRINTS</div>
+      <div class="hub-masthead-title-row">
+        <h2 class="hub-masthead-title">PROVIDER-AGNOSTIC AGENT BLUEPRINTS</h2>
+        <span class="hub-masthead-issue">KNOWLEDGE &amp; ROLE SPECIFICATIONS • ZERO VENDOR LOCK-IN</span>
+      </div>
+      <p class="hub-masthead-desc">
+        Reusable knowledge identities, behavioral instructions, and structured input/output contracts. In Pilot, agents are specifications—deployable into Claude Code, Antigravity, Cursor, or custom Python daemons.
+      </p>
+    </div>
+
+    <!-- Notice Banner -->
+    <div class="hub-info-banner">
+      <span class="banner-icon">📌</span>
+      <span class="banner-text"><strong>ARCHITECTURAL NOTE:</strong> Agents are knowledge and role specifications—not execution runtimes. Use these blueprints to define agent identities, constraints, and contracts across your local CLI or orchestration workflows.</span>
+    </div>
+
+    <!-- Controls: Autonomy & Search -->
+    <div class="hub-controls-bar">
+      <div class="hub-search-wrap">
+        <input 
+          type="text" 
+          id="agents-search-input" 
+          class="newspaper-input search-field" 
+          placeholder="Search agents by role, domain, or target runtime..." 
+          autocomplete="off"
+        >
+        <span class="search-icon-btn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+      </div>
+      <div class="hub-filter-tabs" id="agent-autonomy-tabs">
+        <span class="control-label">AUTONOMY:</span>
+        <button type="button" class="hub-filter-btn active" data-autonomy="all">ALL MODES</button>
+        <button type="button" class="hub-filter-btn" data-autonomy="Assisted">Assisted</button>
+        <button type="button" class="hub-filter-btn" data-autonomy="Autonomous">Autonomous</button>
+      </div>
+    </div>
+
+    <!-- Agents Grid -->
+    <div class="agents-grid" id="agents-grid">
+      <!-- Agents rendered dynamically -->
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="directory-footer">
+    <div class="footer-colophon">
+      <span class="footer-title">HUMAN AFTER ALL! DIRECTORY</span>
+      <span class="footer-desc">A directory of useful tools for a brighter internet. Hand-curated, verified &amp; updated weekly.</span>
+    </div>
+    <div class="footer-links">
+      <a href="#tools" class="footer-hub-link" data-tab="tools">🗞️ Directory of Tools</a>
+      <a href="#prompts" class="footer-hub-link" data-tab="prompts">📝 System Prompts</a>
+      <a href="#workflows" class="footer-hub-link" data-tab="workflows">⚡ AI Workflows</a>
+      <a href="#agents" class="footer-hub-link" data-tab="agents">🤖 Agent Blueprints</a>
+      <span class="footer-sep">•</span>
+      <a href="#top-picks-section">★ Top Picks</a>
+      <button type="button" id="footer-curator-btn" class="footer-curator-btn">Curator Login</button>
+    </div>
+    <div class="footer-meta">
+      <span>© 2026 NODBITS PILOT • PUBLIC EDITION • NO TRACKERS • NO SIGNUP</span>
+    </div>
+  </footer>
 
   </div>
 
@@ -634,6 +803,127 @@
       </div>
     </div>
   </dialog>
+
+  <!-- ==================== PROMPT DETAIL DIALOG ==================== -->
+  <dialog id="prompt-detail-dialog" class="newspaper-dialog dialog-wide">
+    <div class="dialog-inner">
+      <div class="dialog-header-strip">
+        <div class="dialog-category-badge" id="modal-prompt-badge">SYSTEM PROMPT</div>
+        <div class="dialog-badges-right">
+          <span id="modal-prompt-model" class="modal-badge-featured">CLAUDE 3.7</span>
+        </div>
+        <button type="button" id="modal-prompt-close-btn" class="dialog-close-btn" aria-label="Close">✕</button>
+      </div>
+
+      <div class="dialog-body">
+        <div class="dialog-tool-head">
+          <div class="dialog-tool-titles">
+            <h3 class="dialog-title" id="modal-prompt-title">Prompt Title</h3>
+            <div class="dialog-hostname" id="modal-prompt-tags">tags</div>
+          </div>
+        </div>
+
+        <p class="dialog-description" id="modal-prompt-desc">
+          Prompt description here.
+        </p>
+
+        <div class="prompt-code-wrap">
+          <div class="prompt-code-header">
+            <span>INSTRUCTION TEXT</span>
+            <button type="button" id="modal-prompt-copy-btn" class="copy-code-btn">📋 COPY PROMPT</button>
+          </div>
+          <pre class="prompt-code-block" id="modal-prompt-content"></pre>
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" id="modal-prompt-copy-bottom-btn" class="dialog-btn-primary">📋 COPY PROMPT TO CLIPBOARD</button>
+          <button type="button" id="modal-prompt-close-bottom-btn" class="dialog-btn-secondary">CLOSE</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== WORKFLOW DETAIL DIALOG ==================== -->
+  <dialog id="workflow-detail-dialog" class="newspaper-dialog dialog-wide">
+    <div class="dialog-inner">
+      <div class="dialog-header-strip">
+        <div class="dialog-category-badge" id="modal-workflow-badge">AI WORKFLOW</div>
+        <div class="dialog-badges-right">
+          <span id="modal-workflow-diff" class="modal-badge-featured">MEDIUM</span>
+          <span id="modal-workflow-time" class="modal-badge-os">⏱️ 45 MIN</span>
+        </div>
+        <button type="button" id="modal-workflow-close-btn" class="dialog-close-btn" aria-label="Close">✕</button>
+      </div>
+
+      <div class="dialog-body">
+        <h3 class="dialog-title" id="modal-workflow-title">Workflow Title</h3>
+        <p class="dialog-description" id="modal-workflow-purpose"></p>
+        
+        <div class="workflow-steps-timeline" id="modal-workflow-steps">
+          <!-- Rendered steps with linked tools -->
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" id="modal-workflow-copy-btn" class="dialog-btn-primary">📋 COPY WORKFLOW GUIDE</button>
+          <button type="button" id="modal-workflow-close-bottom-btn" class="dialog-btn-secondary">CLOSE</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ==================== AGENT DETAIL DIALOG ==================== -->
+  <dialog id="agent-detail-dialog" class="newspaper-dialog dialog-wide">
+    <div class="dialog-inner">
+      <div class="dialog-header-strip">
+        <div class="dialog-category-badge" id="modal-agent-badge">AGENT BLUEPRINT</div>
+        <div class="dialog-badges-right">
+          <span id="modal-agent-autonomy" class="modal-badge-featured">ASSISTED</span>
+          <span id="modal-agent-runtime" class="modal-badge-os">CLAUDE CODE</span>
+        </div>
+        <button type="button" id="modal-agent-close-btn" class="dialog-close-btn" aria-label="Close">✕</button>
+      </div>
+
+      <div class="dialog-body">
+        <h3 class="dialog-title" id="modal-agent-title">Agent Title</h3>
+        <div class="agent-role-tag" id="modal-agent-role">Lead Systems Architect</div>
+        <p class="dialog-description" id="modal-agent-goal"></p>
+
+        <div class="agent-contracts-box">
+          <div class="contract-col">
+            <span class="contract-label">INPUT CONTRACT</span>
+            <p id="modal-agent-input"></p>
+          </div>
+          <div class="contract-col">
+            <span class="contract-label">OUTPUT CONTRACT</span>
+            <p id="modal-agent-output"></p>
+          </div>
+        </div>
+
+        <div class="agent-instructions-wrap">
+          <div class="prompt-code-header">
+            <span>OPERATIONAL INSTRUCTIONS</span>
+            <button type="button" id="modal-agent-copy-btn" class="copy-code-btn">📋 COPY SPEC</button>
+          </div>
+          <pre class="prompt-code-block" id="modal-agent-instructions"></pre>
+        </div>
+
+        <div class="agent-tools-row" id="modal-agent-tools">
+          <!-- Linked tools -->
+        </div>
+
+        <div class="dialog-actions">
+          <button type="button" id="modal-agent-copy-bottom-btn" class="dialog-btn-primary">📋 COPY AGENT SPEC TO CLIPBOARD</button>
+          <button type="button" id="modal-agent-close-bottom-btn" class="dialog-btn-secondary">CLOSE</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Retro Toast Notification -->
+  <div id="retro-toast" class="retro-toast hidden" role="status" aria-live="polite">
+    <span class="toast-stamp">● NOTICE</span>
+    <span id="toast-message" class="toast-message">Copied to clipboard!</span>
+  </div>
 
   <!-- Main JavaScript App -->
   <script type="module" src="/app.js"></script>
