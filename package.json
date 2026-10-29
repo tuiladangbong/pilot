@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "db:migrate:local": "wrangler d1 migrations apply pilot-db --local",
     "db:migrate:remote": "wrangler d1 migrations apply pilot-db --remote",
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "curate:dry-run": "node scripts/auto-curate/index.mjs --dry-run",
     "curate:live": "node scripts/auto-curate/index.mjs --publish"
   },
