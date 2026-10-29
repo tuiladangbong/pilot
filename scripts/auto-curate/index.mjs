@@ -186,7 +186,10 @@ async function runPipeline() {
         console.log(`✓ Published successfully! ID: ${publishedTool.id}`);
 
         // Notify Telegram if configured
-        await notifier.notifyPublished(tool, publishedWorkflow, publishedPrompt);
+        const notified = await notifier.notifyPublished(tool, publishedWorkflow, publishedPrompt);
+        if (notified) {
+          console.log(`📡 Telegram alert dispatched to admin channel.`);
+        }
       } catch (err) {
         console.error(`✗ Publishing failed for "${tool.title}":`, err.message);
       }

@@ -39,7 +39,11 @@ export class TelegramNotifier {
         body: JSON.stringify(payload),
       });
       const data = await response.json();
-      return data.ok === true;
+      if (!data.ok) {
+        console.warn('[Telegram Notifier] Telegram API error:', data.description);
+        return false;
+      }
+      return true;
     } catch (err) {
       console.warn('[Telegram Notifier] Failed sending message:', err.message);
       return false;
@@ -47,7 +51,7 @@ export class TelegramNotifier {
   }
 
   async notifyPublished(tool, workflow = null, prompt = null) {
-    if (!this.enabled) return;
+    if (!this.enabled) return false;
 
     const starsOrPoints = tool.sourceMetadata?.stars
       ? `⭐ ${tool.sourceMetadata.stars.toLocaleString()} Stars`
@@ -73,7 +77,7 @@ ${prompt ? `\n💡 <b>Prompt Template:</b> Generated and linked.` : ''}
 🌐 <i>Live on <a href="https://pilot.nodbits.com">pilot.nodbits.com</a></i>
     `.trim();
 
-    await this.sendMessage(text);
+    return await this.sendMessage(text);
   }
 
   async notifyPendingReview(tool, candidateId) {
