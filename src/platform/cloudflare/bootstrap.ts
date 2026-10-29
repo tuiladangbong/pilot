@@ -23,5 +23,6 @@ export function createCloudflareDependencies(env: Env): RouterDependencies {
     checkHealth: () => checkDatabaseHealth(env.DB),
     assetHandler: env.ASSETS ? (req: Request) => env.ASSETS!.fetch(req) : undefined,
     curatorToken: env.CURATOR_TOKEN || env.ADMIN_TOKEN,
+    trustAccessHeader: env.TRUST_CF_ACCESS === 'true' || env.TRUST_CF_ACCESS === true,
   };
 }

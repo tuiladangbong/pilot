@@ -55,8 +55,23 @@ test('curator authenticated via Authorization: Bearer token succeeds', () => {
   assert.equal(enforceCuratorAuth(req, deps), null);
 });
 
-test('curator authenticated via Cloudflare Access header succeeds', () => {
+test('spoofed Cloudflare Access header is rejected when trustAccessHeader is false or omitted', () => {
   const deps = { curatorToken: 'secret_123' };
+
+  const req = new Request('https://pilot.nodbits.com/api/curator/status', {
+    headers: { 'Cf-Access-Authenticated-User-Email': 'attacker@evil.com' },
+  });
+  const res = checkIsCurator(req, deps);
+  assert.equal(res.isCurator, false);
+  assert.equal(res.email, undefined);
+  assert.ok(enforceCuratorAuth(new Request('https://pilot.nodbits.com/api/tools', {
+    method: 'POST',
+    headers: { 'Cf-Access-Authenticated-User-Email': 'attacker@evil.com' },
+  }), deps));
+});
+
+test('curator authenticated via Cloudflare Access header succeeds when trustAccessHeader is explicitly true', () => {
+  const deps = { curatorToken: 'secret_123', trustAccessHeader: true };
 
   const req = new Request('https://pilot.nodbits.com/api/curator/status', {
     headers: { 'Cf-Access-Authenticated-User-Email': 'curator@nodbits.com' },
@@ -65,6 +80,20 @@ test('curator authenticated via Cloudflare Access header succeeds', () => {
   assert.equal(res.isCurator, true);
   assert.equal(res.email, 'curator@nodbits.com');
   assert.equal(enforceCuratorAuth(req, deps), null);
+});
+
+test('hardcoded default secret is completely eliminated and fails closed when curatorToken is unset', () => {
+  const deps = {}; // curatorToken undefined
+
+  const req = new Request('https://pilot.nodbits.com/api/tools', {
+    method: 'POST',
+    headers: { 'X-Curator-Key': 'pilot_curator_secret_2026' },
+  });
+  const res = checkIsCurator(req, deps);
+  assert.equal(res.isCurator, false);
+  const authResponse = enforceCuratorAuth(req, deps);
+  assert.ok(authResponse);
+  assert.equal(authResponse.status, 401);
 });
 
 test('invalid or wrong curator token is rejected', () => {

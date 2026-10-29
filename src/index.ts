@@ -11,9 +11,12 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#39;');
 }
 
-function withNoRobotHeaders(response: Response): Response {
+function withSecurityAndTrackingHeaders(response: Response, requestId: string): Response {
   const newHeaders = new Headers(response.headers);
   newHeaders.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  if (!newHeaders.has('X-Request-Id')) {
+    newHeaders.set('X-Request-Id', requestId);
+  }
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
@@ -23,8 +26,9 @@ function withNoRobotHeaders(response: Response): Response {
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    const requestId = request.headers.get('cf-ray') || request.headers.get('x-request-id') || crypto.randomUUID();
     const res = await this.handleFetch(request, env, ctx);
-    return withNoRobotHeaders(res);
+    return withSecurityAndTrackingHeaders(res, requestId);
   },
 
   async handleFetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {

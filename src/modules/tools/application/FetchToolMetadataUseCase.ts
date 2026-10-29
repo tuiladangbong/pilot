@@ -36,20 +36,51 @@ export class FetchToolMetadataUseCase {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; PilotBot/1.0; +https://pilot.nodbits.com)',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          'Accept-Language': 'en-US,en;q=0.9',
-        },
-        signal: controller.signal,
-        redirect: 'follow',
-      });
+      let currentUrl = url;
+      let response: Response | null = null;
+      const maxRedirects = 3;
 
-      clearTimeout(timeoutId);
+      try {
+        for (let hop = 0; hop <= maxRedirects; hop++) {
+          const parsed = new URL(currentUrl);
+          if (isPrivateOrBlockedHost(parsed.hostname)) {
+            throw new Error(`Access to restricted internal/private host is forbidden: ${parsed.hostname}`);
+          }
 
-      const finalUrl = response.url || url;
+          const res = await fetch(currentUrl, {
+            method: 'GET',
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (compatible; PilotBot/1.0; +https://pilot.nodbits.com)',
+              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+              'Accept-Language': 'en-US,en;q=0.9',
+            },
+            signal: controller.signal,
+            redirect: 'manual',
+          });
+
+          if ([301, 302, 303, 307, 308].includes(res.status)) {
+            const location = res.headers.get('location');
+            if (!location) {
+              response = res;
+              break;
+            }
+            const nextUrl = new URL(location, currentUrl).toString();
+            currentUrl = nextUrl;
+            continue;
+          }
+
+          response = res;
+          break;
+        }
+      } finally {
+        clearTimeout(timeoutId);
+      }
+
+      if (!response) {
+        throw new Error('Too many redirects or failed request');
+      }
+
+      const finalUrl = currentUrl;
       const finalHostname = extractHostname(finalUrl) || hostname;
 
       // Read at most 64KB to capture metadata without exhausting memory

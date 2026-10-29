@@ -47,19 +47,32 @@ export interface RouterDependencies {
   readonly assetHandler?: (request: Request) => Promise<Response>;
   readonly curatorToken?: string;
   readonly isCurator?: (request: Request) => boolean;
+  readonly trustAccessHeader?: boolean;
 }
 
-function json(data: unknown, status = 200): Response {
+const CORS_HEADERS: Record<string, string> = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Curator-Key, X-Admin-Key',
+};
+
+const PUBLIC_CACHE_HEADERS: Record<string, string> = {
+  'Cache-Control': 'public, max-age=60, s-maxage=120, stale-while-revalidate=300',
+};
+
+function json(data: unknown, status = 200, extraHeaders: Record<string, string> = {}): Response {
   return new Response(JSON.stringify(data, null, 2), {
     status,
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store',
+      ...CORS_HEADERS,
+      ...extraHeaders,
     },
   });
 }
 
-function jsonError(code: string, message: string, status = 400): Response {
+function jsonError(code: string, message: string, status = 400, extraHeaders: Record<string, string> = {}): Response {
   return json(
     {
       ok: false,
@@ -68,13 +81,49 @@ function jsonError(code: string, message: string, status = 400): Response {
         message,
       },
     },
-    status
+    status,
+    extraHeaders
   );
 }
 
 import { checkIsCurator, enforceCuratorAuth } from './curatorAuth';
 
 export async function handleRequest(request: Request, deps: RouterDependencies): Promise<Response> {
+  const requestId = request.headers.get('cf-ray') || request.headers.get('x-request-id') || crypto.randomUUID();
+  const method = request.method.toUpperCase();
+
+  // Handle CORS OPTIONS preflight
+  if (method === 'OPTIONS') {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        ...CORS_HEADERS,
+        'Access-Control-Max-Age': '86400',
+        'X-Request-Id': requestId,
+      },
+    });
+  }
+
+  try {
+    const res = await dispatchRequest(request, deps);
+    if (!res.headers.has('X-Request-Id')) {
+      res.headers.set('X-Request-Id', requestId);
+    }
+    for (const [k, v] of Object.entries(CORS_HEADERS)) {
+      if (!res.headers.has(k)) {
+        res.headers.set(k, v);
+      }
+    }
+    return res;
+  } catch (error: any) {
+    console.error(`[Unhandled Error] [${requestId}] ${request.method} ${request.url}:`, error);
+    return jsonError('INTERNAL_ERROR', 'An unexpected error occurred.', 500, {
+      'X-Request-Id': requestId,
+    });
+  }
+}
+
+async function dispatchRequest(request: Request, deps: RouterDependencies): Promise<Response> {
   const url = new URL(request.url);
   const pathname = url.pathname.replace(/\/+$/, '') || '/';
   const method = request.method.toUpperCase();
@@ -126,7 +175,7 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
     if (!resource) {
       return jsonError('NOT_FOUND', `Resource with id or slug "${id}" not found`, 404);
     }
-    return json({ ok: true, data: toResourceSummaryDto(resource) });
+    return json({ ok: true, data: toResourceSummaryDto(resource) }, 200, PUBLIC_CACHE_HEADERS);
   }
 
   // GET /api/resources (Generic resource listing across modules)
@@ -164,15 +213,19 @@ export async function handleRequest(request: Request, deps: RouterDependencies):
       offset,
     });
 
-    return json({
-      ok: true,
-      data: result.resources.map(toResourceSummaryDto),
-      meta: {
-        total: result.total,
-        limit,
-        offset,
+    return json(
+      {
+        ok: true,
+        data: result.resources.map(toResourceSummaryDto),
+        meta: {
+          total: result.total,
+          limit,
+          offset,
+        },
       },
-    });
+      200,
+      PUBLIC_CACHE_HEADERS
+    );
   }
 
   // GET /api/tags

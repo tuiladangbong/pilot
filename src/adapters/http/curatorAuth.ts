@@ -1,6 +1,7 @@
 export interface CuratorAuthDependencies {
   readonly curatorToken?: string;
   readonly isCurator?: (request: Request) => boolean;
+  readonly trustAccessHeader?: boolean;
 }
 
 export interface CuratorAuthResult {
@@ -9,9 +10,27 @@ export interface CuratorAuthResult {
 }
 
 /**
+ * Constant-time string comparison to prevent timing side-channel attacks.
+ */
+function safeCompareTokens(provided: string, expected: string): boolean {
+  if (!provided || !expected) return false;
+  const encoder = new TextEncoder();
+  const a = encoder.encode(provided);
+  const b = encoder.encode(expected);
+  if (a.byteLength !== b.byteLength) {
+    return false;
+  }
+  let diff = 0;
+  for (let i = 0; i < a.byteLength; i++) {
+    diff |= a[i] ^ b[i];
+  }
+  return diff === 0;
+}
+
+/**
  * Checks if incoming request has curator/admin privileges via:
  * 1. Custom validator (if provided)
- * 2. Cloudflare Access authenticated email header (cf-access-authenticated-user-email)
+ * 2. Cloudflare Access authenticated email header (only when trustAccessHeader is explicitly true)
  * 3. Secret token via Authorization: Bearer <token> or X-Curator-Key: <token>
  */
 export function checkIsCurator(request: Request, deps: CuratorAuthDependencies): CuratorAuthResult {
@@ -20,10 +39,12 @@ export function checkIsCurator(request: Request, deps: CuratorAuthDependencies):
     return { isCurator: res };
   }
 
-  // 1. Check Cloudflare Access header
-  const cfAccessEmail = request.headers.get('cf-access-authenticated-user-email');
-  if (cfAccessEmail && cfAccessEmail.trim() !== '') {
-    return { isCurator: true, email: cfAccessEmail.trim() };
+  // 1. Check Cloudflare Access header only when explicitly trusted (e.g. verified behind Cloudflare Access Zero Trust)
+  if (deps.trustAccessHeader === true) {
+    const cfAccessEmail = request.headers.get('cf-access-authenticated-user-email');
+    if (cfAccessEmail && cfAccessEmail.trim() !== '') {
+      return { isCurator: true, email: cfAccessEmail.trim() };
+    }
   }
 
   // 2. Check Token header (Authorization: Bearer <token> or X-Curator-Key: <token>)
@@ -36,8 +57,9 @@ export function checkIsCurator(request: Request, deps: CuratorAuthDependencies):
     providedToken = customHeader.trim();
   }
 
-  const expectedToken = deps.curatorToken || 'pilot_curator_secret_2026';
-  if (providedToken && providedToken === expectedToken) {
+  const expectedToken = deps.curatorToken?.trim();
+  // Fail closed if curatorToken is not configured or empty: never fall back to hardcoded secrets!
+  if (providedToken && expectedToken && safeCompareTokens(providedToken, expectedToken)) {
     return { isCurator: true, email: 'curator@pilot' };
   }
 

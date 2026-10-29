@@ -7,4 +7,5 @@ export interface Env {
   ASSETS?: Fetcher;
   CURATOR_TOKEN?: string;
   ADMIN_TOKEN?: string;
+  TRUST_CF_ACCESS?: string | boolean;
 }

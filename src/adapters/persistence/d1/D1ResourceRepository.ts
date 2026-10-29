@@ -55,25 +55,30 @@ export class D1ResourceRepository implements ResourceRepository {
   async findById(id: string): Promise<ResourceWithDetails | null> {
     const query = `
       SELECT r.id, r.type, r.title, r.description, r.slug, r.featured, r.origin, r.favorite, r.created_at, r.updated_at,
-             GROUP_CONCAT(DISTINCT t.name) as tag_names,
+             (
+               SELECT GROUP_CONCAT(t.name)
+               FROM resource_tags rt
+               JOIN tags t ON t.id = rt.tag_id
+               WHERE rt.resource_id = r.id
+             ) as tag_names,
              p.content as prompt_content, p.model as prompt_model,
              tl.url as tool_url, tl.hostname as tool_hostname, tl.kind as tool_kind,
              tl.category as tool_category, tl.pricing as tool_pricing, tl.verified_at as tool_verified_at,
              w.purpose as workflow_purpose, w.status as workflow_status,
              w.difficulty as workflow_difficulty, w.estimated_time as workflow_estimated_time,
-             COUNT(DISTINCT ws.id) as workflow_step_count,
+             (
+               SELECT COUNT(*)
+               FROM workflow_steps ws
+               WHERE ws.workflow_id = r.id
+             ) as workflow_step_count,
              ag.role as agent_role, ag.goal as agent_goal, ag.runtime as agent_runtime,
              ag.model as agent_model, ag.status as agent_status, ag.autonomy_level as agent_autonomy_level
       FROM resources r
       LEFT JOIN prompts p ON p.resource_id = r.id
       LEFT JOIN tools tl ON tl.resource_id = r.id
       LEFT JOIN workflows w ON w.resource_id = r.id
-      LEFT JOIN workflow_steps ws ON ws.workflow_id = r.id
       LEFT JOIN agents ag ON ag.resource_id = r.id
-      LEFT JOIN resource_tags rt ON rt.resource_id = r.id
-      LEFT JOIN tags t ON t.id = rt.tag_id
       WHERE r.id = ?
-      GROUP BY r.id
     `;
 
     const row = await this.db.prepare(query).bind(id).first<ResourceExtendedRow>();
@@ -87,25 +92,30 @@ export class D1ResourceRepository implements ResourceRepository {
   async findByIdOrSlug(idOrSlug: string): Promise<ResourceWithDetails | null> {
     const query = `
       SELECT r.id, r.type, r.title, r.description, r.slug, r.featured, r.origin, r.favorite, r.created_at, r.updated_at,
-             GROUP_CONCAT(DISTINCT t.name) as tag_names,
+             (
+               SELECT GROUP_CONCAT(t.name)
+               FROM resource_tags rt
+               JOIN tags t ON t.id = rt.tag_id
+               WHERE rt.resource_id = r.id
+             ) as tag_names,
              p.content as prompt_content, p.model as prompt_model,
              tl.url as tool_url, tl.hostname as tool_hostname, tl.kind as tool_kind,
              tl.category as tool_category, tl.pricing as tool_pricing, tl.verified_at as tool_verified_at,
              w.purpose as workflow_purpose, w.status as workflow_status,
              w.difficulty as workflow_difficulty, w.estimated_time as workflow_estimated_time,
-             COUNT(DISTINCT ws.id) as workflow_step_count,
+             (
+               SELECT COUNT(*)
+               FROM workflow_steps ws
+               WHERE ws.workflow_id = r.id
+             ) as workflow_step_count,
              ag.role as agent_role, ag.goal as agent_goal, ag.runtime as agent_runtime,
              ag.model as agent_model, ag.status as agent_status, ag.autonomy_level as agent_autonomy_level
       FROM resources r
       LEFT JOIN prompts p ON p.resource_id = r.id
       LEFT JOIN tools tl ON tl.resource_id = r.id
       LEFT JOIN workflows w ON w.resource_id = r.id
-      LEFT JOIN workflow_steps ws ON ws.workflow_id = r.id
       LEFT JOIN agents ag ON ag.resource_id = r.id
-      LEFT JOIN resource_tags rt ON rt.resource_id = r.id
-      LEFT JOIN tags t ON t.id = rt.tag_id
       WHERE r.id = ? OR r.slug = ?
-      GROUP BY r.id
     `;
 
     const row = await this.db.prepare(query).bind(idOrSlug, idOrSlug).first<ResourceExtendedRow>();
@@ -205,25 +215,30 @@ export class D1ResourceRepository implements ResourceRepository {
 
     const dataSql = `
       SELECT r.id, r.type, r.title, r.description, r.slug, r.featured, r.origin, r.favorite, r.created_at, r.updated_at,
-             GROUP_CONCAT(DISTINCT t.name) as tag_names,
+             (
+               SELECT GROUP_CONCAT(t.name)
+               FROM resource_tags rt
+               JOIN tags t ON t.id = rt.tag_id
+               WHERE rt.resource_id = r.id
+             ) as tag_names,
              p.content as prompt_content, p.model as prompt_model,
              tl.url as tool_url, tl.hostname as tool_hostname, tl.kind as tool_kind,
              tl.category as tool_category, tl.pricing as tool_pricing, tl.verified_at as tool_verified_at,
              w.purpose as workflow_purpose, w.status as workflow_status,
              w.difficulty as workflow_difficulty, w.estimated_time as workflow_estimated_time,
-             COUNT(DISTINCT ws.id) as workflow_step_count,
+             (
+               SELECT COUNT(*)
+               FROM workflow_steps ws
+               WHERE ws.workflow_id = r.id
+             ) as workflow_step_count,
              ag.role as agent_role, ag.goal as agent_goal, ag.runtime as agent_runtime,
              ag.model as agent_model, ag.status as agent_status, ag.autonomy_level as agent_autonomy_level
       FROM resources r
       LEFT JOIN prompts p ON p.resource_id = r.id
       LEFT JOIN tools tl ON tl.resource_id = r.id
       LEFT JOIN workflows w ON w.resource_id = r.id
-      LEFT JOIN workflow_steps ws ON ws.workflow_id = r.id
       LEFT JOIN agents ag ON ag.resource_id = r.id
-      LEFT JOIN resource_tags rt ON rt.resource_id = r.id
-      LEFT JOIN tags t ON t.id = rt.tag_id
       ${whereClause}
-      GROUP BY r.id
       ORDER BY ${orderBy}
       LIMIT ? OFFSET ?
     `;
