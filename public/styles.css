@@ -524,6 +524,21 @@ body.newspaper-body {
   box-shadow: 1px 1px 0 var(--border-dark);
 }
 
+.cat-tab.cat-tab-classics {
+  background-color: #111111;
+  color: var(--yellow-primary);
+  font-weight: 800;
+  border-color: #111111;
+}
+
+.cat-tab.cat-tab-classics:hover,
+.cat-tab.cat-tab-classics.active {
+  background-color: var(--yellow-primary);
+  color: #111111;
+  border-color: #111111;
+  box-shadow: 1px 1px 0 #111111;
+}
+
 /* A–Z Index Zone */
 .nav-az-zone {
   padding: 6px 10px;
@@ -953,6 +968,55 @@ body.newspaper-body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Directory Masthead Strip & Classic Badges */
+.directory-masthead-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--paper-warm, #fcf9f2);
+  border: 1.5px solid var(--border-dark, #111111);
+  border-bottom: none;
+  padding: 6px 12px;
+  margin-top: 14px;
+  gap: 10px;
+}
+
+.masthead-badge-pill {
+  font-family: var(--font-headline, sans-serif);
+  font-size: 11px;
+  font-weight: 900;
+  background: var(--yellow-primary, #F4C62B);
+  color: #111111;
+  padding: 2px 8px;
+  border: 1px solid #111111;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.masthead-tagline {
+  font-family: var(--font-editorial, serif);
+  font-style: italic;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ink-secondary, #444444);
+}
+
+.badge-classic {
+  display: inline-block;
+  background-color: var(--yellow-primary, #F4C62B);
+  color: #111111;
+  font-family: var(--font-directory, sans-serif);
+  font-size: 8px;
+  font-weight: 900;
+  padding: 1px 4px;
+  border-radius: 2px;
+  border: 1px solid #111111;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  vertical-align: middle;
 }
 
 /* ==========================================================================

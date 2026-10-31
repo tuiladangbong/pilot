@@ -149,6 +149,7 @@
         <span class="nav-label">BROWSE BY CATEGORY:</span>
         <div class="category-tabs" id="category-tabs">
           <button type="button" class="cat-tab active" data-category="all">ALL →</button>
+          <button type="button" class="cat-tab cat-tab-classics" data-category="classics">★ ALL-TIME CLASSICS</button>
           <button type="button" class="cat-tab" data-category="ai">AI</button>
           <button type="button" class="cat-tab" data-category="code">CODE</button>
           <button type="button" class="cat-tab" data-category="design">DESIGN</button>
@@ -217,6 +218,7 @@
         
         <select id="filter-category" class="newspaper-select">
           <option value="all">All Categories</option>
+          <option value="classics">★ All-Time Classics</option>
           <option value="ai">AI</option>
           <option value="code">Code & Dev</option>
           <option value="design">Design & Visual</option>
@@ -263,25 +265,25 @@
       <button type="button" id="clear-search-btn" class="clear-indicator-btn">✕ Clear</button>
     </div>
 
-    <!-- ==================== EDITOR'S TOP PICKS (BREAKING NEWS / FRONT PAGE) ==================== -->
+    <!-- ==================== ALL-TIME CLASSICS & HALL OF FAME (BREAKING NEWS / FRONT PAGE) ==================== -->
     <section class="top-picks-section" id="top-picks-section">
       <!-- Left: Headline & Editorial Story -->
       <div class="top-picks-lead">
         <div class="lead-badge-row">
-          <span class="yellow-badge">★ EDITOR'S TOP PICKS</span>
-          <span class="breaking-news-tag"><span class="retro-dot blink-fast">●</span> BREAKING: TOOLS WORTH YOUR ATTENTION</span>
+          <span class="yellow-badge">★ ALL-TIME CLASSICS</span>
+          <span class="breaking-news-tag"><span class="retro-dot blink-fast">●</span> HALL OF FAME: FOUNDATIONAL AI STACK</span>
         </div>
-        <div class="lead-subheading">HAND-PICKED TOOLS WORTH YOUR ATTENTION</div>
-        <h2 class="lead-headline">The Top Tools<br>This Week</h2>
+        <div class="lead-subheading">INDUSTRY PILLARS &amp; ESSENTIAL WORKFLOWS</div>
+        <h2 class="lead-headline">All-Time Classics<br>&amp; Hall of Fame</h2>
         <p class="lead-paragraph">
-          Our editors sifted through hundreds of tools to bring you the most useful, innovative and exciting picks right now.
+          The foundational AI models, developer engines, and creative powerhouses that define the modern era: ChatGPT, Claude, Cursor, Midjourney & Notion AI.
         </p>
         <p class="lead-paragraph-secondary">
-          Every listed tool is rigorously tested for utility, longevity, and craftsman feel. We cut through the hype to find software that genuinely improves your daily craft.
+          Every classic listed is time-tested, industry-verified, and indispensable. While hundreds of new tools launch daily, these remain the cornerstone of any productive workflow.
         </p>
         <div class="lead-cta-row">
-          <button type="button" id="btn-see-top-picks" class="newspaper-btn-yellow">SEE ALL TOP PICKS →</button>
-          <span class="lead-curated-date">CURATED WEEK 42 • TESTED &amp; VERIFIED</span>
+          <button type="button" id="btn-see-top-picks" class="newspaper-btn-yellow">VIEW ALL CLASSICS →</button>
+          <span class="lead-curated-date">ALL-TIME REPERTORY • 2026 EDITION</span>
         </div>
       </div>
 
@@ -316,9 +318,9 @@
               <path d="M38 110 C38 98 44 94 48 94 L50 114" fill="#F7F0E2" stroke="#111111" stroke-width="1.5"/>
 
               <!-- Text inside booklet -->
-              <text x="115" y="62" font-family="'Archivo Black', sans-serif" font-size="16" font-weight="900" fill="#111111" text-anchor="middle" letter-spacing="1">TOP</text>
-              <text x="115" y="85" font-family="'Archivo Black', sans-serif" font-size="16" font-weight="900" fill="#111111" text-anchor="middle" letter-spacing="1">TOOLS</text>
-              <text x="115" y="106" font-family="'Archivo Black', sans-serif" font-size="13" font-weight="900" fill="#111111" text-anchor="middle" letter-spacing="0.5">THIS WEEK</text>
+              <text x="115" y="60" font-family="'Archivo Black', sans-serif" font-size="14" font-weight="900" fill="#111111" text-anchor="middle" letter-spacing="1">ALL-TIME</text>
+              <text x="115" y="82" font-family="'Archivo Black', sans-serif" font-size="14" font-weight="900" fill="#111111" text-anchor="middle" letter-spacing="1">CLASSICS</text>
+              <text x="115" y="104" font-family="'Archivo Black', sans-serif" font-size="11" font-weight="900" fill="#111111" text-anchor="middle" letter-spacing="0.5">HALL OF FAME</text>
               <text x="115" y="128" font-size="16" fill="#111111" text-anchor="middle">★</text>
 
               <!-- Starburst seal -->
@@ -352,6 +354,12 @@
         <!-- Rendered results -->
       </div>
     </section>
+
+    <!-- Directory Masthead Strip -->
+    <div class="directory-masthead-strip">
+      <div class="masthead-badge-pill">★ ALL-TIME CLASSICS &amp; DIRECTORY PILLARS</div>
+      <div class="masthead-tagline">Foundational AI tools, developer stacks &amp; creative software vetted for 2026</div>
+    </div>
 
     <!-- ==================== MAIN DIRECTORY GRID ==================== -->
     <main class="main-directory-grid" id="main-directory-grid">
@@ -435,12 +443,12 @@
         </div>
       </section>
 
-      <!-- R1C6: LATEST LISTINGS (~15% width) -->
+      <!-- R1C6: FRESH RADAR (~15% width) -->
       <aside class="grid-col col-right-sidebar col-row-1">
         <div class="sidebar-block">
           <div class="col-header-yellow with-badge">
-            <h3>LATEST LISTINGS</h3>
-            <span class="badge-burst-new">NEW</span>
+            <h3>⚡ FRESH RADAR</h3>
+            <span class="badge-burst-new">24H</span>
           </div>
           <div class="sidebar-tool-list" id="latest-listings-container">
             <!-- Latest listings injected here -->

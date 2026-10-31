@@ -774,12 +774,16 @@ function renderAllCategories() {
     const displaySample = catTools.slice(0, 6);
 
     container.innerHTML = displaySample.map(tool => {
+      const isClassic = tool.featured || (tool.rank && tool.rank <= 10) || tool.origin === 'curated';
       return `
         <div class="tool-row-item" data-tool-id="${escapeHtml(tool.id)}" data-slug="${escapeHtml(tool.slug)}" data-category="${escapeHtml(catId)}">
           ${createBrandLogoHtml(tool, 24)}
           <div class="tool-info">
             <div class="tool-name-line">
-              <span class="tool-name">${escapeHtml(tool.name)}</span>
+              <div style="display:flex; align-items:center; gap:4px; min-width:0;">
+                <span class="tool-name">${escapeHtml(tool.name)}</span>
+                ${isClassic ? '<span class="badge-classic">★ CLASSIC</span>' : ''}
+              </div>
             </div>
             <div class="tool-desc">${escapeHtml(tool.description)}</div>
             <div class="tool-meta">
@@ -907,7 +911,11 @@ function applyFilters() {
   }
 
   if (hasCategory) {
-    results = results.filter(t => (t.category || '').toLowerCase() === state.activeCategory.toLowerCase());
+    if (state.activeCategory === 'classics') {
+      results = results.filter(t => t.featured || (t.rank && t.rank <= 10) || t.origin === 'curated');
+    } else {
+      results = results.filter(t => (t.category || '').toLowerCase() === state.activeCategory.toLowerCase());
+    }
   }
 
   if (hasPricing) {
@@ -933,7 +941,13 @@ function applyFilters() {
     const terms = [];
     if (hasSearch) terms.push(`Search: "${state.searchQuery}"`);
     if (hasLetter) terms.push(`Letter: ${state.activeLetter}`);
-    if (hasCategory) terms.push(`Category: ${state.activeCategory.toUpperCase()}`);
+    if (hasCategory) {
+      if (state.activeCategory === 'classics') {
+        terms.push(`★ ALL-TIME CLASSICS`);
+      } else {
+        terms.push(`Category: ${state.activeCategory.toUpperCase()}`);
+      }
+    }
     if (hasPricing) terms.push(`Pricing: ${state.filters.pricing}`);
     if (hasOpenSource) terms.push(`Open Source`);
     if (hasSort) terms.push(`Sorted: ${getSortLabel(state.activeSort)}`);
@@ -957,14 +971,16 @@ function applyFilters() {
     } else {
       el.searchResultsGrid.innerHTML = results.map(tool => {
         const pricingBadgeStyle = getPricingBadgeStyle(tool.pricingType);
+        const isClassic = tool.featured || (tool.rank && tool.rank <= 10) || tool.origin === 'curated';
         return `
           <div class="search-result-card" data-tool-id="${escapeHtml(tool.id)}" data-slug="${escapeHtml(tool.slug)}">
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
               <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
                 ${createBrandLogoHtml(tool, 26)}
                 <div style="min-width: 0;">
-                  <div style="font-family: var(--font-directory); font-weight: 700; font-size: 14px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    ${escapeHtml(tool.name)}
+                  <div style="font-family: var(--font-directory); font-weight: 700; font-size: 14px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px;">
+                    <span>${escapeHtml(tool.name)}</span>
+                    ${isClassic ? '<span class="badge-classic">★ CLASSIC</span>' : ''}
                   </div>
                   <div style="font-size: 9.5px; color: var(--ink-muted); text-transform: uppercase; font-weight: bold;">
                     ${escapeHtml(tool.category || '')}
@@ -1795,10 +1811,9 @@ function attachEventListeners() {
     resetAllFilters();
   });
 
-  // 10. "SEE ALL TOP PICKS" CTA
+  // 10. "VIEW ALL CLASSICS" CTA
   el.btnSeeTopPicks?.addEventListener('click', () => {
-    resetAllFilters();
-    window.scrollTo({ top: el.topPicksSection.offsetTop - 20, behavior: 'smooth' });
+    selectCategory('classics');
   });
 
   // 11. Editorial Links Click Handlers
