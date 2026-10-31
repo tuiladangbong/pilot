@@ -9,6 +9,12 @@ import {
   DIRECTORY_CATEGORIES,
 } from './data/catalogData.js';
 
+// ==========================================================================
+// SOLUTION 4 FEATURE FLAG: Split All-Time Classics vs Fresh Discoveries
+// Set to `false` to instantly revert back to raw updated_at order
+// ==========================================================================
+export const ENABLE_SEPARATED_FRESH_STREAM = true;
+
 // Application State
 const state = {
   activeHubTab: 'tools', // 'tools' | 'prompts' | 'workflows' | 'agents'
@@ -314,6 +320,9 @@ async function fetchLiveCatalog() {
           initials: getItemInitials(item.title),
           provider: item.provider || '',
           verifiedAt: item.verifiedAt || '2026',
+          origin: item.origin || 'curated',
+          createdAt: item.createdAt || '',
+          updatedAt: item.updatedAt || '',
         };
       });
 
@@ -322,8 +331,9 @@ async function fetchLiveCatalog() {
       const additional = state.allDirectoryTools.filter(t => !dbSlugs.has(t.slug));
       state.allDirectoryTools = [...dbTools, ...additional];
 
-      // Refresh category columns and counts
+      // Refresh category columns, latest discoveries, and counts
       renderAllCategories();
+      renderLatestListings();
       updateCategoryCounts();
       updateTickerCount();
       updateAllCounts();
@@ -677,7 +687,22 @@ function renderTopPicks() {
 
 function renderLatestListings() {
   if (!el.latestListingsContainer) return;
-  el.latestListingsContainer.innerHTML = LATEST_LISTINGS.map(tool => {
+
+  let listings = LATEST_LISTINGS;
+  if (ENABLE_SEPARATED_FRESH_STREAM && state.allDirectoryTools.length > 0) {
+    // Solution 4: Extract live newly discovered/ingested resources
+    const liveFresh = [...state.allDirectoryTools]
+      .filter(t => t.createdAt)
+      .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''))
+      .slice(0, 5);
+
+    if (liveFresh.length > 0) {
+      listings = liveFresh;
+    }
+  }
+
+  el.latestListingsContainer.innerHTML = listings.map(tool => {
+    const isLiveNew = Boolean(tool.createdAt);
     return `
       <div class="sidebar-tool-row" data-tool-id="${escapeHtml(tool.id)}" data-slug="${escapeHtml(tool.slug)}">
         ${createBrandLogoHtml(tool, 24)}
@@ -687,6 +712,7 @@ function renderLatestListings() {
           </div>
           <div class="tool-desc">${escapeHtml(tool.description)}</div>
           <div class="tool-meta">
+            ${isLiveNew ? `<span style="background:var(--yellow-primary,#F4C62B);color:#111;padding:1px 4px;font-size:8.5px;font-weight:bold;border-radius:2px;margin-right:4px;">NEW</span>` : ''}
             ${escapeHtml(tool.pricingLabel)}
             ${tool.displayUrl ? ` | <a href="${escapeHtml(tool.website)}" target="_blank" rel="noopener noreferrer" class="tool-url-link" onclick="event.stopPropagation()">${escapeHtml(tool.displayUrl)} ↗</a>` : ''}
           </div>
@@ -726,9 +752,25 @@ function renderAllCategories() {
     if (!container) return;
 
     // Filter tools for this category
-    const catTools = state.allDirectoryTools.filter(t => t.category === catId);
+    let catTools = state.allDirectoryTools.filter(t => t.category === catId);
 
-    // Pick top 5-6 tools for column view (featured or first in list)
+    if (ENABLE_SEPARATED_FRESH_STREAM) {
+      // Solution 4: Anchor All-Time Classics (featured / highly rated pillars) in the category columns
+      catTools.sort((a, b) => {
+        // 1. Featured / Classic tools come first
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        // 2. Curated origin before auto-crawled
+        const aIsCurated = (a.origin === 'curated');
+        const bIsCurated = (b.origin === 'curated');
+        if (aIsCurated && !bIsCurated) return -1;
+        if (!aIsCurated && bIsCurated) return 1;
+        // 3. Stable alphabetical sort
+        return (a.name || '').localeCompare(b.name || '');
+      });
+    }
+
+    // Pick top 5-6 tools for column view (all-time best / pillars)
     const displaySample = catTools.slice(0, 6);
 
     container.innerHTML = displaySample.map(tool => {
