@@ -754,36 +754,26 @@ function renderAllCategories() {
     // Filter tools for this category
     let catTools = state.allDirectoryTools.filter(t => t.category === catId);
 
-    if (ENABLE_SEPARATED_FRESH_STREAM) {
-      // Solution 4: Anchor All-Time Classics (featured / highly rated pillars) in the category columns
-      catTools.sort((a, b) => {
-        // 1. Featured / Classic tools come first
-        if (a.featured && !b.featured) return -1;
-        if (!a.featured && b.featured) return 1;
-        // 2. Curated origin before auto-crawled
-        const aIsCurated = (a.origin === 'curated');
-        const bIsCurated = (b.origin === 'curated');
-        if (aIsCurated && !bIsCurated) return -1;
-        if (!aIsCurated && bIsCurated) return 1;
-        // 3. Stable alphabetical sort
-        return (a.name || '').localeCompare(b.name || '');
-      });
-    }
+    // Sort newest tools first for the category columns ("lấy mới hết trong các cột đó")
+    catTools.sort((a, b) => {
+      const dateA = a.createdAt || '';
+      const dateB = b.createdAt || '';
+      if (dateA !== dateB) {
+        return dateB.localeCompare(dateA);
+      }
+      return (a.name || '').localeCompare(b.name || '');
+    });
 
-    // Pick top 5-6 tools for column view (all-time best / pillars)
+    // Pick top 5-6 newest tools for column view
     const displaySample = catTools.slice(0, 6);
 
     container.innerHTML = displaySample.map(tool => {
-      const isClassic = tool.featured || (tool.rank && tool.rank <= 10) || tool.origin === 'curated';
       return `
         <div class="tool-row-item" data-tool-id="${escapeHtml(tool.id)}" data-slug="${escapeHtml(tool.slug)}" data-category="${escapeHtml(catId)}">
           ${createBrandLogoHtml(tool, 24)}
           <div class="tool-info">
             <div class="tool-name-line">
-              <div style="display:flex; align-items:center; gap:4px; min-width:0;">
-                <span class="tool-name">${escapeHtml(tool.name)}</span>
-                ${isClassic ? '<span class="badge-classic">★ CLASSIC</span>' : ''}
-              </div>
+              <span class="tool-name">${escapeHtml(tool.name)}</span>
             </div>
             <div class="tool-desc">${escapeHtml(tool.description)}</div>
             <div class="tool-meta">
