@@ -8,7 +8,7 @@ Pilot là một modular monolith nhỏ, có kỷ luật, thực sự di động 
 
 **Kết luận: CÓ ĐIỀU KIỆN SẴN SÀNG (CONDITIONALLY READY)** (không có P0; 3 P1 đang mở). Với vai trò thư mục công khai rủi ro thấp thì có thể tiếp tục chạy; chưa sẵn sàng để bàn giao cho đội mới hoặc cấp quyền ghi cho ngoài một vận hành viên tin cậy cho đến khi xử lý AUD-SEC-001, AUD-SEC-002 và AUD-OPS-001.
 
-Ma trận kiểm soát: 76 kiểm soát — 20 PASS, 22 PARTIAL, 24 FAIL, 8 NOT VERIFIED, 2 N/A. (Chỉ là số đếm; không đưa phần trăm vì các kiểm soát không được đánh trọng số.)
+Ma trận kiểm soát: 75 kiểm soát — 20 PASS, 22 PARTIAL, 24 FAIL, 7 NOT VERIFIED, 2 N/A. (Chỉ là số đếm; không đưa phần trăm vì các kiểm soát không được đánh trọng số.)
 
 ## 2. Phân loại
 Ứng dụng web công khai + API JSON (thư mục/danh mục chủ yếu đọc), đơn tenant, không có tài khoản người dùng cuối, một vai trò curator đặc quyền, cộng pipeline curation tự động (GitHub Actions) và miền AI-resource-hub. Không áp dụng: mobile, game, đa tenant, thanh toán, PII/quyền riêng tư (không lưu PII; favorite của khách nằm trong `localStorage`), message broker.

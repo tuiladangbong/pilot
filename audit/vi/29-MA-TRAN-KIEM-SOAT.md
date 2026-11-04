@@ -83,4 +83,4 @@ Lưu ý: cột 'Bằng chứng' và 'Ghi chú' giữ nguyên bản tiếng Anh t
 | AI-01 | AI/Automation | 1 | AUD-SEC-001 |
 | AI-02 | AI/Automation | 1 |  |
 
-Tổng: 76 kiểm soát — 20 PASS, 22 PARTIAL, 24 FAIL, 8 NOT VERIFIED, 2 N/A.
+Tổng: 75 kiểm soát — 20 PASS, 22 PARTIAL, 24 FAIL, 7 NOT VERIFIED, 2 N/A.

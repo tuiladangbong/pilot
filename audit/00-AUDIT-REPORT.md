@@ -8,7 +8,7 @@ Pilot is a small, disciplined, genuinely portable modular monolith: one Cloudfla
 
 **Verdict: CONDITIONALLY READY** (no P0 found; 3 P1 open). As a low-stakes public directory it is safe to keep running; it is not ready for a team handover or for write access beyond one trusted operator until AUD-SEC-001, AUD-SEC-002 and AUD-OPS-001 are addressed.
 
-Control matrix: 76 controls — 20 PASS, 22 PARTIAL, 24 FAIL, 8 NOT VERIFIED, 2 N/A. (Counts only; no percentage is claimed because controls are unweighted.)
+Control matrix: 75 controls — 20 PASS, 22 PARTIAL, 24 FAIL, 7 NOT VERIFIED, 2 N/A. (Counts only; no percentage is claimed because controls are unweighted.)
 
 ## 2. Classification
 Public web app + JSON API (read-mostly directory/catalog), single-tenant, no end-user accounts, one privileged curator role, plus an automation/curation CLI pipeline (GitHub Actions) and an AI-resource-hub domain. Not applicable: mobile, game, multi-tenant, payments, PII/privacy regimes (no PII stored; visitor favorites live in `localStorage`), message brokers.
