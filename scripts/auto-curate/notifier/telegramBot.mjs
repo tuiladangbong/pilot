@@ -99,7 +99,7 @@ ${escapeHtml(tool.description)}
     const inlineKeyboard = {
       inline_keyboard: [
         [
-          { text: '✅ Approve & Publish', callback_data: `approve_${candidateId}` },
+          { text: '✅ Approve', callback_data: `approve_${candidateId}` },
           { text: '❌ Reject', callback_data: `reject_${candidateId}` },
         ],
         [

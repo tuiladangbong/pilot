@@ -1,3 +1,4 @@
+import { resolveResourceId } from '../../../core/domain/Resource.ts';
 /**
  * Module-specific Domain Model for Agents.
  * Represents a reusable AI role or worker definition, including instructions,
@@ -142,7 +143,7 @@ export function createAgent(input: CreateAgentInput): Agent {
   }
 
   const now = new Date().toISOString();
-  const id = input.id && input.id.trim().length > 0 ? input.id.trim() : crypto.randomUUID();
+  const id = resolveResourceId(input.id);
 
   return {
     id,

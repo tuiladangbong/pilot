@@ -1,3 +1,4 @@
+import { resolveResourceId } from '../../../core/domain/Resource.ts';
 /**
  * Module-specific Domain Model for Prompts.
  * A Prompt is the first functional resource in Pilot.
@@ -66,7 +67,7 @@ export function createPrompt(input: CreatePromptInput): Prompt {
   }
 
   const now = new Date().toISOString();
-  const id = input.id && input.id.trim() !== '' ? input.id.trim() : crypto.randomUUID();
+  const id = resolveResourceId(input.id);
 
   return {
     id,

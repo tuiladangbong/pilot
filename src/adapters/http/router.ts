@@ -47,12 +47,11 @@ export interface RouterDependencies {
   readonly assetHandler?: (request: Request) => Promise<Response>;
   readonly curatorToken?: string;
   readonly isCurator?: (request: Request) => boolean;
-  readonly trustAccessHeader?: boolean;
 }
 
 const CORS_HEADERS: Record<string, string> = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Curator-Key, X-Admin-Key',
 };
 
@@ -87,6 +86,7 @@ function jsonError(code: string, message: string, status = 400, extraHeaders: Re
 }
 
 import { checkIsCurator, enforceCuratorAuth } from './curatorAuth';
+import { parseBoundedInt } from './query';
 
 export async function handleRequest(request: Request, deps: RouterDependencies): Promise<Response> {
   const requestId = request.headers.get('cf-ray') || request.headers.get('x-request-id') || crypto.randomUUID();
@@ -180,8 +180,8 @@ async function dispatchRequest(request: Request, deps: RouterDependencies): Prom
 
   // GET /api/resources (Generic resource listing across modules)
   if (pathname === '/api/resources' && method === 'GET') {
-    const limit = parseInt(url.searchParams.get('limit') ?? '50', 10);
-    const offset = parseInt(url.searchParams.get('offset') ?? '0', 10);
+    const limit = parseBoundedInt(url.searchParams.get('limit'), 50, 1, 500);
+    const offset = parseBoundedInt(url.searchParams.get('offset'), 0, 0, 100000);
     const type = url.searchParams.get('type') ?? undefined;
     const tag = url.searchParams.get('tag') ?? undefined;
     const q = url.searchParams.get('q') ?? undefined;
@@ -498,8 +498,8 @@ async function dispatchRequest(request: Request, deps: RouterDependencies): Prom
       const orderParam = url.searchParams.get('order')?.toLowerCase();
       const order: 'asc' | 'desc' = orderParam === 'asc' ? 'asc' : 'desc';
 
-      const limit = parseInt(url.searchParams.get('limit') ?? '50', 10);
-      const offset = parseInt(url.searchParams.get('offset') ?? '0', 10);
+      const limit = parseBoundedInt(url.searchParams.get('limit'), 50, 1, 500);
+      const offset = parseBoundedInt(url.searchParams.get('offset'), 0, 0, 100000);
 
       const useCase = new ListToolsUseCase(toolRepo);
       const result = await useCase.execute({
@@ -699,8 +699,8 @@ async function dispatchRequest(request: Request, deps: RouterDependencies): Prom
       const orderParam = url.searchParams.get('order')?.toLowerCase();
       const order: 'asc' | 'desc' = orderParam === 'asc' ? 'asc' : 'desc';
 
-      const limit = parseInt(url.searchParams.get('limit') ?? '50', 10);
-      const offset = parseInt(url.searchParams.get('offset') ?? '0', 10);
+      const limit = parseBoundedInt(url.searchParams.get('limit'), 50, 1, 500);
+      const offset = parseBoundedInt(url.searchParams.get('offset'), 0, 0, 100000);
 
       const useCase = new ListPromptsUseCase(promptRepo);
       const result = await useCase.execute({
@@ -928,8 +928,8 @@ async function dispatchRequest(request: Request, deps: RouterDependencies): Prom
       const orderParam = url.searchParams.get('order')?.toLowerCase();
       const order: 'asc' | 'desc' = orderParam === 'asc' ? 'asc' : 'desc';
 
-      const limit = parseInt(url.searchParams.get('limit') ?? '50', 10);
-      const offset = parseInt(url.searchParams.get('offset') ?? '0', 10);
+      const limit = parseBoundedInt(url.searchParams.get('limit'), 50, 1, 500);
+      const offset = parseBoundedInt(url.searchParams.get('offset'), 0, 0, 100000);
 
       const useCase = new ListWorkflowsUseCase(workflowRepo);
       const result = await useCase.execute({
@@ -1143,8 +1143,8 @@ async function dispatchRequest(request: Request, deps: RouterDependencies): Prom
   // GET /api/agents, POST /api/agents
   if (pathname === '/api/agents') {
     if (method === 'GET') {
-      const limit = parseInt(url.searchParams.get('limit') ?? '50', 10);
-      const offset = parseInt(url.searchParams.get('offset') ?? '0', 10);
+      const limit = parseBoundedInt(url.searchParams.get('limit'), 50, 1, 500);
+      const offset = parseBoundedInt(url.searchParams.get('offset'), 0, 0, 100000);
       const statusParam = url.searchParams.get('status') ?? undefined;
       const autonomyParam = url.searchParams.get('autonomy') ?? undefined;
       const runtime = url.searchParams.get('runtime') ?? undefined;

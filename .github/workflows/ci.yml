@@ -7,9 +7,12 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   verify:
-    name: Typecheck & Architectural Tests
+    name: Typecheck & Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -27,5 +30,8 @@ jobs:
       - name: Run Typecheck
         run: npm run typecheck
 
-      - name: Run Unit & Architectural Tests
+      - name: Run Unit, Architectural & Migration Tests
         run: npm test
+
+      - name: Audit runtime dependencies
+        run: npm audit --omit=dev --audit-level=high

@@ -1,3 +1,4 @@
+import { resolveResourceId } from '../../../core/domain/Resource.ts';
 /**
  * Module-specific Domain Model for AI Tools & Websites.
  * Represents useful AI tools, web apps, SaaS services, playgrounds, and reference websites.
@@ -267,7 +268,7 @@ export function createTool(input: CreateToolInput): Tool {
   const kind = validateKind(input.kind);
   const pricing = validatePricing(input.pricing);
   const now = new Date().toISOString();
-  const id = input.id && input.id.trim() !== '' ? input.id.trim() : crypto.randomUUID();
+  const id = resolveResourceId(input.id);
   const slug = input.slug && input.slug.trim() !== '' ? input.slug.trim().toLowerCase() : slugify(input.title);
 
   return {

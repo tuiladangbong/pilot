@@ -1,7 +1,6 @@
 export interface CuratorAuthDependencies {
   readonly curatorToken?: string;
   readonly isCurator?: (request: Request) => boolean;
-  readonly trustAccessHeader?: boolean;
 }
 
 export interface CuratorAuthResult {
@@ -30,8 +29,7 @@ function safeCompareTokens(provided: string, expected: string): boolean {
 /**
  * Checks if incoming request has curator/admin privileges via:
  * 1. Custom validator (if provided)
- * 2. Cloudflare Access authenticated email header (only when trustAccessHeader is explicitly true)
- * 3. Secret token via Authorization: Bearer <token> or X-Curator-Key: <token>
+ * 2. Secret token via Authorization: Bearer <token> or X-Curator-Key: <token>
  */
 export function checkIsCurator(request: Request, deps: CuratorAuthDependencies): CuratorAuthResult {
   if (deps.isCurator) {
@@ -39,15 +37,7 @@ export function checkIsCurator(request: Request, deps: CuratorAuthDependencies):
     return { isCurator: res };
   }
 
-  // 1. Check Cloudflare Access header only when explicitly trusted (e.g. verified behind Cloudflare Access Zero Trust)
-  if (deps.trustAccessHeader === true) {
-    const cfAccessEmail = request.headers.get('cf-access-authenticated-user-email');
-    if (cfAccessEmail && cfAccessEmail.trim() !== '') {
-      return { isCurator: true, email: cfAccessEmail.trim() };
-    }
-  }
-
-  // 2. Check Token header (Authorization: Bearer <token> or X-Curator-Key: <token>)
+  // Check Token header (Authorization: Bearer <token> or X-Curator-Key: <token>)
   const authHeader = request.headers.get('authorization');
   const customHeader = request.headers.get('x-curator-key') || request.headers.get('x-admin-key');
   let providedToken: string | null = null;

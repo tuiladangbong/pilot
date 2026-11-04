@@ -1,3 +1,4 @@
+import { resolveResourceId } from '../../../core/domain/Resource.ts';
 /**
  * Module-specific Domain Model for Workflows.
  * Represents reusable, structured AI workflows composed of ordered steps and linked resources.
@@ -142,7 +143,7 @@ export function createWorkflowStep(
 
   const now = new Date().toISOString();
   return {
-    id: input.id && input.id.trim() !== '' ? input.id.trim() : crypto.randomUUID(),
+    id: resolveResourceId(input.id),
     workflowId,
     position,
     title: input.title.trim(),
@@ -161,7 +162,7 @@ export function createWorkflow(input: CreateWorkflowInput): Workflow {
   }
 
   const now = new Date().toISOString();
-  const id = input.id && input.id.trim() !== '' ? input.id.trim() : crypto.randomUUID();
+  const id = resolveResourceId(input.id);
 
   const rawSteps = input.steps ?? [];
   const steps: WorkflowStep[] = rawSteps.map((stepInput, index) =>

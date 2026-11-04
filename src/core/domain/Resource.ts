@@ -58,3 +58,20 @@ export function createResource(input: CreateResourceInput): Resource {
     updatedAt: input.updatedAt ?? now,
   };
 }
+
+const RESOURCE_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/;
+
+/**
+ * Resolves a caller-supplied resource id (or generates a UUID when absent).
+ * Ids end up in URLs and HTML attributes, so only a conservative charset is accepted.
+ */
+export function resolveResourceId(rawId?: string | null): string {
+  const trimmed = typeof rawId === 'string' ? rawId.trim() : '';
+  if (trimmed === '') {
+    return crypto.randomUUID();
+  }
+  if (!RESOURCE_ID_PATTERN.test(trimmed)) {
+    throw new Error('Resource id may only contain letters, digits, ".", "_" and "-" (max 128 chars)');
+  }
+  return trimmed;
+}

@@ -14,6 +14,16 @@ function escapeHtml(str: string): string {
 function withSecurityAndTrackingHeaders(response: Response, requestId: string): Response {
   const newHeaders = new Headers(response.headers);
   newHeaders.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+  newHeaders.set('X-Content-Type-Options', 'nosniff');
+  newHeaders.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  newHeaders.set('X-Frame-Options', 'DENY');
+  // Only directives that cannot break the current UI (inline handlers/third-party favicons still in use).
+  if (!newHeaders.has('Content-Security-Policy')) {
+    newHeaders.set(
+      'Content-Security-Policy',
+      "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'"
+    );
+  }
   if (!newHeaders.has('X-Request-Id')) {
     newHeaders.set('X-Request-Id', requestId);
   }
@@ -24,11 +34,36 @@ function withSecurityAndTrackingHeaders(response: Response, requestId: string): 
   });
 }
 
+/**
+ * One structured JSON line per API request; mutations are logged with event "mutation"
+ * so operators can answer who/what/when for catalog changes (actor is always the curator token holder).
+ */
+function logRequest(request: Request, response: Response, requestId: string, durationMs: number): void {
+  const url = new URL(request.url);
+  if (!url.pathname.startsWith('/api/')) return;
+  const method = request.method.toUpperCase();
+  const isMutation = method !== 'GET' && method !== 'HEAD' && method !== 'OPTIONS';
+  if (!isMutation && response.status < 500) return;
+  console.log(
+    JSON.stringify({
+      event: isMutation ? 'mutation' : 'request_error',
+      requestId,
+      method,
+      path: url.pathname,
+      status: response.status,
+      durationMs,
+    })
+  );
+}
+
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const requestId = request.headers.get('cf-ray') || request.headers.get('x-request-id') || crypto.randomUUID();
+    const startedAt = Date.now();
     const res = await this.handleFetch(request, env, ctx);
-    return withSecurityAndTrackingHeaders(res, requestId);
+    const finalResponse = withSecurityAndTrackingHeaders(res, requestId);
+    logRequest(request, finalResponse, requestId, Date.now() - startedAt);
+    return finalResponse;
   },
 
   async handleFetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {

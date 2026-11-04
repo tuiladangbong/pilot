@@ -1113,10 +1113,10 @@ function renderPrompts() {
     const previewContent = p.content || '';
 
     return `
-      <article class="prompt-card" data-id="${p.id}">
+      <article class="prompt-card" data-id="${escapeHtml(p.id)}">
         <div class="prompt-card-head">
           <span class="prompt-model-badge">${escapeHtml(modelLabel)}</span>
-          <button type="button" class="tool-bookmark-btn ${state.visitorFavorites.has(p.id) ? 'bookmarked' : ''}" data-id="${p.id}" title="Bookmark prompt">
+          <button type="button" class="tool-bookmark-btn ${state.visitorFavorites.has(p.id) ? 'bookmarked' : ''}" data-id="${escapeHtml(p.id)}" title="Bookmark prompt">
             ${state.visitorFavorites.has(p.id) ? '★' : '☆'}
           </button>
         </div>
@@ -1231,14 +1231,14 @@ function renderWorkflows() {
     }).join('');
 
     return `
-      <article class="workflow-card" data-id="${w.id}">
+      <article class="workflow-card" data-id="${escapeHtml(w.id)}">
         <div class="workflow-card-head">
           <div class="workflow-badges-left">
             <span class="diff-badge ${diffClass}">${(w.difficulty || 'MEDIUM').toUpperCase()}</span>
             <span class="workflow-time-badge">⏱️ ${escapeHtml(w.estimatedTime || 'Varies')}</span>
             <span class="workflow-step-count">${steps.length} STEPS</span>
           </div>
-          <button type="button" class="tool-bookmark-btn ${state.visitorFavorites.has(w.id) ? 'bookmarked' : ''}" data-id="${w.id}" title="Bookmark workflow">
+          <button type="button" class="tool-bookmark-btn ${state.visitorFavorites.has(w.id) ? 'bookmarked' : ''}" data-id="${escapeHtml(w.id)}" title="Bookmark workflow">
             ${state.visitorFavorites.has(w.id) ? '★' : '☆'}
           </button>
         </div>
@@ -1377,7 +1377,7 @@ async function renderAgents() {
     const isAuto = autonomy.toLowerCase() === 'autonomous';
 
     return `
-      <article class="agent-card" data-id="${a.id}">
+      <article class="agent-card" data-id="${escapeHtml(a.id)}">
         <div class="agent-card-head">
           <span class="agent-role-pill">${escapeHtml((a.role || 'AGENT').toUpperCase())}</span>
           <span class="agent-autonomy-badge ${isAuto ? 'autonomous' : ''}">● ${escapeHtml(autonomy.toUpperCase())}</span>

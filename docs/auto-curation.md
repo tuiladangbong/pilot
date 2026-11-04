@@ -52,7 +52,7 @@ flowchart TD
 
 ### Phase 2: Automated Scheduled Execution (GitHub Actions)
 - **Workflow:** [`.github/workflows/auto-curate.yml`](file:///c:/Users/dangbong/Documents/Projects/Nodbits%20PILOT/.github/workflows/auto-curate.yml)
-- **Schedule:** Runs automatically every 6 hours (`0 */6 * * *` UTC) or on-demand via `workflow_dispatch`.
+- **Schedule:** Runs every 6 hours (`0 */6 * * *` UTC) in **dry-run mode only** (discovery and report, no writes). Publishing to production happens only via a manual `workflow_dispatch` with `dry_run=false`.
 - **Zero Edge Overhead:** Keeps the production Cloudflare Worker lean and fast while utilizing free GitHub Actions runner minutes for deep scraping and LLM processing.
 
 ### Phase 3: Telegram Notification & Interactive Co-Pilot Review
@@ -71,7 +71,7 @@ In your GitHub Repository Settings (**Settings > Secrets and variables > Actions
 |:---|:---:|:---|:---|
 | `CURATOR_TOKEN` | **YES** | Authentication secret for Pilot's REST API (`X-Curator-Key`) | High-entropy string matching Cloudflare secret |
 | `PILOT_API_URL` | Optional | Target Pilot production URL | `https://pilot.nodbits.com` |
-| `AI_API_KEY` | Optional | Gemini or OpenAI API key for advanced LLM synthesis | (Falls back to local NLP heuristics if omitted) |
+| `AI_API_KEY` | Unused | Reserved; scoring is currently heuristic-only and the workflow no longer passes this secret | – |
 | `TELEGRAM_BOT_TOKEN` | Optional | Telegram Bot API token for notifications | From `@BotFather` |
 | `TELEGRAM_CHAT_ID` | Optional | Target Telegram channel or user ID | e.g. `-1001234567890` |
 

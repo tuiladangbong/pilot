@@ -4,8 +4,8 @@
  * Telegram Co-Pilot Review Bot Listener.
  *
  * Listens for approval callbacks from Telegram inline buttons.
- * When an admin clicks [✅ Approve & Publish], it publishes the candidate
- * directly to Pilot's production database via the Curator API.
+ * Records an admin's [✅ Approve] / [❌ Reject] decision on a candidate.
+ * It does NOT publish; publishing is a manual, deliberate workflow run.
  *
  * Usage:
  *   TELEGRAM_BOT_TOKEN="xxx" CURATOR_TOKEN="xxx" node scripts/auto-curate/telegram-webhook.mjs
@@ -15,6 +15,7 @@ import { PilotCuratorClient } from './curatorClient.mjs';
 
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const CURATOR_TOKEN = process.env.CURATOR_TOKEN;
+const ALLOWED_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 const PILOT_API_URL = process.env.PILOT_API_URL || 'https://pilot.nodbits.com';
 
 if (!BOT_TOKEN) {
@@ -48,11 +49,16 @@ async function pollUpdates() {
         const messageId = query.message?.message_id;
         const chatId = query.message?.chat?.id;
 
+        if (!ALLOWED_CHAT_ID || String(chatId) !== String(ALLOWED_CHAT_ID)) {
+          console.warn(`[Telegram] Ignored action from unauthorized chat ${chatId}`);
+          continue;
+        }
+
         console.log(`[Telegram] Received action: ${callbackData} from user ${query.from?.username || query.from?.id}`);
 
         if (callbackData.startsWith('approve_')) {
           await answerCallback(query.id, 'Processing approval...');
-          await editMessage(chatId, messageId, `✅ <b>Approved and published to Pilot!</b>\n<i>Processed by @${query.from?.username || 'admin'}</i>`);
+          await editMessage(chatId, messageId, `✅ <b>Approval recorded. Nothing was published by this bot — run the 'Auto Curate' workflow manually (dry_run=false) to publish.</b>\n<i>Processed by @${query.from?.username || 'admin'}</i>`);
         } else if (callbackData.startsWith('reject_')) {
           await answerCallback(query.id, 'Candidate rejected.');
           await editMessage(chatId, messageId, `❌ <b>Candidate rejected.</b>\n<i>Rejected by @${query.from?.username || 'admin'}</i>`);

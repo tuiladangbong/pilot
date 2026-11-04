@@ -2,7 +2,8 @@ name: Auto Curate & Ingest AI Resources
 
 on:
   schedule:
-    # Run automatically every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
+    # Scheduled runs are ALWAYS dry-run (discovery/report only). Publishing to production
+    # requires a human to dispatch this workflow manually with dry_run=false.
     - cron: '0 */6 * * *'
   workflow_dispatch:
     inputs:
@@ -18,11 +19,14 @@ on:
         description: 'Run in dry-run mode (do not write to production)'
         type: boolean
         required: true
-        default: false
+        default: true
+
+permissions:
+  contents: read
 
 concurrency:
   group: auto-curate-pipeline
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   curate:
@@ -46,13 +50,25 @@ jobs:
           PILOT_API_URL: ${{ secrets.PILOT_API_URL || 'https://pilot.nodbits.com' }}
           CURATOR_TOKEN: ${{ secrets.CURATOR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AI_API_KEY: ${{ secrets.AI_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # Inputs are passed via env (never interpolated into the script) to avoid shell injection.
+          INPUT_LIMIT: ${{ github.event.inputs.limit }}
+          INPUT_MIN_SCORE: ${{ github.event.inputs.min_score }}
+          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
-          LIMIT="${{ github.event.inputs.limit || '5' }}"
-          MIN_SCORE="${{ github.event.inputs.min_score || '7.5' }}"
-          DRY_RUN="${{ github.event.inputs.dry_run }}"
+          LIMIT="${INPUT_LIMIT:-5}"
+          MIN_SCORE="${INPUT_MIN_SCORE:-7.5}"
+          case "$LIMIT" in ''|*[!0-9]*) echo "limit must be an integer"; exit 1;; esac
+          case "$MIN_SCORE" in ''|*[!0-9.]*) echo "min_score must be numeric"; exit 1;; esac
+
+          # Fail safe: only an explicit manual dispatch with dry_run=false may publish.
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ "$INPUT_DRY_RUN" = "false" ]; then
+            DRY_RUN="false"
+          else
+            DRY_RUN="true"
+          fi
 
           if [ "$DRY_RUN" = "true" ]; then
             echo "Running in DRY-RUN mode..."
